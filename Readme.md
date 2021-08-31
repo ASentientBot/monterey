@@ -1,22 +1,21 @@
 # credits
-Please tell me if I forgot you.
 - [dosdude1](http://dosdude1.com): 10.14.4+ GL bundle fix, Mojave/Catalina patchers, countless macOS insights
 - [Dortania](https://dortania.github.io) ([khronokernel](https://github.com/khronokernel), [dhinakg](https://github.com/dhinakg), et al.): OpenCore Legacy Patcher, Broadcom Wi-Fi fix, TeraScale 2 insights, excellent hackintosh guides, countless other insights and help
 - [SpiraMira](https://github.com/SpiraMira) ([pkouame](https://forums.macrumors.com/members/pkouame.1036080/)), [testheit](https://forums.macrumors.com/members/1133139/): SkyLight insights, previous transparancy patches
 - [jackluke](https://github.com/jacklukem): 10.14+ Penryn panic fix (telemetry plugin), Tesla insights, testing
 - [Minh Ton](https://minh-ton.github.io): many macOS insights, testing
-- [moosethegoose2213](https://moosethegoose2213.github.io) (ASentientHedgehog): TeraScale 2 insights, lots of testing
+- [moosethegoose2213](https://moosethegoose2213.github.io) (ASentientHedgehog): TeraScale 2 insights, testing
 - EduCovas: WebKit insights, testing
 - [ParrotGeek](https://parrotgeek.com): Tesla and SIP insights
 - [Julian Fairfax](https://julianfairfax.gitlab.io): many macOS insights, testing
 - [me](http://asentientbot.github.io), Zoe, Cass2, Alice: code, most fixes not listed above
-- other contributors and moderators on [Unsupported Macs Discord](https://discord.gg/XbbWAsE), [OCLP Discord](https://discord.gg/rqdPgH8xSN), [MacRumors Forums](https://forums.macrumors.com)
+Thanks as well to other contributors and moderators on [Unsupported Macs Discord](https://discord.gg/XbbWAsE), [OCLP Discord](https://discord.gg/rqdPgH8xSN), and [MacRumors Forums](https://forums.macrumors.com). Please tell me if I forgot you.
 
 # build
-Place [these](https://archive.org/download/71prereqs) in `Build.noindex`; run `Extract.tool`, then `Build.tool`. Most people will want `Build.noindex/Wrapped`; the rest is unsupported for now.
+Place [these](https://archive.org/download/71prereqs) in `Build.noindex`; run `Extract.tool`, then `Build.tool`. You'll probably just want `Build.noindex/Wrapped`; the rest is unsupported for now.
 
 # todo
-Roughly ordered by priority.
+Roughly ordered by priority. Also see [here](https://github.com/dortania/OpenCore-Legacy-Patcher/issues/108#issuecomment-810634088).
 
 ## immediately
 - add proper occlusion notifications
