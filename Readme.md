@@ -9,6 +9,7 @@
 - [ParrotGeek](https://parrotgeek.com): Tesla and SIP insights
 - [Julian Fairfax](https://julianfairfax.gitlab.io): many macOS insights, testing
 - [me](http://asentientbot.github.io), Zoe, Cass2, Alice: code, most fixes not listed above
+
 Thanks as well to other contributors and moderators on [Unsupported Macs Discord](https://discord.gg/XbbWAsE), [OCLP Discord](https://discord.gg/rqdPgH8xSN), and [MacRumors Forums](https://forums.macrumors.com). Please tell me if I forgot you.
 
 # build
