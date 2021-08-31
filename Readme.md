@@ -20,9 +20,10 @@ Roughly ordered by priority. Also see [here](https://github.com/dortania/OpenCor
 
 ## immediately
 - add proper occlusion notifications
+- remove log spam
 - rewrite Stubber
 - rewrite Glyphs
-- framework symlinks
+- add framework symlinks
 
 ## hopefully soon
 - fix CALayer corner radius
@@ -50,7 +51,7 @@ Roughly ordered by priority. Also see [here](https://github.com/dortania/OpenCor
 - implement auto appearance
 - implement Screen Time locking
 
-# fixes
+# fixed
 
 ## since Monterey DP5 release (OCLP server, 2021-8-26)
 - none yet
