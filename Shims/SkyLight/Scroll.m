@@ -22,7 +22,7 @@ NSDictionary* SLSCopyDevicesDictionary()
 		valuesNew.release;
 	}
 	
-	trace(@"SLSCopyDevicesDictionary %@",dictOut);
+	// trace(@"SLSCopyDevicesDictionary %@",dictOut);
 	
 	// don't autorelease because *Copy*
 	return dictOut;

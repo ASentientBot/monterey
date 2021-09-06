@@ -18,7 +18,7 @@ BOOL styleIsDark()
 
 void SLSTransactionSystemStatusBarRegisterSortedWindow(unsigned long rdi_transaction,unsigned int esi_windowID,unsigned int edx_priority,unsigned long rcx_displayID,unsigned int r8d_flags,unsigned int r9d_insertOrder,float xmm0_preferredPosition,unsigned int stack_appearance)
 {
-	trace(@"SLSTransactionSystemStatusBarRegisterSortedWindow %d %d %ld %d %d %f %d",esi_windowID,edx_priority,rcx_displayID,r8d_flags,r9d_insertOrder,xmm0_preferredPosition,stack_appearance);
+	// trace(@"SLSTransactionSystemStatusBarRegisterSortedWindow %d %d %ld %d %d %f %d",esi_windowID,edx_priority,rcx_displayID,r8d_flags,r9d_insertOrder,xmm0_preferredPosition,stack_appearance);
 	
 	unsigned int connection=SLSMainConnectionID();
 	
@@ -32,7 +32,7 @@ void SLSTransactionSystemStatusBarRegisterSortedWindow(unsigned long rdi_transac
 
 void SLSTransactionSystemStatusBarRegisterReplicantWindow(unsigned long rdi_transaction,unsigned int esi_windowID,unsigned int edx_parent,unsigned long rcx_displayID,unsigned int r8d_flags,unsigned int r9d_appearance)
 {
-	trace(@"SLSTransactionSystemStatusBarRegisterReplicantWindow %d %d %ld %d %d",esi_windowID,edx_parent,rcx_displayID,r8d_flags,r9d_appearance);
+	// trace(@"SLSTransactionSystemStatusBarRegisterReplicantWindow %d %d %ld %d %d",esi_windowID,edx_parent,rcx_displayID,r8d_flags,r9d_appearance);
 	
 	unsigned int connection=SLSMainConnectionID();
 	SLSSystemStatusBarRegisterReplicantWindow(connection,esi_windowID,edx_parent,rcx_displayID,r8d_flags);
@@ -41,7 +41,7 @@ void SLSTransactionSystemStatusBarRegisterReplicantWindow(unsigned long rdi_tran
 
 void SLSTransactionSystemStatusBarUnregisterWindow(unsigned long rdi_transaction,unsigned int esi_windowID)
 {
-	trace(@"SLSTransactionSystemStatusBarUnregisterWindow %d",esi_windowID);
+	// trace(@"SLSTransactionSystemStatusBarUnregisterWindow %d",esi_windowID);
 	
 	unsigned int connection=SLSMainConnectionID();
 	SLSUnregisterWindowWithSystemStatusBar(connection,esi_windowID);
@@ -53,7 +53,7 @@ void SLSTransactionSystemStatusBarUnregisterWindow(unsigned long rdi_transaction
 
 void SLSTransactionSystemStatusBarSetSelectedContentFrame(unsigned long rdi_transaction,unsigned int esi_windowID,CGRect stack_rect)
 {
-	trace(@"SLSTransactionSystemStatusBarSetSelectedContentFrame %d %@",esi_windowID,NSStringFromRect(stack_rect));
+	// trace(@"SLSTransactionSystemStatusBarSetSelectedContentFrame %d %@",esi_windowID,NSStringFromRect(stack_rect));
 	
 	CALayer* layer=wrapperForWindow(esi_windowID).context.layer;
 	
@@ -64,7 +64,7 @@ void SLSTransactionSystemStatusBarSetSelectedContentFrame(unsigned long rdi_tran
 	else
 	{
 		// TODO: totally guessed
-		CGColorRef fillBase=styleIsDark()?CGColorGetConstantColor(kCGColorBlack):CGColorGetConstantColor(kCGColorWhite);
+		CGColorRef fillBase=CGColorGetConstantColor(styleIsDark()?kCGColorBlack:kCGColorWhite);
 		float fillAlpha=styleIsDark()?0.1:0.25;
 		CGColorRef fillColor=CGColorCreateCopyWithAlpha(fillBase,fillAlpha);
 		layer.backgroundColor=fillColor;
@@ -86,7 +86,7 @@ const NSString* kSLMenuBarInactiveImageWindowLightKey=@"kSLMenuBarInactiveImageW
 
 unsigned int SLSSetMenuBars(unsigned int edi_connectionID,NSMutableArray* rsi_array,NSMutableDictionary* rdx_dict)
 {
-	trace(@"SLSSetMenuBars (in) %d %@ %@",edi_connectionID,rdx_dict,rsi_array);
+	// trace(@"SLSSetMenuBars (in) %d %@ %@",edi_connectionID,rdx_dict,rsi_array);
 	
 	// emulate the new highlight color
 	// TODO: strings may be defined somewhere
@@ -120,7 +120,7 @@ unsigned int SLSSetMenuBars(unsigned int edi_connectionID,NSMutableArray* rsi_ar
 		rsi_array[barIndex][kCGMenuBarInactiveImageWindowKey]=inactiveID;
 	}
 	
-	trace(@"SLSSetMenuBars (out) %d %@ %@",edi_connectionID,rdx_dict,rsi_array);
+	// trace(@"SLSSetMenuBars (out) %d %@ %@",edi_connectionID,rdx_dict,rsi_array);
 	
 	return SLSSetMenuBar$(edi_connectionID,rsi_array,rdx_dict);
 }
@@ -166,7 +166,7 @@ NSDictionary* SLSCopySystemStatusBarMetrics()
 	result[@"displays"]=displays;
 	displays.release;
 	
-	trace(@"SLSCopySystemStatusBarMetrics %@",result);
+	// trace(@"SLSCopySystemStatusBarMetrics %@",result);
 	
 	// don't autorelease because *Copy*
 	return result;
@@ -176,7 +176,7 @@ NSDictionary* SLSCopySystemStatusBarMetrics()
 
 void statusBarSpaceCallback()
 {
-	trace(@"statusBarSpaceCallback");
+	// trace(@"statusBarSpaceCallback");
 	
 	// TODO: not how it's officially done
 	
@@ -210,14 +210,14 @@ void menuBarRevealCommon(NSNumber* amount)
 
 void menuBarRevealCallback()
 {
-	trace(@"menuBarRevealCallback");
+	// trace(@"menuBarRevealCallback");
 	
 	menuBarRevealCommon(@1.0);
 }
 
 void menuBarHideCallback()
 {
-	trace(@"menuBarHideCallback");
+	// trace(@"menuBarHideCallback");
 	
 	menuBarRevealCommon(@0.0);
 }
@@ -225,7 +225,7 @@ void menuBarHideCallback()
 dispatch_once_t notifyOnce;
 NSNotificationCenter* SLSCoordinatedLocalNotificationCenter()
 {
-	trace(@"SLSCoordinatedLocalNotificationCenter");
+	// trace(@"SLSCoordinatedLocalNotificationCenter");
 	
 	dispatch_once(&notifyOnce,^()
 	{
@@ -254,7 +254,7 @@ dispatch_block_t SLSCopyCoordinatedDistributedNotificationContinuationBlock()
 		return result;
 	}
 	
-	trace(@"SLSCopyCoordinatedDistributedNotificationContinuationBlock fallback");
+	// trace(@"SLSCopyCoordinatedDistributedNotificationContinuationBlock fallback");
 	
 	// TODO: ownership?
 	return ^()

@@ -1,5 +1,3 @@
-# TODO: move logic into Stubber
-
 source "$code/Tasks/Common.zsh"
 
 prefixOut="Wrapped"
@@ -26,14 +24,9 @@ function build
 	install_name_tool -id "$oldInstall" "$oldOut"
 	
 	mainIn="$prefixOut/${name}Wrapper.m"
-	shimsIn="$code/Shims/${name}"
+	shimsIn="$code/Shims"
 
-	if test -d "$shimsIn"
-	then
-		./Stubber "$oldIn" "$newIn" "$mainIn" "$shimsIn/"*".m"
-	else
-		./Stubber "$oldIn" "$newIn" "$mainIn"
-	fi
+	./Stubber "$oldIn" "$newIn" "$shimsIn" "$mainIn"
 	
 	clangCommon -dynamiclib -compatibility_version 1.0.0 -current_version 1.0.0 -install_name "$mainInstall" -Xlinker -reexport_library "$oldOut" -I "$code/Shims" "$mainIn" -o "$mainOut" $4
 	

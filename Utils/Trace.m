@@ -1,3 +1,7 @@
+// TODO: reimplement print-to-file
+// TODO: reimplement indentation and custom prefixes
+// and then update other code to use it
+
 BOOL traceLog=false;
 BOOL tracePrint=true;
 

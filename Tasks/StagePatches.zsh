@@ -34,13 +34,20 @@ cp -R "10.14.3/Payload/System/Library/PrivateFrameworks/GPUSupport.framework" "$
 cp -R "10.14.3/Payload/System/Library/Frameworks/OpenGL.framework" "$overlayFrameworks"
 rm -f "$overlayFrameworks/OpenGL.framework/Versions/A/Libraries/libCoreFSCache.dylib"
 
-# TODO: the symlinks as discussed with Mykola
 mkdir -p "$overlayPFrameworks/SkyLight.framework/Versions/A"
 mkdir -p "$overlayFrameworks/CoreDisplay.framework/Versions/A"
 mkdir -p "$overlayFrameworks/IOSurface.framework/Versions/A"
 cp "Wrapped/SkyLight" "Wrapped/SkyLightOld.dylib" "$overlayPFrameworks/SkyLight.framework/Versions/A"
 cp "Wrapped/CoreDisplay" "Wrapped/CoreDisplayOld.dylib" "$overlayFrameworks/CoreDisplay.framework/Versions/A"
 cp "Wrapped/IOSurface" "Wrapped/IOSurfaceOld.dylib" "$overlayFrameworks/IOSurface.framework/Versions/A"
+
+ln -s "A" "$overlayPFrameworks/SkyLight.framework/Versions/Current"
+ln -s "A" "$overlayFrameworks/CoreDisplay.framework/Versions/Current"
+ln -s "A" "$overlayFrameworks/IOSurface.framework/Versions/Current"
+
+ln -s "Versions/Current/SkyLight" "$overlayPFrameworks/SkyLight.framework/SkyLight"
+ln -s "Versions/Current/CoreDisplay" "$overlayFrameworks/CoreDisplay.framework/CoreDisplay"
+ln -s "Versions/Current/IOSurface" "$overlayFrameworks/IOSurface.framework/IOSurface"
 
 plistFolder="$overlay/System/Library/LaunchDaemons"
 plistPath="$PWD/$plistFolder/HiddHack.plist"

@@ -4,10 +4,10 @@
 
 #import "Utils.h"
 
-@interface Stub:NSObject
+@interface %name%:NSObject
 @end
 
-@implementation Stub
+@implementation %name%
 
 -(void)fake
 {
