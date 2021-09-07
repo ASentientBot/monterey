@@ -1,7 +1,5 @@
 // catch missing selectors
 
-// TODO: share (or rename) between frameworks to avoid warning spam in Terminal
-
 #import "Utils.h"
 
 @interface %name%:NSObject

@@ -35,5 +35,5 @@ function build
 }
 
 build "SkyLight" "Current/Ramdisk/System/Library/PrivateFrameworks/SkyLight.framework/Versions/A/SkyLight" "/System/Library/PrivateFrameworks/SkyLight.framework/Versions/A/SkyLight"
-build "10.14.4/Payload/System/Library/Frameworks/CoreDisplay.framework/Versions/A/CoreDisplay" "Current/Ramdisk/System/Library/Frameworks/CoreDisplay.framework/Versions/A/CoreDisplay" "/System/Library/Frameworks/CoreDisplay.framework/Versions/A/CoreDisplay"
+build "CoreDisplay" "Current/Ramdisk/System/Library/Frameworks/CoreDisplay.framework/Versions/A/CoreDisplay" "/System/Library/Frameworks/CoreDisplay.framework/Versions/A/CoreDisplay"
 build "10.15.7/Payload/System/Library/Frameworks/IOSurface.framework/Versions/A/IOSurface" "Current/Ramdisk/System/Library/Frameworks/IOSurface.framework/Versions/A/IOSurface" "/System/Library/Frameworks/IOSurface.framework/Versions/A/IOSurface"

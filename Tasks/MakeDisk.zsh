@@ -1,4 +1,6 @@
-target="$(osascript -e 'posix path of (choose folder)')"
+source "$code/Tasks/Common.zsh"
+
+target="$(promptFolder)"
 
 unique="Installer$(date +%s)"
 diskutil erasevolume JHFS+ "$unique" "$target"

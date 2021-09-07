@@ -11,6 +11,7 @@ runTask "PatchLSK"
 
 runTask "PatchTesla"
 runTask "PatchSkyLight"
+runTask "PatchCoreDisplay"
 runTask "PatchIOSurface"
 runTask "PatchWeb"
 

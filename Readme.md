@@ -6,8 +6,9 @@
 - [Minh Ton](https://minh-ton.github.io): many macOS insights, testing
 - [moosethegoose2213](https://moosethegoose2213.github.io) (ASentientHedgehog): TeraScale 2 insights, testing
 - [EduCovas](https://github.com/educovas): WebKit insights, testing
-- [ParrotGeek](https://parrotgeek.com): Tesla and SIP insights
+- [parrotgeek1](https://parrotgeek.com): Tesla and SIP insights
 - [Julian Fairfax](https://julianfairfax.gitlab.io): macOS insights, testing
+- Krutav Shah: testing
 - [me](http://asentientbot.github.io), Zoe, Cass2, Alice: code, most fixes not listed above
 
 Thanks as well to other contributors, moderators, and testers on [Unsupported Macs Discord](https://discord.gg/XbbWAsE), [OCLP Discord](https://discord.gg/rqdPgH8xSN), and [MacRumors Forums](https://forums.macrumors.com). Please tell me if I forgot to mention you.
@@ -17,12 +18,15 @@ Place [these](https://archive.org/download/71prereqs) in `Build.noindex`. Add th
 
 # changes
 
-## GitHub 2021-9-5
+## 2021-9-7
+- implement CoreDisplay hack for AGDC crash on Intel
+
+## 2021-9-5
 - rewrite Stubber (modularity, `Class Stub is implemented...`)
 - remove excessive SkyLight shim logs
 - create symlinks in shimmed frameworks (Catalyst dyld problem)
 
-## Google Drive 2021-8-26
+## 2021-8-26
 Changes since last non-GitHub release.
 
 ### new Monterey issues
@@ -50,12 +54,12 @@ Roughly ordered by priority. Also see [here](https://github.com/dortania/OpenCor
 - automatically handle TeraScale 2 colors
 - support Intel
 - support TeraScale 1
+- investigate space switching notifications
 - improve DisplayLink
 - fix NSVisualEffectView blurs
 - fix shifted/missing icons
 - fix Catalyst app scrolling
 - improve Defenestrator
-- better separate wrappers/pseudopatcher
 - fix corrupt shadows on Dock, zoom button popups
 - improve replicant handling
 - fix VNC, screencapture
@@ -65,5 +69,6 @@ Roughly ordered by priority. Also see [here](https://github.com/dortania/OpenCor
 - fix hidd, keyboard backlight
 - automatically color menu bar text (temporary: `defaults write -g ASB_DarkMenuBar -bool true`)
 - fix Control Center sliders
+- fix hardware cursor
 - implement auto appearance
 - implement Screen Time locking
