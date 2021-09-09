@@ -4,8 +4,8 @@
 - [SpiraMira](https://github.com/SpiraMira) ([pkouame](https://forums.macrumors.com/members/pkouame.1036080/)), [testheit](https://forums.macrumors.com/members/1133139/): SkyLight insights, previous transparency patches
 - [jackluke](https://github.com/jacklukem): 10.14+ Penryn panic fix (telemetry plugin), Tesla insights, testing
 - [Minh Ton](https://minh-ton.github.io): many macOS insights, testing
-- [moosethegoose2213](https://moosethegoose2213.github.io) (ASentientHedgehog): TeraScale 2 insights, testing
-- [EduCovas](https://github.com/educovas): WebKit insights, testing
+- [moosethegoose2213](https://moosethegoose2213.github.io) (ASentientHedgehog): TeraScale 2 and QuartzCore insights, testing
+- [EduCovas](https://github.com/educovas): WebKit and QuartzCore insights, testing
 - [parrotgeek1](https://parrotgeek.com): Tesla and SIP insights
 - [Julian Fairfax](https://julianfairfax.gitlab.io): macOS insights, testing
 - Krutav Shah: testing
@@ -48,7 +48,7 @@ Roughly ordered by priority. Also see [here](https://github.com/dortania/OpenCor
 
 - add proper occlusion notifications
 - rewrite Glyphs
-- fix CALayer corner radius
+- fix CALayer corner radius (temporary: downgrade QuartzCore to Big Sur version)
 - support Big Sur
 - support TeraScale 2
 - automatically handle TeraScale 2 colors
@@ -63,12 +63,12 @@ Roughly ordered by priority. Also see [here](https://github.com/dortania/OpenCor
 - fix corrupt shadows on Dock, zoom button popups
 - improve replicant handling
 - fix VNC, screencapture
-- fix Photo Booth
+- fix Photo Booth (temporary: downgrade to Big Sur version)
 - fix accessibility zoom
 - rewrite BootThing
-- fix hidd, keyboard backlight
+- fix hidd, keyboard backlight (temporary: use Lab Tick)
 - automatically color menu bar text (temporary: `defaults write -g ASB_DarkMenuBar -bool true`)
 - fix Control Center sliders
 - fix hardware cursor
-- implement auto appearance
+- implement auto appearance (temporary: use NightOwl)
 - implement Screen Time locking
