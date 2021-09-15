@@ -25,6 +25,9 @@ fi
 mkdir -p "$wifiTarget"
 cp -R "AirPortBrcmNIC.kext" "$wifiTarget"
 
+mkdir -p "$extensions/IOAHCIFamily.kext/Contents/PlugIns/IOAHCIBlockStorage.kext/Contents/MacOS"
+cp "IOAHCIBlockStorage" "$extensions/IOAHCIFamily.kext/Contents/PlugIns/IOAHCIBlockStorage.kext/Contents/MacOS"
+
 overlayPFrameworks="$overlay/System/Library/PrivateFrameworks"
 overlayFrameworks="$overlay/System/Library/Frameworks"
 mkdir -p "$overlayPFrameworks"
