@@ -4,5 +4,3 @@
 # APPLE
 forward 0x4150504c4500
 write 0x00'
-
-chmod +x "IOAHCIBlockStorage"

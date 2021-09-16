@@ -19,6 +19,10 @@ Place [these](https://archive.org/download/71prereqs) in `Build.noindex`. Add th
 
 # changes
 
+## 2021-9-16
+- implement Bluetooth hack
+- steal hibernation patch from OpenCore
+
 ## 2021-9-7
 - implement CoreDisplay hack for AGDC-related WindowServer crash on Intel
 
