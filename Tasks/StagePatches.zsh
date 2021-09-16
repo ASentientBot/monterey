@@ -28,6 +28,9 @@ cp -R "AirPortBrcmNIC.kext" "$wifiTarget"
 mkdir -p "$extensions/IOAHCIFamily.kext/Contents/PlugIns/IOAHCIBlockStorage.kext/Contents/MacOS"
 cp "IOAHCIBlockStorage" "$extensions/IOAHCIFamily.kext/Contents/PlugIns/IOAHCIBlockStorage.kext/Contents/MacOS"
 
+mkdir -p "$overlay/usr/sbin"
+cp "bluetoothd" "BlueTool" "$overlay/usr/sbin"
+
 overlayPFrameworks="$overlay/System/Library/PrivateFrameworks"
 overlayFrameworks="$overlay/System/Library/Frameworks"
 mkdir -p "$overlayPFrameworks"

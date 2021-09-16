@@ -16,6 +16,7 @@ runTask "PatchIOSurface"
 runTask "PatchWeb"
 
 runTask "PatchWifi"
+runTask "PatchBluetooth"
 runTask "PatchHibernate"
 
 runTask "BuildWrappers"

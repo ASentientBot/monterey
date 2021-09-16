@@ -1,6 +1,6 @@
 # credits
 - [dosdude1](http://dosdude1.com): 10.14.4+ OpenGL fix, Mojave/Catalina patchers, countless macOS insights
-- [Dortania](https://dortania.github.io) ([khronokernel](https://github.com/khronokernel), [dhinakg](https://github.com/dhinakg), et al.): OpenCore Legacy Patcher, Broadcom Wi-Fi fix, TeraScale 2 insights, excellent hackintosh guides, countless other insights and help
+- [Dortania](https://dortania.github.io) ([khronokernel](https://github.com/khronokernel), [dhinakg](https://github.com/dhinakg), et al.): OpenCore Legacy Patcher, Broadcom Wi-Fi fix, Bluetooth insights, TeraScale 2 insights, excellent hackintosh guides, countless other insights and help
 - [SpiraMira](https://github.com/SpiraMira) ([pkouame](https://forums.macrumors.com/members/pkouame.1036080/)), [testheit](https://forums.macrumors.com/members/1133139/): SkyLight insights, previous transparency patches
 - [jackluke](https://github.com/jacklukem): 10.14+ Penryn panic fix (telemetry plugin), Tesla insights, testing
 - [Minh Ton](https://minh-ton.github.io): many macOS insights, testing
@@ -73,3 +73,4 @@ Roughly ordered by priority. Also see [here](https://github.com/dortania/OpenCor
 - fix hardware cursor
 - implement auto appearance (workaround: use NightOwl)
 - implement Screen Time locking
+- fix full-screen transition
