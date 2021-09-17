@@ -56,7 +56,7 @@ Roughly ordered by priority. Also see [here](https://github.com/dortania/OpenCor
 - fix CALayer corner radius (workaround: downgrade QuartzCore to Big Sur version)
 - support Big Sur
 - support TeraScale 2
-- automatically handle TeraScale 2 colors
+- automatically handle TeraScale 2 colors (workaround: set "millions" in SwitchResX)
 - support Intel
 - support TeraScale 1
 - investigate space switching notifications
@@ -67,7 +67,7 @@ Roughly ordered by priority. Also see [here](https://github.com/dortania/OpenCor
 - improve Defenestrator
 - fix corrupt shadows on Dock, zoom button popups
 - improve replicant handling
-- fix VNC, screencapture
+- fix VNC, screencapture (workaround: `defaults write com.apple.cmio CMIO_Unit_Input_ASC.DoNotUseOpenCL -bool true`)
 - fix Photo Booth (workaround: downgrade to Big Sur version)
 - fix accessibility zoom
 - rewrite BootThing
