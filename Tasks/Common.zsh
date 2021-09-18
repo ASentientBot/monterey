@@ -29,6 +29,16 @@ function promptFolder
 	osascript -e 'tell app "Terminal" to posix path of (choose folder)'
 }
 
+function promptList
+{
+	osascript -e 'on run argList
+choose from list items 2 thru end of argList with prompt item 1 of argList
+set output to result
+if output is false then error number -128
+return output
+end' "$@"
+}
+
 function finish
 {
 	printf "\e[32mdone\e[0m\n"

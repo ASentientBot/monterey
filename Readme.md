@@ -10,14 +10,25 @@
 - [parrotgeek1](https://parrotgeek.com): Tesla and SIP insights
 - [Julian Fairfax](https://julianfairfax.gitlab.io): macOS insights, testing
 - Krutav Shah: testing
-- [me](http://asentientbot.github.io), Zoe, Cass2, Alice: code, most fixes not listed above
+- [me](http://asentientbot.github.io): code, most fixes not listed above
 
 Thanks as well to other contributors, moderators, and testers on [Unsupported Macs Discord](https://discord.gg/XbbWAsE), [OCLP Discord](https://discord.gg/rqdPgH8xSN), and [MacRumors Forums](https://forums.macrumors.com). Please tell me if I forgot to mention you.
 
 # build
-Place [these](https://archive.org/download/71prereqs) in `Build.noindex`. Add the target version's `InstallAssistant.pkg` as `Current.pkg`. Run `Extract.tool`, then `Build.tool`. Files can be manually installed from `Build.noindex/InstallerOverlay/RamdiskOverlay/SystemOverlay`; auto-patching is unsupported for now.
+Place [these](https://archive.org/download/71prereqs) in `Build.noindex`. Add the target version's `InstallAssistant.pkg` as `Current.pkg`. Run `Extract.tool`, then `Build.tool`.
+
+Run `Install.tool` to prepare patches for a given machine:
+- `zoe`: MacBook7,1
+- `cass2`: minimal TeraScale 2 system
+
+Select `reveal` to show the output in Finder. Other modes are _strongly discouraged_; see [OCLP](https://dortania.github.io/OpenCore-Legacy-Patcher/) for all practical uses.
 
 # changes
+
+## 2021-9-18
+- implement ivars in Stubber
+- restructure staging/installation code to handle multiple targets
+- support TeraScale 2
 
 ## 2021-9-16
 - implement Bluetooth hack
@@ -55,7 +66,6 @@ Roughly ordered by priority. Also see [here](https://github.com/dortania/OpenCor
 - rewrite Glyphs
 - fix CALayer corner radius (workaround: downgrade QuartzCore to Big Sur version)
 - support Big Sur
-- support TeraScale 2
 - automatically handle TeraScale 2 colors (workaround: set "millions" in SwitchResX)
 - support Intel
 - support TeraScale 1

@@ -1,14 +1,19 @@
+# TODO: move more logic to Stubber
+
 source "$code/Tasks/Common.zsh"
 
-prefixOut="Wrapped"
-rm -rf "$prefixOut"
-mkdir "$prefixOut"
+folderOut="Wrapped"
+rm -rf "$folderOut"
+mkdir "$folderOut"
 
 function build
 {
 	oldIn="$1"
 	newIn="$2"
 	mainInstall="$3"
+
+	prefixOut="$folderOut/$4"
+	mkdir -p "$prefixOut"
 	
 	name="$(basename "$mainInstall")"
 	mainNameOut="$name"
@@ -28,12 +33,16 @@ function build
 
 	./Stubber "$oldIn" "$newIn" "$shimsIn" "$mainIn"
 	
-	clangCommon -dynamiclib -compatibility_version 1.0.0 -current_version 1.0.0 -install_name "$mainInstall" -Xlinker -reexport_library "$oldOut" -I "$code/Shims" "$mainIn" -o "$mainOut" $4
+	clangCommon -dynamiclib -compatibility_version 1.0.0 -current_version 1.0.0 -install_name "$mainInstall" -Xlinker -reexport_library "$oldOut" -I "$code/Shims" "$mainIn" -o "$mainOut"
 	
 	codesign -f -s - "$oldOut"
 	codesign -f -s - "$mainOut"
 }
 
-build "SkyLight" "Current/Ramdisk/System/Library/PrivateFrameworks/SkyLight.framework/Versions/A/SkyLight" "/System/Library/PrivateFrameworks/SkyLight.framework/Versions/A/SkyLight"
-build "CoreDisplay" "Current/Ramdisk/System/Library/Frameworks/CoreDisplay.framework/Versions/A/CoreDisplay" "/System/Library/Frameworks/CoreDisplay.framework/Versions/A/CoreDisplay"
-build "10.15.7/Payload/System/Library/Frameworks/IOSurface.framework/Versions/A/IOSurface" "Current/Ramdisk/System/Library/Frameworks/IOSurface.framework/Versions/A/IOSurface" "/System/Library/Frameworks/IOSurface.framework/Versions/A/IOSurface"
+build "SkyLight" "Current/Ramdisk/System/Library/PrivateFrameworks/SkyLight.framework/Versions/A/SkyLight" "/System/Library/PrivateFrameworks/SkyLight.framework/Versions/A/SkyLight" "Common"
+build "CoreDisplay" "Current/Ramdisk/System/Library/Frameworks/CoreDisplay.framework/Versions/A/CoreDisplay" "/System/Library/Frameworks/CoreDisplay.framework/Versions/A/CoreDisplay" "Common"
+
+build "10.15.7/Payload/System/Library/Frameworks/IOSurface.framework/Versions/A/IOSurface" "Current/Ramdisk/System/Library/Frameworks/IOSurface.framework/Versions/A/IOSurface" "/System/Library/Frameworks/IOSurface.framework/Versions/A/IOSurface" "Zoe"
+
+build "10.14.6/Payload/System/Library/Frameworks/IOSurface.framework/Versions/A/IOSurface" "Current/Ramdisk/System/Library/Frameworks/IOSurface.framework/Versions/A/IOSurface" "/System/Library/Frameworks/IOSurface.framework/Versions/A/IOSurface" "Cass2"
+build "10.13.6/Payload/System/Library/PrivateFrameworks/IOAccelerator.framework/Versions/A/IOAccelerator" "Current/Ramdisk/System/Library/PrivateFrameworks/IOAccelerator.framework/Versions/A/IOAccelerator" "/System/Library/PrivateFrameworks/IOAccelerator.framework/Versions/A/IOAccelerator" "Cass2"

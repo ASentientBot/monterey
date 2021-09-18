@@ -22,6 +22,5 @@ runTask "PatchHibernate"
 runTask "BuildWrappers"
 
 runTask "BuildInstallerInject"
-runTask "StagePatches"
 
 finish

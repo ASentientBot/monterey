@@ -10,6 +10,7 @@ NSMutableArray<NSString*>* symbols;
 NSMutableString* output;
 NSMutableString* shims;
 NSMutableArray<NSString*>* classNames;
+NSMutableDictionary<NSString*,NSMutableArray<NSString*>*>* ivarNames;
 NSMutableArray<NSString*>* constantNames;
 NSMutableArray<NSString*>* functionNames;
 NSString* shimMainPath;
@@ -137,6 +138,7 @@ void setupTasks()
 	addTask(@"init classes",TYPE_ONCE,^int()
 	{
 		classNames=NSMutableArray.alloc.init;
+		ivarNames=NSMutableDictionary.alloc.init;
 		return RET_NULL;
 	});
 	
@@ -146,6 +148,9 @@ void setupTasks()
 		{
 			NSString* className=[symbol substringFromIndex:13];
 			[classNames addObject:className];
+			
+			ivarNames[className]=NSMutableArray.alloc.init;
+			
 			return RET_DONE_DELETE;
 		}
 		return RET_NULL;
@@ -160,8 +165,10 @@ void setupTasks()
 	{
 		if([symbol containsString:@"OBJC_IVAR_$_"])
 		{
-			trace(@"UNIMPLEMENTED");
-			return RET_ERROR;
+			NSArray<NSString*>* bits=[[symbol substringFromIndex:12] componentsSeparatedByString:@"."];
+			[ivarNames[bits[0]] addObject:bits[1]];
+			
+			return RET_DONE_DELETE;
 		}
 		return RET_NULL;
 	});
@@ -203,7 +210,15 @@ void setupTasks()
 			for(unsigned int index=0;index<classNames.count;index++)
 			{
 				NSString* className=classNames[index];
-				[output appendFormat:@"@interface %@:%@\n@end\n@implementation %@\n@end\n",className,stubClassName,className];
+				
+				[output appendFormat:@"@interface %@:%@\n{\n",className,stubClassName];
+				
+				for(NSString* ivarName in ivarNames[className])
+				{
+					[output appendFormat:@"\tid %@;\n",ivarName];
+				}
+				
+				[output appendFormat:@"}\n@end\n@implementation %@\n@end\n",className];
 			}
 		}
 		

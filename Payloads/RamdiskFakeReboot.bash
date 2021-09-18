@@ -19,6 +19,7 @@ rm -rf "$extensions/AppleIntel"*"Graphics"*".kext"
 rm -rf "$extensions/AppleIntelFramebuffer"*".kext"
 rm -rf "$extensions/AppleParavirtGPU.kext"
 rm -rf "$extensions/GeForce.kext"
+rm -rf "$extensions/AppleCameraInterface.kext"
 
 set +e
 
