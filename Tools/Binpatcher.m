@@ -241,16 +241,16 @@ int main(int argCount,char* argList[])
 			continue;
 		}
 		
-		NSArray<NSString*>* bits=[commands[index] componentsSeparatedByString:@" "];
-		
-		NSString* name=bits[0];
-		if([name isEqualToString:@"#"])
+		if([commands[index] hasPrefix:@"#"])
 		{
 			continue;
 		}
 		
+		NSArray<NSString*>* bits=[commands[index] componentsSeparatedByString:@" "];
+		
 		trace(@"  %@",commands[index]);
 		
+		NSString* name=bits[0];
 		NSUInteger commandIndex=[commandNames indexOfObject:name];
 		if(commandIndex==NSNotFound)
 		{

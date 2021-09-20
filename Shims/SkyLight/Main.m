@@ -15,6 +15,7 @@
 #import "Session.m"
 #import "Sleep.m"
 #import "Todo.m"
+#import "TS2.m"
 #import "WindowFlags.m"
 
 @interface Setup:NSObject
@@ -24,7 +25,7 @@
 
 +(void)load
 {
-	if(getpid()<100&&[NSProcessInfo.processInfo.processName containsString:@"kextcache"])
+	if(getpid()<100&&[NSProcessInfo.processInfo.arguments[0] isEqualToString:@"/usr/sbin/kextcache"])
 	{
 		trace(@"Zoe <3");
 	}
@@ -37,6 +38,7 @@
 	defenestratorSetup();
 	glyphsSetup();
 	occlusionSetup();
+	ts2Setup();
 }
 
 @end

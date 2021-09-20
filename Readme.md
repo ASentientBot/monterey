@@ -9,7 +9,6 @@
 - [Acidanthera](https://github.com/acidanthera): aftermarket SSD hibernation patch
 - [parrotgeek1](https://parrotgeek.com): Tesla and SIP insights
 - [Julian Fairfax](https://julianfairfax.gitlab.io): macOS insights, testing
-- Krutav Shah: testing
 - [me](http://asentientbot.github.io): code, most fixes not listed above
 
 Thanks as well to other contributors, moderators, and testers on [Unsupported Macs Discord](https://discord.gg/XbbWAsE), [OCLP Discord](https://discord.gg/rqdPgH8xSN), and [MacRumors Forums](https://forums.macrumors.com). Please tell me if I forgot to mention you.
@@ -21,9 +20,12 @@ Run `Install.tool` to prepare patches for a given machine:
 - `zoe`: MacBook7,1
 - `cass2`: minimal TeraScale 2 system
 
-Select `reveal` to show the output in Finder. Other modes are _strongly discouraged_; see [OCLP](https://dortania.github.io/OpenCore-Legacy-Patcher/) for all practical uses.
+Select `reveal` to show the output in Finder. Other modes are unsupported; see [OCLP](https://dortania.github.io/OpenCore-Legacy-Patcher/) for all practical uses.
 
 # changes
+
+## 2021-9-20
+- fix TeraScale 2 screen recording
 
 ## 2021-9-18
 - implement ivars in Stubber
@@ -64,14 +66,14 @@ Roughly ordered by priority. Also see [here](https://github.com/dortania/OpenCor
 
 - add proper occlusion notifications
 - rewrite Glyphs
-- fix CALayer corner radius (workaround: downgrade QuartzCore to Big Sur version)
+- fix NSVisualEffectView blurs
 - support Big Sur
 - automatically handle TeraScale 2 colors (workaround: set "millions" in SwitchResX)
 - support Intel
 - support TeraScale 1
+- fix CALayer corner radius (workaround: downgrade QuartzCore to Big Sur version)
 - investigate space switching notifications
 - improve DisplayLink
-- fix NSVisualEffectView blurs
 - fix shifted/missing icons
 - fix Catalyst app scrolling
 - improve Defenestrator
