@@ -29,7 +29,7 @@ Select `reveal` to show the output in Finder. Other modes are unsupported; see [
 
 ## 2021-9-18
 - implement ivars in Stubber
-- restructure staging/installation code to handle multiple targets
+- handle staging/installing multiple targets
 - support TeraScale 2
 
 ## 2021-9-16
@@ -69,6 +69,7 @@ Roughly ordered by priority. Also see [here](https://github.com/dortania/OpenCor
 - fix NSVisualEffectView blurs
 - support Big Sur
 - automatically handle TeraScale 2 colors (workaround: set "millions" in SwitchResX)
+- fix VNC on TeraScale 2
 - support Intel
 - support TeraScale 1
 - fix CALayer corner radius (workaround: downgrade QuartzCore to Big Sur version)
@@ -79,7 +80,6 @@ Roughly ordered by priority. Also see [here](https://github.com/dortania/OpenCor
 - improve Defenestrator
 - fix corrupt shadows on Dock, zoom button popups
 - improve replicant handling
-- fix VNC, screencapture (workaround: `defaults write com.apple.cmio CMIO_Unit_Input_ASC.DoNotUseOpenCL -bool true`)
 - fix Photo Booth (workaround: downgrade to Big Sur version)
 - fix accessibility zoom
 - rewrite BootThing
