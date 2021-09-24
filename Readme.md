@@ -24,6 +24,10 @@ Select `reveal` to show the output in Finder. Other modes are unsupported; see [
 
 # changes
 
+## 2021-9-24
+- workaround ROM feature check in DP7
+- add NVDAStartup (removed with Kepler kexts)
+
 ## 2021-9-20
 - fix TeraScale 2 screen recording
 

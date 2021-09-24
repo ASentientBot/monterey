@@ -44,6 +44,9 @@ then
 	cp -R "10.13.6/Payload/System/Library/Extensions/GeForceTeslaGLDriver.bundle" "$extensions"
 	cp -R "10.15.7/Payload/System/Library/Extensions/IOSurface.kext" "$extensions"
 
+	# TODO: up to Monterey DP6 works
+	cp -R "10.15.7/Payload/System/Library/Extensions/NVDAStartup.kext" "$extensions"
+
 	cp "GeForceTesla" "$extensions/GeForceTesla.kext/Contents/MacOS"
 	cp "NVDAResmanTesla" "$extensions/NVDAResmanTesla.kext/Contents/MacOS"
 	cp "IOSurface" "$extensions/IOSurface.kext/Contents/MacOS"

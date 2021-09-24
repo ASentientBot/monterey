@@ -9,8 +9,11 @@ diskutil erasevolume JHFS+ "$unique" "$target"
 
 target=("/Volumes/Install macOS"*)
 
-# TODO: BootThing replacement
-nvram boot-args='-no_compat_check amfi_get_out_of_my_way=1 -nokcmismatchpanic keepsyms=1 -v'
+plist="$target/Library/Preferences/SystemConfiguration/com.apple.Boot.plist"
+previousArgs="$(defaults read "$plist" "Kernel Flags")"
+defaults write "$plist" "Kernel Flags" "$previousArgs -no_compat_check amfi_get_out_of_my_way=1 -nokcmismatchpanic keepsyms=1 -v"
+plutil -convert xml1 "$plist"
+
 cp "ffffffff.efi" "$target/System/Library/CoreServices/boot.efi"
 
 bs="$target/BaseSystem/BaseSystem.dmg"
@@ -28,6 +31,8 @@ plist="$bsMount/System/Installation/CDIS/Recovery Springboard.app/Contents/Resou
 /usr/libexec/PlistBuddy "$plist" -c 'Add Buttons:0:TitleKey string "patched installer"'
 /usr/libexec/PlistBuddy "$plist" -c "Add Buttons:0:DescriptionKey string \"is this the link you\'re looking for?\""
 
+# TODO: finicky on DP7, why?
+sleep 10
 hdiutil eject "$bsMount"
 
 cp -R "InstallerOverlay/" "$target"
