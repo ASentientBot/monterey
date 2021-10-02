@@ -43,6 +43,9 @@ void SLSAdjustSystemStatusBarWindows(unsigned int edi_connectionID);
 
 void SLSSessionSwitchToAuditSessionID(unsigned int edi_sessionID);
 
+typedef void(^RemoteContextBlock)(id,unsigned int,unsigned int);
+void SLSInstallRemoteContextNotificationHandler(NSString* rdi,RemoteContextBlock rsi);
+
 extern const NSString* kSLSBuiltInDevicesKey;
 extern const NSString* kSLSMouseDevicesKey;
 extern const NSString* kSLSGestureScrollDevicesKey;

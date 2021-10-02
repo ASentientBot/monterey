@@ -14,7 +14,7 @@ unsigned long SLSReenableUpdateTokenWithSeed()
 	return 0;
 }
 
-// prevent freezing regions caused by above
+// freezing regions caused by above
 
 unsigned long SLSDisableUpdateToken()
 {
