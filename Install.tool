@@ -2,7 +2,7 @@
 
 source "$(dirname "$0")/Tasks/Common.zsh"
 
-target="$(promptList 'target machine' 'zoe' 'cass2')"
+target="$(promptList 'target machine' 'zoe' 'cass2' 'cass3' 'null')"
 export target
 
 runTask "StageSystem"

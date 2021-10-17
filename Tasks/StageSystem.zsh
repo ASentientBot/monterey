@@ -1,5 +1,11 @@
 overlay="SystemOverlay"
 rm -rf "$overlay"
+mkdir "$overlay"
+
+if test "$target" = "null"
+then
+	exit 0
+fi
 
 extensions="$overlay/System/Library/Extensions"
 privateFrameworks="$overlay/System/Library/PrivateFrameworks"
@@ -93,4 +99,23 @@ then
 	mkdir -p "$privateFrameworks/IOAccelerator.framework/Versions/A"
 	cp "Wrapped/Cass2/IOAccelerator" "Wrapped/Cass2/IOAcceleratorOld.dylib" "$privateFrameworks/IOAccelerator.framework/Versions/A"
 
+elif test "$target" = "cass3"
+then
+	cp -R "10.13.6/Payload/System/Library/Extensions/AMD4800Controller.kext" "$extensions"
+
+	# TODO: check loaded/needed
+	cp -R "10.13.6/Payload/System/Library/Extensions/AMDLegacyFramebuffer.kext" "$extensions"
+
+	cp -R "10.13.6/Payload/System/Library/Extensions/AMDLegacySupport.kext" "$extensions"
+	cp -R "10.13.6/Payload/System/Library/Extensions/ATIRadeonX2000.kext" "$extensions"
+	cp -R "10.13.6/Payload/System/Library/Extensions/ATIRadeonX2000GLDriver.bundle" "$extensions"
+
+	# TODO: unify these non-TS2 patches to avoid copy+paste
+	
+	cp -R "10.15.7/Payload/System/Library/Extensions/IOSurface.kext" "$extensions"
+	cp "IOSurface" "$extensions/IOSurface.kext/Contents/MacOS"
+
+	cp -R "10.14.3/Payload/System/Library/PrivateFrameworks/GPUSupport.framework" "$privateFrameworks"
+
+	cp "Wrapped/Zoe/IOSurface" "Wrapped/Zoe/IOSurfaceOld.dylib" "$frameworks/IOSurface.framework/Versions/A"
 fi
