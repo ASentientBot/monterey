@@ -5,9 +5,9 @@
 - [jackluke](https://github.com/jacklukem): 10.14+ Penryn panic fix (telemetry plugin), Tesla insights, testing
 - [Minh Ton](https://minh-ton.github.io): many macOS insights, testing
 - [moosethegoose2213](https://moosethegoose2213.github.io) (ASentientHedgehog): TeraScale 2 and QuartzCore insights, testing
+- [parrotgeek1](https://parrotgeek.com): many macOS and graphics insights regarding Tesla, SIP, OpenGL and more
 - [EduCovas](https://github.com/educovas): WebKit and QuartzCore insights, testing
 - [Acidanthera](https://github.com/acidanthera): aftermarket SSD hibernation patch
-- [parrotgeek1](https://parrotgeek.com): Tesla and SIP insights
 - [Julian Fairfax](https://julianfairfax.gitlab.io): macOS insights, testing
 - [me](http://asentientbot.github.io): code, most fixes not listed above
 
@@ -24,6 +24,9 @@ Run `Install.tool` to prepare patches for a given machine:
 Select `reveal` to show the output in Finder. Other modes are unsupported; see [OCLP](https://dortania.github.io/OpenCore-Legacy-Patcher/) for all practical uses.
 
 # changes
+
+## 2021-10-18
+- add a hack to stop crashes if you've downgraded QuartzCore to fix corners
 
 ## 2021-10-17
 - add preliminary support for TeraScale 1
@@ -75,6 +78,7 @@ Changes since last non-GitHub release.
 # todo
 Roughly ordered by priority. Also see [here](https://github.com/dortania/OpenCore-Legacy-Patcher/issues/108#issuecomment-810634088).
 
+- investigate intermittent Firefox crashing, broken WebGL
 - add proper occlusion notifications
 - rewrite Glyphs
 - fix NSVisualEffectView blurs

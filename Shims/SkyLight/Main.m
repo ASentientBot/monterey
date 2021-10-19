@@ -18,6 +18,8 @@
 #import "TS2.m"
 #import "WindowFlags.m"
 
+#import "DowngradedQuartzCore.m"
+
 @interface Setup:NSObject
 @end
 
