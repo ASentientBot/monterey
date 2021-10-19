@@ -25,7 +25,7 @@ Select `reveal` to show the output in Finder. Other modes are unsupported; see [
 
 # changes
 
-## 2021-10-18
+## 2021-10-19
 - add a hack to stop crashes if you've downgraded QuartzCore to fix corners
 
 ## 2021-10-17
