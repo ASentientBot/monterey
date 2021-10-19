@@ -1,6 +1,7 @@
 // for the record, i still don't approve of this
 
 @interface CAPresentationModifierGroup:NSObject
+-(void)flush;
 @end
 
 @interface CAPresentationModifierGroup(Hax)
@@ -16,6 +17,7 @@
 -(void)flushWithTransaction
 {
 	trace(@"CAPresentationModifierGroup flushWithTransaction");
+	self.flush;
 }
 
 @end
