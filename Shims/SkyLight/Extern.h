@@ -46,6 +46,8 @@ void SLSSessionSwitchToAuditSessionID(unsigned int edi_sessionID);
 typedef void(^RemoteContextBlock)(id,unsigned int,unsigned int);
 void SLSInstallRemoteContextNotificationHandler(NSString* rdi,RemoteContextBlock rsi);
 
+unsigned int SLSPackagesEnableWindowOcclusionNotifications(unsigned int edi_connectionID,unsigned int esi_windowID,unsigned int edx,unsigned long rcx);
+
 extern const NSString* kSLSBuiltInDevicesKey;
 extern const NSString* kSLSMouseDevicesKey;
 extern const NSString* kSLSGestureScrollDevicesKey;

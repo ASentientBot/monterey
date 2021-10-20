@@ -1,16 +1,20 @@
-// WebKit animations, requestAnimationFrame, Activity Monitor table
+// WebKit, Activity Monitor refresh based on window visibility
 
-// TODO: actually fix occlusion notifications
+void (*real_setWindowNumber)(id self,SEL selector,unsigned long windowID);
 
-unsigned long fake_occlusionState()
+void fake_setWindowNumber(id self,SEL selector,unsigned long windowID)
 {
-	trace(@"fake_occlusionState");
+	real_setWindowNumber(self,selector,windowID);
 	
-	// NSWindowOcclusionStateVisible (can't link AppKit)
-	return 2;
+	if(windowID!=-1)
+	{
+		trace(@"fake_setWindowNumber fixing occlusion detection");
+		
+		SLSPackagesEnableWindowOcclusionNotifications(SLSMainConnectionID(),windowID,1,0);
+	}
 }
 
 void occlusionSetup()
 {
-	swizzleImp(@"NSWindow",@"occlusionState",true,(IMP)fake_occlusionState,NULL);
+	swizzleImp(@"NSWindow",@"_setWindowNumber:",true,(IMP)fake_setWindowNumber,(IMP*)&real_setWindowNumber);
 }

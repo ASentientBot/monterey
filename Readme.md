@@ -25,6 +25,9 @@ Select `reveal` to show the output in Finder. Other modes are unsupported; see [
 
 # changes
 
+## 2021-10-20
+- properly enable occlusion notifications
+
 ## 2021-10-19
 - add a hack to stop crashes if you've downgraded QuartzCore to fix corners
 
@@ -79,7 +82,6 @@ Changes since last non-GitHub release.
 Roughly ordered by priority. Also see [here](https://github.com/dortania/OpenCore-Legacy-Patcher/issues/108#issuecomment-810634088).
 
 - investigate intermittent Firefox crashing, broken WebGL
-- add proper occlusion notifications
 - rewrite Glyphs
 - fix NSVisualEffectView blurs
 - support Big Sur
