@@ -81,24 +81,26 @@ Changes since last non-GitHub release.
 # todo
 Roughly ordered by priority. Also see [here](https://github.com/dortania/OpenCore-Legacy-Patcher/issues/108#issuecomment-810634088).
 
-- investigate intermittent Firefox crashing, broken WebGL
-- rewrite Glyphs
+- fix Catalyst app scrolling
 - fix NSVisualEffectView blurs
 - support Big Sur
 - automatically handle TeraScale 2 colors (workaround: set "millions" in SwitchResX)
 - fix VNC on TeraScale 2
 - support Ironlake
 - fix CALayer corner radius (workaround: downgrade QuartzCore to Big Sur version)
+- investigate slow compositing in all browsers
+- investigate broken WebGL in all browsers (workaround: use Chrome's `ignore-gpu-blocklist`)
+- fix shifted/missing icons
+- improve status bar item resizing, replicant handling
+- investigate Maps crash
+- fix accessibility zoom
+- rewrite Glyphs
 - investigate space switching notifications
 - improve DisplayLink
-- fix shifted/missing icons
-- fix Catalyst app scrolling
 - improve Defenestrator
 - fix corrupt shadows on Dock, zoom button popups
-- improve status bar item resizing, replicant handling
 - fix Photo Booth (workaround: downgrade to Big Sur version)
-- fix accessibility zoom
-- rewrite BootThing
+- use `com.apple.Boot.plist` for boot-args
 - fix hidd, keyboard backlight (workaround: use Lab Tick)
 - automatically color menu bar text (workaround: `defaults write -g ASB_DarkMenuBar -bool true`)
 - fix Control Center sliders
