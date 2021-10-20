@@ -1,5 +1,8 @@
 // WebKit, Activity Monitor refresh based on window visibility
 
+// TODO: results in occlusionState 8194/8192 visible/occluded, NSWindowOcclusionStateVisible == 2
+// first-party apps work, but docs don't specify it should be checked bitwise
+
 void (*real_setWindowNumber)(id self,SEL selector,unsigned long windowID);
 
 void fake_setWindowNumber(id self,SEL selector,unsigned long windowID)
