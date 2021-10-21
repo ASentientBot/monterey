@@ -33,7 +33,17 @@ void displayNotifyCommon(unsigned int type)
 	{
 		if(displayNotifyTypes[index].intValue==type)
 		{
-			dispatch_async(displayNotifyQueues[index],displayNotifyBlocks[index]);
+			dispatch_queue_t queue;
+			if(displayNotifyQueues[index]!=(dispatch_queue_t)NSNull.null)
+			{
+				queue=displayNotifyQueues[index];
+			}
+			else
+			{
+				queue=dispatch_get_main_queue();
+			}
+			
+			dispatch_async(queue,displayNotifyBlocks[index]);
 		}
 	}
 
@@ -68,7 +78,16 @@ unsigned int SLSDisplayManagerRegisterPowerStateNotification(dispatch_queue_t rd
 		SLSRegisterConnectionNotifyProc(connection,displayWakeCallback,0x67,nil);
 	});
 	
-	[displayNotifyQueues addObject:rdi_queue];
+	// passed NULL by PowerChime
+	if(rdi_queue)
+	{
+		[displayNotifyQueues addObject:rdi_queue];
+	}
+	else
+	{
+		[displayNotifyQueues addObject:(dispatch_queue_t)NSNull.null];
+	}
+	
 	[displayNotifyTypes addObject:[NSNumber numberWithInt:edx_type]];
 	
 	// TODO: confirm this is how blocks work
