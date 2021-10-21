@@ -81,6 +81,7 @@ Changes since last non-GitHub release.
 # todo
 Roughly ordered by priority. Also see [here](https://github.com/dortania/OpenCore-Legacy-Patcher/issues/108#issuecomment-810634088).
 
+- investigate Safari again, since fixing occlusion notifications didn't fully resolve the freezing
 - fix Catalyst app scrolling
 - fix NSVisualEffectView blurs
 - support Big Sur
