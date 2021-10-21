@@ -11,6 +11,7 @@
 #import "Glyphs.m"
 #import "MenuBar.m"
 #import "Occlusion.m"
+#import "SecureCursor.m"
 #import "Scroll.m"
 #import "Session.m"
 #import "Sleep.m"
@@ -40,6 +41,7 @@
 	defenestratorSetup();
 	glyphsSetup();
 	occlusionSetup();
+	safariSetup();
 	ts2Setup();
 }
 
