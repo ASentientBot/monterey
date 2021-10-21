@@ -25,6 +25,9 @@ Select `reveal` to show the output in Finder. Other modes are unsupported; see [
 
 # changes
 
+## 2021-10-21
+- fix PowerChime crash for those who have [enabled it](https://forums.macrumors.com/threads/macos-10-14-mojave-on-unsupported-macs-thread.2121473/post-26339698)
+
 ## 2021-10-20
 - properly enable occlusion notifications
 
