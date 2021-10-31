@@ -7,6 +7,7 @@
 - [moosethegoose2213](https://moosethegoose2213.github.io) (ASentientHedgehog): TeraScale 2 and QuartzCore insights, testing
 - [parrotgeek1](https://parrotgeek.com): many macOS and graphics insights regarding Tesla, SIP, OpenGL and more
 - [EduCovas](https://github.com/educovas): Safari Extensions, WebKit, and QuartzCore insights, testing
+- [Syncretic](https://forums.macrumors.com/members/syncretic.1173816/): [MonteRand](https://forums.macrumors.com/threads/monterand-probably-the-start-of-an-ongoing-saga.2320479/)
 - [Acidanthera](https://github.com/acidanthera): aftermarket SSD hibernation patch
 - [Julian Fairfax](https://julianfairfax.gitlab.io): macOS insights, testing
 - [me](http://asentientbot.github.io): code, most fixes not listed above
@@ -25,6 +26,10 @@ Select `reveal` to show the output in Finder. Other modes are unsupported; see [
 
 # changes
 
+## 2021-10-30
+- implement [MonteRand](https://forums.macrumors.com/threads/monterand-probably-the-start-of-an-ongoing-saga.2320479/) kernel patch
+- add `objdump` wrapper to Stubber
+
 ## 2021-10-21
 - fix PowerChime crash for those who have [enabled it](https://forums.macrumors.com/threads/macos-10-14-mojave-on-unsupported-macs-thread.2121473/post-26339698)
 - add hack to fix Safari extension checkboxes
@@ -33,7 +38,7 @@ Select `reveal` to show the output in Finder. Other modes are unsupported; see [
 - properly enable occlusion notifications
 
 ## 2021-10-19
-- add a hack to stop crashes if you've downgraded QuartzCore to fix corners
+- add hack to stop crashes if you've downgraded QuartzCore to fix corners
 
 ## 2021-10-17
 - add preliminary support for TeraScale 1
@@ -85,7 +90,7 @@ Changes since last non-GitHub release.
 # todo
 Roughly ordered by priority. Also see [here](https://github.com/dortania/OpenCore-Legacy-Patcher/issues/108#issuecomment-810634088).
 
-- investigate Safari freezing again (possible, highly hack-y workaround: disable `WebKit::TiledCoreAnimationDrawingArea::invalidateRenderingUpdateRunLoopObserver()`)
+- investigate Safari freezing again (workaround: disable `WebKit::TiledCoreAnimationDrawingArea::invalidateRenderingUpdateRunLoopObserver()`)
 - fix Catalyst app scrolling
 - fix NSVisualEffectView blurs
 - support Big Sur

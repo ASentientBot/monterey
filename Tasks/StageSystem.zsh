@@ -82,6 +82,10 @@ then
 	mkdir -p "$webkit"
 	cp -R "com.apple.WebKit.WebContent.xpc" "$webkit"
 
+	kernels="$overlay/System/Library/Kernels"
+	mkdir "$kernels"
+	cp "kernel" "$kernels"
+
 elif test "$target" = "cass2"
 then
 	cp -R "10.13.6/Payload/System/Library/Extensions/AMD5000Controller.kext" "$extensions"

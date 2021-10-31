@@ -202,6 +202,71 @@ void initCommands()
 		NSString* string=[NSString stringWithFormat:@"0x48b8%016llxc3",htonll(value)];
 		patch(dataFromHexString(string));
 	}];
+	
+	[commandNames addObject:@"assembly"];
+	[commandExamples addObject:@"(?m)^.+?rdrand.+?$"];
+	[commandBlocks addObject:^(NSArray<NSString*>* argList)
+	{
+		char tempPathC[]="/tmp/Binpatcher.XXXXX";
+		if(!mktemp(tempPathC))
+		{
+			trace(@"mktemp error");
+			exit(1);
+		}
+		
+		NSString* tempPath=[NSString stringWithUTF8String:tempPathC];
+		
+		NSError* writeError=nil;
+		[data writeToFile:tempPath options:0 error:&writeError];
+		if(writeError)
+		{
+			trace(@"write error");
+			exit(1);
+		}
+		
+		NSString* dumpString;
+		if(runTask(@[@"/usr/bin/objdump",@"-d",@"--x86-asm-syntax=intel",tempPath],nil,&dumpString))
+		{
+			trace(@"objdump error");
+			exit(1);
+		}
+		
+		if(remove(tempPathC))
+		{
+			trace(@"remove error");
+			exit(1);
+		}
+		
+		// TODO: dumb
+		NSString* regexString=[argList componentsJoinedByString:@" "];
+		
+		NSError* regexError=nil;
+		NSRegularExpression* regex=[NSRegularExpression regularExpressionWithPattern:regexString options:0 error:&regexError];
+		if(regexError)
+		{
+			trace(@"regex error");
+			exit(1);
+		}
+		
+		NSRange matchRange=[regex rangeOfFirstMatchInString:dumpString options:0 range:NSMakeRange(0,dumpString.length)];
+		if(matchRange.location==NSNotFound)
+		{
+			trace(@"not found");
+			exit(1);
+		}
+		
+		NSString* matchString=[dumpString substringWithRange:matchRange];
+		trace(@"    match %@",matchString);
+		
+		NSString* addressString=[@"0x" stringByAppendingString:[matchString componentsSeparatedByString:@":"][0]];
+		unsigned long address=longFromHexString(addressString);
+		
+		// TODO: assumes one TEXT segment
+		struct segment_command_64* textSeg=findSegmentCommand((char*)data.bytes,SEG_TEXT);
+		unsigned long addressDelta=textSeg->vmaddr-textSeg->fileoff;
+		
+		setPosition(address-addressDelta);
+	}];
 }
 
 int main(int argCount,char* argList[])

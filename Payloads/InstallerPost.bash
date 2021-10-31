@@ -1,5 +1,8 @@
 dmg="macOS Install Data/UpdateBundle/AssetData/usr/standalone/update/ramdisk/x86_64SURamDisk.dmg"
 
+# TODO: delete
+find . > "ASB_PreBlessFind.log"
+
 # TODO: stop doing this
 hdiutil resize -size 1G "$dmg"
 

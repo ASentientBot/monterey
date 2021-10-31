@@ -14,8 +14,6 @@ previousArgs="$(defaults read "$plist" "Kernel Flags")"
 defaults write "$plist" "Kernel Flags" "$previousArgs -no_compat_check amfi_get_out_of_my_way=1 -nokcmismatchpanic keepsyms=1 -v"
 plutil -convert xml1 "$plist"
 
-cp "ffffffff.efi" "$target/System/Library/CoreServices/boot.efi"
-
 bs="$target/BaseSystem/BaseSystem.dmg"
 bsOld="$target/BaseSystemOld.dmg"
 mv "$bs" "$bsOld"
