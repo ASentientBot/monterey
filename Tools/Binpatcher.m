@@ -116,6 +116,126 @@ void findBytesCommon(NSString* needleString,BOOL forward)
 	setPosition(found.location);
 }
 
+// TODO: ugly and slow
+unsigned long addressFromDumpLine(NSString* line)
+{
+	NSCharacterSet* hexCharacters=[NSCharacterSet characterSetWithCharactersInString:@"0123456789abcdef"];
+	NSCharacterSet* badCharacters=hexCharacters.invertedSet;
+	
+	NSString* lineTrimmed=[line stringByTrimmingCharactersInSet:badCharacters];
+	NSArray<NSString*>* lineBits=[lineTrimmed componentsSeparatedByCharactersInSet:badCharacters];
+	
+	if(lineBits.count==0||lineBits.firstObject.length<4)
+	{
+		return 0;
+	}
+	
+	return longFromHexString([@"0x" stringByAppendingString:lineBits.firstObject]);
+}
+
+void assemblyRegexCommon(NSArray<NSString*>* commandPrefix,NSArray<NSString*>* argList)
+{
+	char tempPathC[]="/tmp/Binpatcher.XXXXX";
+	if(!mktemp(tempPathC))
+	{
+		trace(@"mktemp error");
+		exit(1);
+	}
+	
+	NSString* tempPath=[NSString stringWithUTF8String:tempPathC];
+	
+	NSError* writeError=nil;
+	[data writeToFile:tempPath options:0 error:&writeError];
+	if(writeError)
+	{
+		trace(@"write error");
+		exit(1);
+	}
+	
+	NSString* dumpString;
+	if(runTask([commandPrefix arrayByAddingObject:tempPath],nil,&dumpString))
+	{
+		trace(@"task error");
+		exit(1);
+	}
+	
+	if(remove(tempPathC))
+	{
+		trace(@"remove error");
+		exit(1);
+	}
+	
+	NSString* directionString=argList.firstObject;
+	BOOL forward=false;
+	if([directionString isEqualToString:@"forward"])
+	{
+		forward=true;
+	}
+	else if(![directionString isEqualToString:@"backward"])
+	{
+		trace(@"must specify direction");
+		exit(1);
+	}
+	
+	NSString* regexString=[[argList subarrayWithRange:NSMakeRange(1,argList.count-1)] componentsJoinedByString:@" "];
+	
+	NSError* regexError=nil;
+	NSRegularExpression* regex=[NSRegularExpression regularExpressionWithPattern:regexString options:0 error:&regexError];
+	if(regexError)
+	{
+		trace(@"regex error");
+		exit(1);
+	}
+	
+	// TODO: assumes one TEXT,text
+	struct segment_command_64* textSeg=findSegmentCommand((char*)data.bytes,SEG_TEXT);
+	struct section_64* textSect=findSectionCommand((char*)data.bytes,SEG_TEXT,SECT_TEXT);
+	unsigned long textAddress=textSect->addr;
+	unsigned long textOffset=textSeg->fileoff+textSect->offset;
+	unsigned long addressDelta=textAddress-textOffset;
+	trace(@"    address delta 0x%lx",addressDelta);
+	
+	NSArray<NSString*>* relevantLines;
+	NSArray<NSString*>* dumpLines=[dumpString componentsSeparatedByString:@"\n"];
+	for(unsigned int index=0;index<dumpLines.count;index++)
+	{
+		unsigned long lineAddress=addressFromDumpLine(dumpLines[index]);
+		if(lineAddress>=position+addressDelta)
+		{
+			if(forward)
+			{
+				trace(@"    skipping to line %d",index);
+				relevantLines=[dumpLines subarrayWithRange:NSMakeRange(index,dumpLines.count-index)];
+			}
+			else
+			{
+				trace(@"    trimming to line %d",index);
+				relevantLines=[dumpLines subarrayWithRange:NSMakeRange(0,index)];
+			}
+			
+			break;
+		}
+	}
+	NSString* relevantString=[relevantLines componentsJoinedByString:@"\n"];
+	
+	NSArray<NSTextCheckingResult*>* matches=[regex matchesInString:relevantString options:0 range:NSMakeRange(0,relevantString.length)];
+	
+	NSTextCheckingResult* match=forward?matches.firstObject:matches.lastObject;
+	
+	if(match.range.location==NSNotFound)
+	{
+		trace(@"not found");
+		exit(1);
+	}
+	
+	NSString* matchString=[relevantString substringWithRange:match.range];
+	trace(@"    match %@",matchString);
+	
+	unsigned long address=addressFromDumpLine(matchString);
+	
+	setPosition(address-addressDelta);
+}
+
 NSMutableArray<NSString*>* commandNames;
 NSMutableArray<NSString*>* commandExamples;
 NSMutableArray<void (^)(NSArray<NSString*>*)>* commandBlocks;
@@ -130,7 +250,7 @@ void initCommands()
 	[commandExamples addObject:@"0xcafe | +0xcafe | -0xcafe"];
 	[commandBlocks addObject:^(NSArray<NSString*>* argList)
 	{
-		NSString* offsetString=argList[0];
+		NSString* offsetString=argList.firstObject;
 		
 		if([offsetString hasPrefix:@"+"])
 		{
@@ -150,21 +270,21 @@ void initCommands()
 	[commandExamples addObject:@"0xbabe"];
 	[commandBlocks addObject:^(NSArray<NSString*>* argList)
 	{
-		findBytesCommon(argList[0],true);
+		findBytesCommon(argList.firstObject,true);
 	}];
 	
 	[commandNames addObject:@"backward"];
 	[commandExamples addObject:@"0xbabe"];
 	[commandBlocks addObject:^(NSArray<NSString*>* argList)
 	{
-		findBytesCommon(argList[0],false);
+		findBytesCommon(argList.firstObject,false);
 	}];
 	
 	[commandNames addObject:@"symbol"];
 	[commandExamples addObject:@"_fs_snapshot_create"];
 	[commandBlocks addObject:^(NSArray<NSString*>* argList)
 	{
-		unsigned long offset=findSymbolOffset(data.mutableBytes,argList[0]);
+		unsigned long offset=findSymbolOffset(data.mutableBytes,argList.firstObject);
 		if(!offset)
 		{
 			trace(@"not found");
@@ -178,7 +298,7 @@ void initCommands()
 	[commandExamples addObject:@"0xface"];
 	[commandBlocks addObject:^(NSArray<NSString*>* argList)
 	{
-		NSData* data=dataFromHexString(argList[0]);
+		NSData* data=dataFromHexString(argList.firstObject);
 		patch(data);
 	}];
 	
@@ -186,7 +306,7 @@ void initCommands()
 	[commandExamples addObject:@"0x1a4"];
 	[commandBlocks addObject:^(NSArray<NSString*>* argList)
 	{
-		unsigned long count=longFromHexString(argList[0]);
+		unsigned long count=longFromHexString(argList.firstObject);
 		NSString* string=[@"0x" stringByPaddingToLength:(count+1)*2 withString:@"90" startingAtIndex:0];
 		patch(dataFromHexString(string));
 	}];
@@ -195,7 +315,7 @@ void initCommands()
 	[commandExamples addObject:@"0x45"];
 	[commandBlocks addObject:^(NSArray<NSString*>* argList)
 	{
-		unsigned long value=longFromHexString(argList[0]);
+		unsigned long value=longFromHexString(argList.firstObject);
 		
 		// movabs rax,<value>
 		// ret
@@ -203,69 +323,18 @@ void initCommands()
 		patch(dataFromHexString(string));
 	}];
 	
-	[commandNames addObject:@"assembly"];
-	[commandExamples addObject:@"(?m)^.+?rdrand.+?$"];
+	[commandNames addObject:@"otool"];
+	[commandExamples addObject:@"forward|backward (?m)^.+?rdrand.+?$"];
 	[commandBlocks addObject:^(NSArray<NSString*>* argList)
 	{
-		char tempPathC[]="/tmp/Binpatcher.XXXXX";
-		if(!mktemp(tempPathC))
-		{
-			trace(@"mktemp error");
-			exit(1);
-		}
-		
-		NSString* tempPath=[NSString stringWithUTF8String:tempPathC];
-		
-		NSError* writeError=nil;
-		[data writeToFile:tempPath options:0 error:&writeError];
-		if(writeError)
-		{
-			trace(@"write error");
-			exit(1);
-		}
-		
-		NSString* dumpString;
-		if(runTask(@[@"/usr/bin/objdump",@"-d",@"--x86-asm-syntax=intel",tempPath],nil,&dumpString))
-		{
-			trace(@"objdump error");
-			exit(1);
-		}
-		
-		if(remove(tempPathC))
-		{
-			trace(@"remove error");
-			exit(1);
-		}
-		
-		// TODO: dumb
-		NSString* regexString=[argList componentsJoinedByString:@" "];
-		
-		NSError* regexError=nil;
-		NSRegularExpression* regex=[NSRegularExpression regularExpressionWithPattern:regexString options:0 error:&regexError];
-		if(regexError)
-		{
-			trace(@"regex error");
-			exit(1);
-		}
-		
-		NSRange matchRange=[regex rangeOfFirstMatchInString:dumpString options:0 range:NSMakeRange(0,dumpString.length)];
-		if(matchRange.location==NSNotFound)
-		{
-			trace(@"not found");
-			exit(1);
-		}
-		
-		NSString* matchString=[dumpString substringWithRange:matchRange];
-		trace(@"    match %@",matchString);
-		
-		NSString* addressString=[@"0x" stringByAppendingString:[matchString componentsSeparatedByString:@":"][0]];
-		unsigned long address=longFromHexString(addressString);
-		
-		// TODO: assumes one TEXT segment
-		struct segment_command_64* textSeg=findSegmentCommand((char*)data.bytes,SEG_TEXT);
-		unsigned long addressDelta=textSeg->vmaddr-textSeg->fileoff;
-		
-		setPosition(address-addressDelta);
+		assemblyRegexCommon(@[@"/usr/bin/otool",@"-xVj"],argList);
+	}];
+	
+	[commandNames addObject:@"objdump"];
+	[commandExamples addObject:@"forward|backward (?m)^.+?rdrand.+?$"];
+	[commandBlocks addObject:^(NSArray<NSString*>* argList)
+	{
+		assemblyRegexCommon(@[@"/usr/bin/objdump",@"-d",@"--x86-asm-syntax=intel"],argList);
 	}];
 }
 
@@ -315,7 +384,7 @@ int main(int argCount,char* argList[])
 		
 		trace(@"  %@",commands[index]);
 		
-		NSString* name=bits[0];
+		NSString* name=bits.firstObject;
 		NSUInteger commandIndex=[commandNames indexOfObject:name];
 		if(commandIndex==NSNotFound)
 		{

@@ -33,10 +33,27 @@ struct segment_command_64* findSegmentCommand(char* startPointer,char* type)
 	{
 		if(command->cmd==LC_SEGMENT_64)
 		{
-			return strcmp(((struct segment_command_64*)command)->segname,type);
+			return strcmp(((struct segment_command_64*)command)->segname,type)==0;
 		}
 		return false;
 	});
+}
+
+struct section_64* findSectionCommand(char* startPointer,char* segmentType,char* sectionType)
+{
+	struct segment_command_64* segment=findSegmentCommand(startPointer,segmentType);
+	
+	struct section_64* section=(struct section_64*)((char*)segment+sizeof(struct segment_command_64));
+	for(unsigned int sectionIndex=0;sectionIndex<segment->nsects;sectionIndex++)
+	{
+		if(strcmp(section->sectname,sectionType)==0)
+		{
+			return section;
+		}
+		section++;
+	}
+	
+	return NULL;
 }
 
 unsigned long findSymbolOffset(char* startPointer,NSString* targetSymbolName)

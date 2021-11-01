@@ -86,6 +86,14 @@ then
 	mkdir "$kernels"
 	cp "kernel" "$kernels"
 
+	iokit="$overlay/System/Library/Frameworks/IOKit.framework/Versions/A"
+	mkdir -p "$iokit"
+	cp "IOKit" "$iokit"
+
+	powerd="$overlay/System/Library/CoreServices/powerd.bundle"
+	mkdir -p "$powerd"
+	cp "powerd" "$powerd"
+
 elif test "$target" = "cass2"
 then
 	cp -R "10.13.6/Payload/System/Library/Extensions/AMD5000Controller.kext" "$extensions"

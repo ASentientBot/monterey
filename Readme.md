@@ -26,9 +26,13 @@ Select `reveal` to show the output in Finder. Other modes are unsupported; see [
 
 # changes
 
+## 2021-10-31
+- automatically apply Low Power Mode patches (IOKit model check, powerd to skip xcpm ioctls)
+- further improve Binpatcher's assembly regex mode
+
 ## 2021-10-30
 - implement [MonteRand](https://forums.macrumors.com/threads/monterand-probably-the-start-of-an-ongoing-saga.2320479/) kernel patch
-- add `objdump` wrapper to Stubber
+- add `objdump` wrapper to Binpatcher
 
 ## 2021-10-21
 - fix PowerChime crash for those who have [enabled it](https://forums.macrumors.com/threads/macos-10-14-mojave-on-unsupported-macs-thread.2121473/post-26339698)

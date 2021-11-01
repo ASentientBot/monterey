@@ -19,6 +19,7 @@ runTask "PatchWifi"
 runTask "PatchBluetooth"
 runTask "PatchHibernate"
 runTask "PatchKernel"
+runTask "PatchLPM"
 
 runTask "BuildWrappers"
 
