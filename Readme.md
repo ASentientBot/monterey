@@ -26,6 +26,9 @@ Select `reveal` to show the output in Finder. Other modes are unsupported; see [
 
 # changes
 
+## 2021-11-3
+- fix Bluetooth again
+
 ## 2021-10-31
 - automatically apply Low Power Mode patches (IOKit model check, powerd xcpm ioctl)
 - further improve Binpatcher's assembly regex mode
