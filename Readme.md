@@ -27,7 +27,7 @@ Select `reveal` to show the output in Finder. Other modes are unsupported; see [
 # changes
 
 ## 2021-10-31
-- automatically apply Low Power Mode patches (IOKit model check, powerd to skip xcpm ioctls)
+- automatically apply Low Power Mode patches (IOKit model check, powerd xcpm ioctl)
 - further improve Binpatcher's assembly regex mode
 
 ## 2021-10-30

@@ -1,3 +1,8 @@
+// TODO: relative jumps
+// TODO: basic math
+// TODO: variables or a stack
+// TODO: nop auto size
+
 #import "Utils.h"
 
 NSMutableData* data;
@@ -116,7 +121,8 @@ void findBytesCommon(NSString* needleString,BOOL forward)
 	setPosition(found.location);
 }
 
-// TODO: ugly and slow
+// TODO: both these functions are absurdly inefficient
+
 unsigned long addressFromDumpLine(NSString* line)
 {
 	NSCharacterSet* hexCharacters=[NSCharacterSet characterSetWithCharactersInString:@"0123456789abcdef"];
@@ -220,13 +226,13 @@ void assemblyRegexCommon(NSArray<NSString*>* commandPrefix,NSArray<NSString*>* a
 	
 	NSArray<NSTextCheckingResult*>* matches=[regex matchesInString:relevantString options:0 range:NSMakeRange(0,relevantString.length)];
 	
-	NSTextCheckingResult* match=forward?matches.firstObject:matches.lastObject;
-	
-	if(match.range.location==NSNotFound)
+	if(matches.count==0)
 	{
 		trace(@"not found");
 		exit(1);
 	}
+	
+	NSTextCheckingResult* match=forward?matches.firstObject:matches.lastObject;
 	
 	NSString* matchString=[relevantString substringWithRange:match.range];
 	trace(@"    match %@",matchString);
@@ -324,14 +330,14 @@ void initCommands()
 	}];
 	
 	[commandNames addObject:@"otool"];
-	[commandExamples addObject:@"forward|backward (?m)^.+?rdrand.+?$"];
+	[commandExamples addObject:@"( forward | backward ) (?m)^.+?rdrand.+?$"];
 	[commandBlocks addObject:^(NSArray<NSString*>* argList)
 	{
 		assemblyRegexCommon(@[@"/usr/bin/otool",@"-xVj"],argList);
 	}];
 	
 	[commandNames addObject:@"objdump"];
-	[commandExamples addObject:@"forward|backward (?m)^.+?rdrand.+?$"];
+	[commandExamples addObject:@"( forward | backward ) (?m)^.+?rdrand.+?$"];
 	[commandBlocks addObject:^(NSArray<NSString*>* argList)
 	{
 		assemblyRegexCommon(@[@"/usr/bin/objdump",@"-d",@"--x86-asm-syntax=intel"],argList);
@@ -370,32 +376,35 @@ int main(int argCount,char* argList[])
 	NSArray<NSString*>* commands=[script componentsSeparatedByString:@"\n"];
 	for(unsigned int index=0;index<commands.count;index++)
 	{
-		if(commands[index].length==0)
+		@autoreleasepool
 		{
-			continue;
+			if(commands[index].length==0)
+			{
+				continue;
+			}
+			
+			if([commands[index] hasPrefix:@"#"])
+			{
+				continue;
+			}
+			
+			NSArray<NSString*>* bits=[commands[index] componentsSeparatedByString:@" "];
+			
+			trace(@"  %@",commands[index]);
+			
+			NSString* name=bits.firstObject;
+			NSUInteger commandIndex=[commandNames indexOfObject:name];
+			if(commandIndex==NSNotFound)
+			{
+				trace(@"invalid command");
+				return 1;
+			}
+			
+			NSRange argsRange=NSMakeRange(1,bits.count-1);
+			NSArray<NSString*>* args=[bits subarrayWithRange:argsRange];
+			
+			commandBlocks[commandIndex](args);
 		}
-		
-		if([commands[index] hasPrefix:@"#"])
-		{
-			continue;
-		}
-		
-		NSArray<NSString*>* bits=[commands[index] componentsSeparatedByString:@" "];
-		
-		trace(@"  %@",commands[index]);
-		
-		NSString* name=bits.firstObject;
-		NSUInteger commandIndex=[commandNames indexOfObject:name];
-		if(commandIndex==NSNotFound)
-		{
-			trace(@"invalid command");
-			return 1;
-		}
-		
-		NSRange argsRange=NSMakeRange(1,bits.count-1);
-		NSArray<NSString*>* args=[bits subarrayWithRange:argsRange];
-		
-		commandBlocks[commandIndex](args);
 	}
 	
 	trace(@"writing %@",outPath);

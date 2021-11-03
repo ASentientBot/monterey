@@ -4,9 +4,21 @@ rm -f "bluetoothdEnts.xml"
 codesign --dump --xml --entitlements "bluetoothdEnts.xml" "bluetoothd"
 
 ./Binpatcher "bluetoothd" "bluetoothd" '
-# Bluetooth USB Host Controller --> BRCM2070 Hub
-forward 0x426c7565746f6f74682055534220486f737420436f6e74726f6c6c657200
-write 0x4252434d323037302048756200'
+otool forward (?m)^.*?\[Found_USB_Dongle
+
+otool forward (?m)^.*?CFStringCompare
+otool forward (?m)^.*?je
+nop 0x2
+
+otool forward (?m)^.*?cmpl\t\$0xa5c
+otool forward (?m)^.*?je
+write 0xeb
+
+set 0x0
+otool forward (?m)^.*?\[GetProductAndVendorID
+otool forward (?m)^.*?CFStringCompare
+otool forward (?m)^.*?je
+nop 0x6'
 
 codesign -f -s - --entitlements "bluetoothdEnts.xml" "bluetoothd"
 

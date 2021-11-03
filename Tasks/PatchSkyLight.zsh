@@ -51,3 +51,8 @@ nop 0x8
 # TODO: shim SLSInstallRemoteContextNotificationHandlerV2 instead
 symbol ___SLSRemoveRemoteContextNotificationHandler_block_invoke
 return 0x0'
+
+if test -e "$code/Stuff/anti-thing.txt"
+then
+	./Binpatcher "SkyLight" "SkyLight" "$(cat "$code/Stuff/anti-thing.txt")"
+fi
