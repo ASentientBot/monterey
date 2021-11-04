@@ -48,12 +48,16 @@ void SLSInstallRemoteContextNotificationHandler(NSString* rdi,RemoteContextBlock
 
 unsigned int SLSPackagesEnableWindowOcclusionNotifications(unsigned int edi_connectionID,unsigned int esi_windowID,unsigned int edx,unsigned long rcx);
 
+void SLDisplayForceToGray(BOOL);
+
 extern const NSString* kSLSBuiltInDevicesKey;
 extern const NSString* kSLSMouseDevicesKey;
 extern const NSString* kSLSGestureScrollDevicesKey;
 
 extern const NSString* kCGSWorkspaceWallSpaceKey;
 extern const NSString* kCGSWorkspaceSpaceIDKey;
+
+extern const NSString* kSLSAccessibilityAdjustmentMatrix;
 
 // CoreGraphics private
 

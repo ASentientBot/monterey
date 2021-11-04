@@ -1,11 +1,4 @@
-// TODO: all non-ideal workarounds
-
-// crash in _XSetAccessibilityAdjustments
-
-unsigned long SLSSetAccessibilityAdjustments()
-{
-	return 0;
-}
+// TODO: non-ideal workarounds
 
 // SLSReenableUpdateTokenWithSeed assertions
 

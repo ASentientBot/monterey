@@ -26,6 +26,9 @@ Select `reveal` to show the output in Finder. Other modes are unsupported; see [
 
 # changes
 
+## 2021-11-4
+- enable greyscale color filter
+
 ## 2021-11-3
 - run HID event system under WindowServer (removing the need for `HiddHack.plist`)
 - fix Bluetooth again

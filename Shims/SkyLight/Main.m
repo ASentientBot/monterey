@@ -10,6 +10,7 @@
 #import "Dock.m"
 #import "DowngradedQuartzCore.m"
 #import "Glyphs.m"
+#import "Grey.m"
 #import "Hidd.m"
 #import "MenuBar.m"
 #import "Occlusion.m"
