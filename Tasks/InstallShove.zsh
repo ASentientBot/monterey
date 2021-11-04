@@ -22,8 +22,6 @@ set +e
 cp -R "SystemOverlay/" "$target"
 set -e
 
-chown root:wheel "$target/System/Library/LaunchDaemons/HiddHack.plist"
-
 if test "$target" = "/"
 then
 	reboot

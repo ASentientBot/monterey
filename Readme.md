@@ -27,6 +27,7 @@ Select `reveal` to show the output in Finder. Other modes are unsupported; see [
 # changes
 
 ## 2021-11-3
+- run HID event system under WindowServer (removing the need for `HiddHack.plist`)
 - fix Bluetooth again
 
 ## 2021-10-31
@@ -118,7 +119,7 @@ Roughly ordered by priority. Also see [here](https://github.com/dortania/OpenCor
 - fix corrupt shadows on Dock, zoom button popups
 - fix Photo Booth (workaround: downgrade to Big Sur version)
 - use `com.apple.Boot.plist` for boot-args
-- fix hidd, keyboard backlight (workaround: use Lab Tick)
+- fix keyboard backlight (workaround: use Lab Tick)
 - automatically color menu bar text (workaround: `defaults write -g ASB_DarkMenuBar -bool true`)
 - fix Control Center sliders
 - fix hardware cursor

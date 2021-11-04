@@ -32,7 +32,7 @@ function promptFolder
 function promptList
 {
 	osascript -e 'on run argList
-choose from list items 2 thru end of argList with prompt item 1 of argList
+tell app "Terminal" to choose from list items 2 thru end of argList with prompt item 1 of argList
 set output to result
 if output is false then error number -128
 return output

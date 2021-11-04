@@ -8,6 +8,9 @@
 NSMutableData* data;
 unsigned long position;
 
+int currentLine;
+int lastModifiedLine;
+
 NSMutableData* dataFromHexString(NSString* string)
 {
 	if(![string hasPrefix:@"0x"])
@@ -94,6 +97,8 @@ void patch(NSData* input)
 	memcpy(data.mutableBytes+position,input.bytes,input.length);
 	
 	setPosition(position+input.length);
+	
+	lastModifiedLine=currentLine;
 }
 
 void findBytesCommon(NSString* needleString,BOOL forward)
@@ -121,15 +126,15 @@ void findBytesCommon(NSString* needleString,BOOL forward)
 	setPosition(found.location);
 }
 
-// TODO: both these functions are absurdly inefficient
+NSCharacterSet* nonHexCharacters=nil;
+NSMutableDictionary<NSString*,NSNumber*>* assemblyCacheLines=nil;
+NSMutableDictionary<NSString*,NSArray*>* assemblyCache=nil;
+BOOL alwaysCacheAssembly=true;
 
 unsigned long addressFromDumpLine(NSString* line)
 {
-	NSCharacterSet* hexCharacters=[NSCharacterSet characterSetWithCharactersInString:@"0123456789abcdef"];
-	NSCharacterSet* badCharacters=hexCharacters.invertedSet;
-	
-	NSString* lineTrimmed=[line stringByTrimmingCharactersInSet:badCharacters];
-	NSArray<NSString*>* lineBits=[lineTrimmed componentsSeparatedByCharactersInSet:badCharacters];
+	NSString* lineTrimmed=[line stringByTrimmingCharactersInSet:nonHexCharacters];
+	NSArray<NSString*>* lineBits=[lineTrimmed componentsSeparatedByCharactersInSet:nonHexCharacters];
 	
 	if(lineBits.count==0||lineBits.firstObject.length<4)
 	{
@@ -141,34 +146,65 @@ unsigned long addressFromDumpLine(NSString* line)
 
 void assemblyRegexCommon(NSArray<NSString*>* commandPrefix,NSArray<NSString*>* argList)
 {
-	char tempPathC[]="/tmp/Binpatcher.XXXXX";
-	if(!mktemp(tempPathC))
+	if(!nonHexCharacters)
 	{
-		trace(@"mktemp error");
-		exit(1);
+		nonHexCharacters=[NSCharacterSet characterSetWithCharactersInString:@"0123456789abcdef"].invertedSet.retain;
+		assemblyCacheLines=NSMutableDictionary.alloc.init;
+		assemblyCache=NSMutableDictionary.alloc.init;
 	}
 	
-	NSString* tempPath=[NSString stringWithUTF8String:tempPathC];
+	NSArray<NSString*>* dumpLines=nil;
 	
-	NSError* writeError=nil;
-	[data writeToFile:tempPath options:0 error:&writeError];
-	if(writeError)
+	NSString* commandName=commandPrefix.firstObject;
+	if(assemblyCacheLines[commandName])
 	{
-		trace(@"write error");
-		exit(1);
+		if(alwaysCacheAssembly||assemblyCacheLines[commandName].intValue>lastModifiedLine)
+		{
+			trace(@"    using cached dump");
+			dumpLines=assemblyCache[commandName];
+		}
+		else
+		{
+			trace(@"    rejecting cached dump");
+		}
 	}
 	
-	NSString* dumpString;
-	if(runTask([commandPrefix arrayByAddingObject:tempPath],nil,&dumpString))
+	if(!dumpLines)
 	{
-		trace(@"task error");
-		exit(1);
-	}
-	
-	if(remove(tempPathC))
-	{
-		trace(@"remove error");
-		exit(1);
+		char tempPathC[]="/tmp/Binpatcher.XXXXX";
+		if(!mktemp(tempPathC))
+		{
+			trace(@"mktemp error");
+			exit(1);
+		}
+		
+		NSString* tempPath=[NSString stringWithUTF8String:tempPathC];
+		
+		NSError* writeError=nil;
+		[data writeToFile:tempPath options:0 error:&writeError];
+		if(writeError)
+		{
+			trace(@"write error");
+			exit(1);
+		}
+		
+		NSString* dumpString=nil;
+		if(runTask([commandPrefix arrayByAddingObject:tempPath],nil,&dumpString))
+		{
+			trace(@"task error");
+			exit(1);
+		}
+		
+		if(remove(tempPathC))
+		{
+			trace(@"remove error");
+			exit(1);
+		}
+		
+		dumpLines=[dumpString componentsSeparatedByString:@"\n"];
+		
+		assemblyCacheLines[commandName]=[NSNumber numberWithInt:currentLine];
+		assemblyCache[commandName]=dumpLines;
 	}
 	
 	NSString* directionString=argList.firstObject;
@@ -202,25 +238,53 @@ void assemblyRegexCommon(NSArray<NSString*>* commandPrefix,NSArray<NSString*>* a
 	trace(@"    address delta 0x%lx",addressDelta);
 	
 	NSArray<NSString*>* relevantLines;
-	NSArray<NSString*>* dumpLines=[dumpString componentsSeparatedByString:@"\n"];
-	for(unsigned int index=0;index<dumpLines.count;index++)
+	
+	unsigned long lastAddress=0;
+	unsigned long targetAddress=position+addressDelta;
+	unsigned long step=dumpLines.count/2;
+	long index=0;
+	unsigned int log2SearchCount=0;
+	while(true)
 	{
-		unsigned long lineAddress=addressFromDumpLine(dumpLines[index]);
-		if(lineAddress>=position+addressDelta)
+		log2SearchCount++;
+		
+		unsigned long address=addressFromDumpLine(dumpLines[index]);
+		
+		if(address<targetAddress)
 		{
-			if(forward)
+			index+=step;
+		}
+		else
+		{
+			if(address==targetAddress)
 			{
-				trace(@"    skipping to line %d",index);
-				relevantLines=[dumpLines subarrayWithRange:NSMakeRange(index,dumpLines.count-index)];
-			}
-			else
-			{
-				trace(@"    trimming to line %d",index);
-				relevantLines=[dumpLines subarrayWithRange:NSMakeRange(0,index)];
+				break;
 			}
 			
-			break;
+			if(step==1&&lastAddress<targetAddress)
+			{
+				break;
+			}
+			
+			index-=step;
 		}
+		
+		lastAddress=address;
+		
+		index=MIN(MAX(index,0),dumpLines.count-1);
+		step=MAX((step+1)/2,1);
+	}
+	
+	// TODO: the function's last major performance issue
+	if(forward)
+	{
+		trace(@"    skipping to line %d (%d comparisons)",index,log2SearchCount);
+		relevantLines=[dumpLines subarrayWithRange:NSMakeRange(index,dumpLines.count-index)];
+	}
+	else
+	{
+		trace(@"    trimming to line %d (%d comparisons)",index,log2SearchCount);
+		relevantLines=[dumpLines subarrayWithRange:NSMakeRange(0,index)];
 	}
 	NSString* relevantString=[relevantLines componentsJoinedByString:@"\n"];
 	
@@ -342,6 +406,13 @@ void initCommands()
 	{
 		assemblyRegexCommon(@[@"/usr/bin/objdump",@"-d",@"--x86-asm-syntax=intel"],argList);
 	}];
+	
+	[commandNames addObject:@"strict_cache"];
+	[commandExamples addObject:@""];
+	[commandBlocks addObject:^(NSArray<NSString*>* argList)
+	{
+		alwaysCacheAssembly=false;
+	}];
 }
 
 int main(int argCount,char* argList[])
@@ -373,11 +444,15 @@ int main(int argCount,char* argList[])
 	
 	position=0;
 	
+	lastModifiedLine=-1;
+	
 	NSArray<NSString*>* commands=[script componentsSeparatedByString:@"\n"];
 	for(unsigned int index=0;index<commands.count;index++)
 	{
 		@autoreleasepool
 		{
+			currentLine=index;
+			
 			if(commands[index].length==0)
 			{
 				continue;

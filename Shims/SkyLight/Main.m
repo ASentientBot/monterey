@@ -8,7 +8,9 @@
 #import "Defenestrator.m"
 #import "DisplayLink.m"
 #import "Dock.m"
+#import "DowngradedQuartzCore.m"
 #import "Glyphs.m"
+#import "Hidd.m"
 #import "MenuBar.m"
 #import "Occlusion.m"
 #import "SecureCursor.m"
@@ -18,8 +20,6 @@
 #import "Todo.m"
 #import "TS2.m"
 #import "WindowFlags.m"
-
-#import "DowngradedQuartzCore.m"
 
 @interface Setup:NSObject
 @end
@@ -40,6 +40,7 @@
 	blursSetup();
 	defenestratorSetup();
 	glyphsSetup();
+	hiddSetup();
 	occlusionSetup();
 	safariSetup();
 	ts2Setup();

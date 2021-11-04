@@ -33,13 +33,6 @@ ln -s "Versions/Current/SkyLight" "$privateFrameworks/SkyLight.framework/SkyLigh
 ln -s "Versions/Current/CoreDisplay" "$frameworks/CoreDisplay.framework/CoreDisplay"
 ln -s "Versions/Current/IOSurface" "$frameworks/IOSurface.framework/IOSurface"
 
-plistFolder="$overlay/System/Library/LaunchDaemons"
-plistPath="$PWD/$plistFolder/HiddHack.plist"
-mkdir -p "$plistFolder"
-cp "10.15.7/Payload/System/Library/LaunchDaemons/com.apple.hidd.plist" "$plistPath"
-defaults write "$plistPath" ProgramArguments -array-add eventSystem
-defaults write "$plistPath" Label HiddHack
-
 if test "$target" = "zoe"
 then
 	cp -R "10.13.6/Payload/System/Library/Extensions/AppleHDA.kext" "$extensions"
