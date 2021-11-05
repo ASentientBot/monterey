@@ -115,7 +115,6 @@ Roughly ordered by priority. Also see [here](https://github.com/dortania/OpenCor
 - fix shifted/missing icons
 - improve status bar item resizing, replicant handling
 - investigate Maps crash
-- fix accessibility zoom
 - rewrite Glyphs
 - investigate space switching notifications
 - fix corrupt shadows on Dock, zoom button popups
