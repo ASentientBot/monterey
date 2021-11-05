@@ -21,6 +21,7 @@
 #import "Todo.m"
 #import "TS2.m"
 #import "WindowFlags.m"
+#import "Zoom.m"
 
 @interface Setup:NSObject
 @end

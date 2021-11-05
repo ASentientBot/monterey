@@ -28,6 +28,7 @@ Select `reveal` to show the output in Finder. Other modes are unsupported; see [
 
 ## 2021-11-4
 - enable greyscale color filter
+- fix accessibility zoom
 
 ## 2021-11-3
 - run HID event system under WindowServer (removing the need for `HiddHack.plist`)
@@ -103,7 +104,7 @@ Roughly ordered by priority. Also see [here](https://github.com/dortania/OpenCor
 
 - investigate Safari freezing again (workaround: disable `WebKit::TiledCoreAnimationDrawingArea::invalidateRenderingUpdateRunLoopObserver()`)
 - fix Catalyst app scrolling
-- fix NSVisualEffectView blurs
+- fix NSVisualEffectView blurs (workarounds: Reduce Transparency, `defaults write -g CADisableBackdrops -bool true`)
 - support Big Sur
 - automatically handle TeraScale 2 colors (workaround: set "millions" in SwitchResX)
 - fix VNC on TeraScale 2
@@ -117,8 +118,6 @@ Roughly ordered by priority. Also see [here](https://github.com/dortania/OpenCor
 - fix accessibility zoom
 - rewrite Glyphs
 - investigate space switching notifications
-- improve DisplayLink
-- improve Defenestrator
 - fix corrupt shadows on Dock, zoom button popups
 - fix Photo Booth (workaround: downgrade to Big Sur version)
 - use `com.apple.Boot.plist` for boot-args

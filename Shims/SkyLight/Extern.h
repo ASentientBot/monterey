@@ -10,6 +10,8 @@ dispatch_block_t SLSCopyCoordinatedDistributedNotificationContinuationBloc$();
 
 unsigned int SLSShapeWindowInWindowCoordinate$(unsigned int edi_connectionID,unsigned int esi_windowID,char* rdx_region,unsigned int ecx,unsigned int r8d,unsigned int r9d,unsigned int stack);
 
+CFMachPortRef SLSEventTapCreat$(unsigned int edi_location,NSString* rsi_priority,unsigned int edx_placement,unsigned int ecx_options,unsigned long r8_eventsOfInterest,void* r9_callback,void* stack_info);
+
 // SkyLight
 
 unsigned int SLSMainConnectionID();
