@@ -1,3 +1,6 @@
+// TODO: make this compile on Catalyst and remove
+#if ! TARGET_OS_MACCATALYST
+
 int runTask(NSArray<NSString*>* command,NSString* workingPath,NSString** output)
 {
 	NSTask* task=NSTask.alloc.init;
@@ -40,3 +43,5 @@ int runTask(NSArray<NSString*>* command,NSString* workingPath,NSString** output)
 	
 	return result;
 }
+
+#endif

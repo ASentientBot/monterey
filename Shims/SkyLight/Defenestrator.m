@@ -5,7 +5,8 @@
 @property unsigned int connectionID;
 @property unsigned int windowID;
 @property unsigned int surfaceID;
-@property(retain) CAContext* context;
+@property(assign) CAContext* context;
+@property(assign) char* backdrop;
 
 @end
 
@@ -27,15 +28,17 @@ void defenestratorSetup()
 {
 	trace(@"ContextWrapper init %d %d %@",connectionID,windowID,context);
 	
-	self.connectionID=connectionID;
-	self.windowID=windowID;
-	self.context=context;
+	_connectionID=connectionID;
+	_windowID=windowID;
+	_context=context.retain;
 	
 	unsigned int surfaceID;
 	SLSAddSurface(connectionID,windowID,&surfaceID);
 	SLSBindSurface(connectionID,windowID,surfaceID,4,0,context.contextId);
 	SLSOrderSurface(connectionID,windowID,surfaceID,1,0);
-	self.surfaceID=surfaceID;
+	_surfaceID=surfaceID;
+	
+	_backdrop=NULL;
 	
 	self.updateSurfaceBounds;
 	
@@ -45,14 +48,27 @@ void defenestratorSetup()
 -(void)updateSurfaceBounds
 {
 	CGRect bounds;
-	SLSGetWindowBounds(self.connectionID,self.windowID,&bounds);
+	SLSGetWindowBounds(_connectionID,_windowID,&bounds);
 	
-	// trace(@"ContextWrapper updateSurfaceBounds %@",NSStringFromRect(bounds));
+	trace(@"ContextWrapper updateSurfaceBounds %@",NSStringFromRect(bounds));
 	
 	bounds.origin.x=0;
 	bounds.origin.y=0;
 	
-	SLSSetSurfaceBounds(self.connectionID,self.windowID,self.surfaceID,bounds);
+	SLSSetSurfaceBounds(_connectionID,_windowID,_surfaceID,bounds);
+	
+	if(blurBeta())
+	{
+		if(_backdrop)
+		{
+			SLSWindowBackdropRelease(_backdrop);
+		}
+		
+		// TODO: why
+		bounds.size.width+=1;
+		
+		_backdrop=SLSWindowBackdropCreateWithLevelAndTintColor(_windowID,@"Mimic",@"Sover",0,NULL,bounds);
+	}
 }
 
 -(void)dealloc
@@ -61,7 +77,13 @@ void defenestratorSetup()
 	
 	// TODO: *Surface* calls are not undone
 	
-	self.context.release;
+	_context.release;
+	
+	if(_backdrop)
+	{
+		SLSWindowBackdropRelease(_backdrop);
+	}
+	
 	super.dealloc;
 }
 

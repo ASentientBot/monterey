@@ -52,6 +52,9 @@ unsigned int SLSPackagesEnableWindowOcclusionNotifications(unsigned int edi_conn
 
 void SLDisplayForceToGray(BOOL);
 
+char* SLSWindowBackdropCreateWithLevelAndTintColor(unsigned int edi_windowID,NSString* rsi_material,NSString* rdx_blendMode,unsigned long rcx_level,CGColorRef r8_tintColor,CGRect stack_frame);
+void SLSWindowBackdropRelease(char* rdi_backdrop);
+
 extern const NSString* kSLSBuiltInDevicesKey;
 extern const NSString* kSLSMouseDevicesKey;
 extern const NSString* kSLSGestureScrollDevicesKey;

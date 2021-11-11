@@ -16,7 +16,7 @@ return 0x0
 set 0xb949c
 write 0x38
 
-# WSBackdropGetCorrectedColor remove 0x17 (MenuBarDark) material background
+# WSBackdropGetCorrectedColor remove 0x17 (MenuBarDark) material background (floats RGBA)
 set 0x26ef70
 write 0x00000000000000000000000000000000
 

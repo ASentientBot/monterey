@@ -8,7 +8,7 @@ BOOL styleIsDark()
 	{
 		styleIsDarkValue=[NSUserDefaults.standardUserDefaults boolForKey:@"ASB_DarkMenuBar"];
 		
-		trace(@"ASB_DarkMenuBar %d",styleIsDarkValue);
+		// trace(@"ASB_DarkMenuBar %d",styleIsDarkValue);
 	});
 	
 	return styleIsDarkValue;
@@ -201,7 +201,7 @@ void menuBarRevealCommon(NSNumber* amount)
 	output[@"space"]=wallID;
 	output[@"reveal"]=amount;
 	
-	trace(@"menuBarRevealCommon %@",output);
+	// trace(@"menuBarRevealCommon %@",output);
 	
 	[NSNotificationCenter.defaultCenter postNotificationName:kSLSCoordinatedSpaceMenuBarRevealChangedNotificationName object:nil userInfo:output];
 	

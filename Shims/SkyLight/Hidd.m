@@ -31,7 +31,7 @@ void hiddSetup()
 			
 			CFStringRef paramsKey=(CFStringRef)@"HIDParameters";
 			NSDictionary* params=IORegistryEntryCreateCFProperty(service,paramsKey,kCFAllocatorDefault,0);
-			trace(@"%@ %@",paramsKey,params);
+			// trace(@"%@ %@",paramsKey,params);
 			IOHIDEventSystemSetProperty(system,paramsKey,params);
 			
 			IOObjectRelease(service);

@@ -11,12 +11,12 @@
 
 -(void)setUpdatesAsynchronously:(BOOL)flag
 {
-	trace(@"CAPresentationModifierGroup setUpdatesAsynchronously");
+	// trace(@"CAPresentationModifierGroup setUpdatesAsynchronously");
 }
 
 -(void)flushWithTransaction
 {
-	trace(@"CAPresentationModifierGroup flushWithTransaction");
+	// trace(@"CAPresentationModifierGroup flushWithTransaction");
 	self.flush;
 }
 

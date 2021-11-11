@@ -5,7 +5,7 @@
 - [jackluke](https://github.com/jacklukem): 10.14+ Penryn panic fix (telemetry plugin), Tesla insights, testing
 - [Minh Ton](https://minh-ton.github.io): many macOS insights, testing
 - [moosethegoose2213](https://moosethegoose2213.github.io) (ASentientHedgehog): TeraScale 2 and QuartzCore insights, testing
-- [parrotgeek1](https://parrotgeek.com): many macOS and graphics insights regarding Tesla, SIP, OpenGL and more
+- [parrotgeek1](https://parrotgeek.com): many macOS and graphics insights regarding Tesla, TeraScale 2, SIP, OpenGL and more
 - [EduCovas](https://github.com/educovas): Safari Extensions, WebKit, and QuartzCore insights, testing
 - [Syncretic](https://forums.macrumors.com/members/syncretic.1173816/): [MonteRand](https://forums.macrumors.com/threads/monterand-probably-the-start-of-an-ongoing-saga.2320479/)
 - [Acidanthera](https://github.com/acidanthera): aftermarket SSD hibernation patch
@@ -25,6 +25,9 @@ Run `Install.tool` to prepare patches for a given machine:
 Select `reveal` to show the output in Finder. Other modes are unsupported; see [OCLP](https://dortania.github.io/OpenCore-Legacy-Patcher/) for all practical uses.
 
 # changes
+
+## 2021-11-11
+- start testing blur fixes (opt-in with `defaults write -g ASB_BlurBeta -bool true`, tweak strength with `defaults write -g ASB_BlurOverride -float n`)
 
 ## 2021-11-4
 - enable greyscale color filter
@@ -104,12 +107,12 @@ Roughly ordered by priority. Also see [here](https://github.com/dortania/OpenCor
 
 - investigate Safari freezing again (workaround: disable `WebKit::TiledCoreAnimationDrawingArea::invalidateRenderingUpdateRunLoopObserver()`)
 - fix Catalyst app scrolling
-- fix NSVisualEffectView blurs (workarounds: Reduce Transparency, `defaults write -g CADisableBackdrops -bool true`)
 - support Big Sur
 - automatically handle TeraScale 2 colors (workaround: set "millions" in SwitchResX)
 - fix VNC on TeraScale 2
+- check "swipe between pages"
 - support Ironlake
-- fix CALayer corner radius (workaround: downgrade QuartzCore to Big Sur version)
+- fix CALayer corner radii (workaround: downgrade QuartzCore to Big Sur version)
 - investigate slow compositing in all browsers
 - investigate broken WebGL in all browsers (workaround: use Chrome's `ignore-gpu-blocklist`)
 - fix shifted/missing icons
@@ -117,7 +120,6 @@ Roughly ordered by priority. Also see [here](https://github.com/dortania/OpenCor
 - investigate Maps crash
 - rewrite Glyphs
 - investigate space switching notifications
-- fix corrupt shadows on Dock, zoom button popups
 - fix Photo Booth (workaround: downgrade to Big Sur version)
 - use `com.apple.Boot.plist` for boot-args
 - fix keyboard backlight (workaround: use Lab Tick)
@@ -127,3 +129,4 @@ Roughly ordered by priority. Also see [here](https://github.com/dortania/OpenCor
 - implement auto appearance (workaround: use NightOwl)
 - implement Screen Time locking
 - fix full-screen transition
+- fix Migration Assistant

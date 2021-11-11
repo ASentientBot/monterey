@@ -11,7 +11,7 @@ void fake_setWindowNumber(id self,SEL selector,unsigned long windowID)
 	
 	if(windowID!=-1)
 	{
-		trace(@"fake_setWindowNumber fixing occlusion detection");
+		// trace(@"fake_setWindowNumber fixing occlusion detection");
 		
 		SLSPackagesEnableWindowOcclusionNotifications(SLSMainConnectionID(),windowID,1,0);
 	}
