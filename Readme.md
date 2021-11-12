@@ -27,7 +27,7 @@ Select `reveal` to show the output in Finder. Other modes are unsupported; see [
 # changes
 
 ## 2021-11-11
-- start testing blur fixes (opt-in with `defaults write -g ASB_BlurBeta -bool true`, tweak strength with `defaults write -g ASB_BlurOverride -float n`)
+- start testing blur fixes (opt-in with `defaults write -g ASB_BlurBeta -bool true`, tweak strength with `defaults write -g ASB_BlurOverride -float n`, disable per-app with `defaults write <bundle id> ASB_BlurBeta -bool false`)
 
 ## 2021-11-4
 - enable greyscale color filter
@@ -105,9 +105,9 @@ Changes since last non-GitHub release.
 # todo
 Roughly ordered by priority. Also see [here](https://github.com/dortania/OpenCore-Legacy-Patcher/issues/108#issuecomment-810634088).
 
+- fix the blur fix mouse events problem (workaround: temporarily blacklisted affected apps)
 - investigate Safari freezing again (workaround: disable `WebKit::TiledCoreAnimationDrawingArea::invalidateRenderingUpdateRunLoopObserver()`)
 - fix Catalyst app scrolling
-- support Big Sur
 - automatically handle TeraScale 2 colors (workaround: set "millions" in SwitchResX)
 - fix VNC on TeraScale 2
 - check "swipe between pages"

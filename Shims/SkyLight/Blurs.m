@@ -21,8 +21,10 @@ double blurBeta()
 	{
 		blurBetaValue=[NSUserDefaults.standardUserDefaults boolForKey:@"ASB_BlurBeta"];
 		
-		if([NSProcessInfo.processInfo.arguments[0] isEqualToString:@"/System/Library/CoreServices/screencaptureui.app/Contents/MacOS/screencaptureui"])
+		if(blurBetaValue&&[@[@"/System/Library/CoreServices/screencaptureui.app/Contents/MacOS/screencaptureui",@"/System/Library/CoreServices/ControlCenter.app/Contents/MacOS/ControlCenter",@"/System/Library/CoreServices/NotificationCenter.app/Contents/MacOS/NotificationCenter"] containsObject:NSProcessInfo.processInfo.arguments[0]])
 		{
+			trace(@"blacklisted from blur fixes");
+			
 			blurBetaValue=false;
 		}
 		
