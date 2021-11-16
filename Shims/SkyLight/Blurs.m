@@ -63,6 +63,9 @@ void fake_setFilters(id self,SEL selector,NSArray* filters)
 	for(NSObject* filter in filters)
 	{
 		NSString* name=[filter name];
+		
+		// trace(@"%@ %@ %@",filter,[filter inputKeys],[filter outputKeys]);
+		
 		if([name isEqualToString:@"sdrNormalize"]||[name isEqualToString:@"colorSaturate"])
 		{
 			continue;

@@ -50,7 +50,7 @@ void defenestratorSetup()
 	CGRect bounds;
 	SLSGetWindowBounds(_connectionID,_windowID,&bounds);
 	
-	trace(@"ContextWrapper updateSurfaceBounds %@",NSStringFromRect(bounds));
+	// trace(@"ContextWrapper updateSurfaceBounds %@",NSStringFromRect(bounds));
 	
 	bounds.origin.x=0;
 	bounds.origin.y=0;

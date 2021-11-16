@@ -243,10 +243,10 @@ void assemblyRegexCommon(NSArray<NSString*>* commandPrefix,NSArray<NSString*>* a
 	unsigned long targetAddress=position+addressDelta;
 	unsigned long step=dumpLines.count/2;
 	long index=0;
-	unsigned int log2SearchCount=0;
+	unsigned int binarySearchCount=0;
 	while(true)
 	{
-		log2SearchCount++;
+		binarySearchCount++;
 		
 		unsigned long address=addressFromDumpLine(dumpLines[index]);
 		
@@ -278,12 +278,12 @@ void assemblyRegexCommon(NSArray<NSString*>* commandPrefix,NSArray<NSString*>* a
 	// TODO: the function's last major performance issue
 	if(forward)
 	{
-		trace(@"    skipping to line %d (%d comparisons)",index,log2SearchCount);
+		trace(@"    skipping to line %d (%d comparisons)",index,binarySearchCount);
 		relevantLines=[dumpLines subarrayWithRange:NSMakeRange(index,dumpLines.count-index)];
 	}
 	else
 	{
-		trace(@"    trimming to line %d (%d comparisons)",index,log2SearchCount);
+		trace(@"    trimming to line %d (%d comparisons)",index,binarySearchCount);
 		relevantLines=[dumpLines subarrayWithRange:NSMakeRange(0,index)];
 	}
 	NSString* relevantString=[relevantLines componentsJoinedByString:@"\n"];

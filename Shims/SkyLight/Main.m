@@ -1,4 +1,5 @@
 @import QuartzCore;
+@import Darwin.POSIX.dlfcn;
 
 #import "Utils.h"
 
@@ -23,6 +24,8 @@
 #import "WindowFlags.m"
 #import "Zoom.m"
 
+#import "Plugins.m"
+
 @interface Setup:NSObject
 @end
 
@@ -46,6 +49,8 @@
 	occlusionSetup();
 	safariSetup();
 	ts2Setup();
+	
+	pluginsSetup();
 }
 
 @end

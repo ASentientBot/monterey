@@ -26,8 +26,11 @@ Select `reveal` to show the output in Finder. Other modes are unsupported; see [
 
 # changes
 
+## 2021-11-16
+- implement basic plugin functionality (place dylibs in `/etc/SkyLightPlugins`, append lines `<target path or *> : <dylib name>` to `List.txt`)
+
 ## 2021-11-11
-- start testing blur fixes (opt-in with `defaults write -g ASB_BlurBeta -bool true`, tweak strength with `defaults write -g ASB_BlurOverride -float n`, disable per-app with `defaults write <bundle id> ASB_BlurBeta -bool false`)
+- start testing blur fixes (opt-in with `defaults write -g ASB_BlurBeta -bool true`, tweak strength with `defaults write -g ASB_BlurOverride -float <radius>`, disable per-app with `defaults write <bundle id> ASB_BlurBeta -bool false`)
 
 ## 2021-11-4
 - enable greyscale color filter
