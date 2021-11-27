@@ -71,6 +71,8 @@ void defenestratorSetup()
 	}
 }
 
+// TODO: not called when a window is destroyed, only when context is overwritten
+
 -(void)dealloc
 {
 	trace(@"ContextWrapper dealloc");

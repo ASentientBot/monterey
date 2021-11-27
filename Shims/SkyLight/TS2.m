@@ -27,6 +27,7 @@ void ts2ScreencaptureSetup()
 			
 			NSUserDefaults* cmioDefaults=[NSUserDefaults.alloc initWithSuiteName:@"com.apple.cmio"];
 			[cmioDefaults setBool:true forKey:@"CMIO_Unit_Input_ASC.DoNotUseOpenCL"];
+			cmioDefaults.release;
 		}
 	}
 }

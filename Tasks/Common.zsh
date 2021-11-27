@@ -1,15 +1,17 @@
 set -e
 
-export code="$(dirname "$(dirname "$0")")"
+code="$(dirname "$(dirname "$0")")"
+export code
 
 mkdir -p "$code/Build.noindex"
 cd "$code/Build.noindex"
 
-export major="$(defaults read "$PWD/Current/Payload/System/Library/CoreServices/SystemVersion.plist" ProductVersion | cut -d '.' -f 1)"
+major="$(defaults read "$PWD/Current/Payload/System/Library/CoreServices/SystemVersion.plist" ProductVersion | cut -d '.' -f 1)"
+export major
 
 function clangCommon
 {
-	clang -fmodules -I "$code/Utils" -Wno-unused-getter-return-value -Wno-objc-missing-super-calls $@
+	clang -fmodules -I "$code/Utils" -Wno-unused-getter-return-value -Wno-objc-missing-super-calls -mmacosx-version-min="$major" -DMAJOR="$major" $@
 }
 
 function runTask

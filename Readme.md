@@ -4,9 +4,9 @@
 - [SpiraMira](https://github.com/SpiraMira) ([pkouame](https://forums.macrumors.com/members/pkouame.1036080/)), [testheit](https://forums.macrumors.com/members/1133139/): SkyLight insights, previous transparency patches
 - [jackluke](https://github.com/jacklukem): 10.14+ Penryn panic fix (telemetry plugin), Tesla insights, testing
 - [Minh Ton](https://minh-ton.github.io): many macOS insights, testing
-- [moosethegoose2213](https://moosethegoose2213.github.io) (ASentientHedgehog): TeraScale 2 and QuartzCore insights, testing
+- [moosethegoose2213](https://moosethegoose2213.github.io) (ASentientHedgehog): TeraScale 2 and QuartzCore insights, keyboard backlight fix, testing
 - [parrotgeek1](https://parrotgeek.com): many macOS and graphics insights regarding Tesla, TeraScale 2, SIP, OpenGL and more
-- [EduCovas](https://github.com/educovas): Safari Extensions, WebKit, and QuartzCore insights, testing
+- [EduCovas](https://github.com/educovas): Safari Extensions, WebKit, QuartzCore, and DisplayLink insights, testing
 - [Syncretic](https://forums.macrumors.com/members/syncretic.1173816/): [MonteRand](https://forums.macrumors.com/threads/monterand-probably-the-start-of-an-ongoing-saga.2320479/)
 - [Acidanthera](https://github.com/acidanthera): aftermarket SSD hibernation patch
 - [Julian Fairfax](https://julianfairfax.gitlab.io): macOS insights, testing
@@ -25,6 +25,10 @@ Run `Install.tool` to prepare patches for a given machine:
 Select `reveal` to show the output in Finder. Other modes are unsupported; see [OCLP](https://dortania.github.io/OpenCore-Legacy-Patcher/) for all practical uses.
 
 # changes
+
+## 2021-11-26
+- update DisplayLink hacks (thanks EduCovas!)
+- support Big Sur
 
 ## 2021-11-16
 - implement basic plugin functionality (place dylibs in `/etc/SkyLightPlugins`, append lines `<target path or *> : <dylib name>` to `List.txt`)
@@ -108,12 +112,14 @@ Changes since last non-GitHub release.
 # todo
 Roughly ordered by priority. Also see [here](https://github.com/dortania/OpenCore-Legacy-Patcher/issues/108#issuecomment-810634088).
 
-- fix the blur fix mouse events problem (workaround: temporarily blacklisted affected apps)
-- investigate Safari freezing again (workaround: disable `WebKit::TiledCoreAnimationDrawingArea::invalidateRenderingUpdateRunLoopObserver()`)
 - fix Catalyst app scrolling
+- investigate Safari freezing again (workaround: disable `WebKit::TiledCoreAnimationDrawingArea::invalidateRenderingUpdateRunLoopObserver()`)
+- fix blur fix mouse events problem (workaround: temporarily blacklisted affected apps)
+- fix blur fix lag
+- fix "Cycle Through Windows"
+- fix "Swipe Between Pages"
 - automatically handle TeraScale 2 colors (workaround: set "millions" in SwitchResX)
 - fix VNC on TeraScale 2
-- check "swipe between pages"
 - support Ironlake
 - fix CALayer corner radii (workaround: downgrade QuartzCore to Big Sur version)
 - investigate slow compositing in all browsers
@@ -125,7 +131,7 @@ Roughly ordered by priority. Also see [here](https://github.com/dortania/OpenCor
 - investigate space switching notifications
 - fix Photo Booth (workaround: downgrade to Big Sur version)
 - use `com.apple.Boot.plist` for boot-args
-- fix keyboard backlight (workaround: use Lab Tick)
+- fix keyboard backlight (workaround: use Lab Tick or manually load `TouchBarServer`)
 - automatically color menu bar text (workaround: `defaults write -g ASB_DarkMenuBar -bool true`)
 - fix Control Center sliders
 - fix hardware cursor
@@ -133,3 +139,4 @@ Roughly ordered by priority. Also see [here](https://github.com/dortania/OpenCor
 - implement Screen Time locking
 - fix full-screen transition
 - fix Migration Assistant
+- fix "Move to Display"

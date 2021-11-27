@@ -13,13 +13,17 @@ runTask "PatchTesla"
 runTask "PatchSkyLight"
 runTask "PatchCoreDisplay"
 runTask "PatchIOSurface"
-runTask "PatchWeb"
+
+if test "$major" = "12"
+then
+	runTask "PatchWeb"
+	runTask "PatchBluetooth"
+	runTask "PatchKernel"
+	runTask "PatchLPM"
+fi
 
 runTask "PatchWifi"
-runTask "PatchBluetooth"
 runTask "PatchHibernate"
-runTask "PatchKernel"
-runTask "PatchLPM"
 
 runTask "BuildWrappers"
 

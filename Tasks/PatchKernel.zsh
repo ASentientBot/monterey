@@ -1,5 +1,10 @@
 # MonteRand
 
+# not needed in 12.1 DP2+
+cp "Current/Payload/System/Library/Kernels/kernel" .
+cp "Current/Zip/AssetData/boot/System/Library/KernelCollections/BootKernelExtensions.kc" .
+exit 0
+
 "./Binpatcher" "Current/Payload/System/Library/Kernels/kernel" "kernel" '
 symbol _work_interval_port_type_render_server
 forward 0x0fc7f173fb21f139d173f589c9488b94cdd0fdffff

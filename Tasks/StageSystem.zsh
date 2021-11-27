@@ -63,29 +63,32 @@ then
 	mkdir -p "$ahci"
 	cp "IOAHCIBlockStorage" "$ahci"
 
-	mkdir -p "$overlay/usr/sbin"
-	cp "bluetoothd" "BlueTool" "$overlay/usr/sbin"
-
 	cp -R "10.14.3/Payload/System/Library/PrivateFrameworks/GPUSupport.framework" "$privateFrameworks"
 
 	cp "Wrapped/Zoe/IOSurface" "Wrapped/Zoe/IOSurfaceOld.dylib" "$frameworks/IOSurface.framework/Versions/A"
 
-	# TODO: check needed on Cass2
-	webkit="$overlay/System/Library/Frameworks/WebKit.framework/Versions/A/XPCServices"
-	mkdir -p "$webkit"
-	cp -R "com.apple.WebKit.WebContent.xpc" "$webkit"
+	if test "$major" = "12"
+	then
+		mkdir -p "$overlay/usr/sbin"
+		cp "bluetoothd" "BlueTool" "$overlay/usr/sbin"
 
-	kernels="$overlay/System/Library/Kernels"
-	mkdir "$kernels"
-	cp "kernel" "$kernels"
+		# TODO: check needed on Cass2
+		webkit="$overlay/System/Library/Frameworks/WebKit.framework/Versions/A/XPCServices"
+		mkdir -p "$webkit"
+		cp -R "com.apple.WebKit.WebContent.xpc" "$webkit"
 
-	iokit="$overlay/System/Library/Frameworks/IOKit.framework/Versions/A"
-	mkdir -p "$iokit"
-	cp "IOKit" "$iokit"
+		kernels="$overlay/System/Library/Kernels"
+		mkdir "$kernels"
+		cp "kernel" "$kernels"
 
-	powerd="$overlay/System/Library/CoreServices/powerd.bundle"
-	mkdir -p "$powerd"
-	cp "powerd" "$powerd"
+		iokit="$overlay/System/Library/Frameworks/IOKit.framework/Versions/A"
+		mkdir -p "$iokit"
+		cp "IOKit" "$iokit"
+
+		powerd="$overlay/System/Library/CoreServices/powerd.bundle"
+		mkdir -p "$powerd"
+		cp "powerd" "$powerd"
+	fi
 
 elif test "$target" = "cass2"
 then

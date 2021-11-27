@@ -87,3 +87,11 @@ void CoreDockGetOrientationAndPinning(unsigned long* orientationOut,unsigned lon
 +(instancetype)contextWithCGSConnection:(unsigned int)edx_connectionID options:(NSDictionary*)rcx_options;
 
 @end
+
+// IOKit
+
+#if MAJOR == 11
+
+#define kIOMainPortDefault kIOMasterPortDefault
+
+#endif
