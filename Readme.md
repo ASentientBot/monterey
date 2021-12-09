@@ -26,6 +26,9 @@ Select `reveal` to show the output in Finder. Other modes are unsupported; see [
 
 # changes
 
+## 2021-12-9
+- plugins v2 (now in `/Library/Application Support/SkyLightPlugins` to workaround sandbox, target paths read from `<dylib name>.txt` for easier management)
+
 ## 2021-11-26
 - update DisplayLink hacks (thanks EduCovas!)
 - support Big Sur
@@ -113,7 +116,6 @@ Changes since last non-GitHub release.
 Roughly ordered by priority. Also see [here](https://github.com/dortania/OpenCore-Legacy-Patcher/issues/108#issuecomment-810634088).
 
 - fix Catalyst app scrolling
-- investigate Safari freezing again (workaround: disable `WebKit::TiledCoreAnimationDrawingArea::invalidateRenderingUpdateRunLoopObserver()`)
 - fix blur fix mouse events problem (workaround: temporarily blacklisted affected apps)
 - fix blur fix lag
 - fix "Cycle Through Windows"

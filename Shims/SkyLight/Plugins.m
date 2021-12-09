@@ -1,53 +1,79 @@
-const NSString* PLUGIN_PATH=@"/etc/SkyLightPlugins";
-const NSString* PLUGIN_LIST_NAME=@"List.txt";
+// might as well take advantage of loading in every graphical process!
+
+const NSString* PLUGIN_PATH=@"/Library/Application Support/SkyLightPlugins";
+
+// using NSFileManager in early boot causes a hang
+
+NSArray<NSString*>* listFolderEarlyBoot(NSString* path)
+{
+	DIR* folder=opendir(path.UTF8String);
+	if(!folder)
+	{
+		return nil;
+	}
+	
+	NSMutableArray<NSString*>* files=NSMutableArray.alloc.init;
+	while(true)
+	{
+		struct dirent* file=readdir(folder);
+		if(!file)
+		{
+			break;
+		}
+		
+		NSString* name=[NSString stringWithUTF8String:file->d_name];
+		[files addObject:name];
+	}
+	
+	closedir(folder);
+	
+	return files.autorelease;
+}
 
 void pluginsSetup()
 {
-	NSString* listPath=[PLUGIN_PATH stringByAppendingPathComponent:(NSString*)PLUGIN_LIST_NAME];
-	NSString* list=[NSString stringWithContentsOfFile:listPath encoding:NSUTF8StringEncoding error:nil];
-	
-	if(!list)
+	NSArray<NSString*>* files=listFolderEarlyBoot((NSString*)PLUGIN_PATH);
+	if(!files)
 	{
 		return;
 	}
 	
-	// TODO: dumb, but logging in early boot causes a hang
-	BOOL shouldLog=getpid()>200;
-	
 	NSString* process=NSProcessInfo.processInfo.arguments[0];
 	
-	NSArray<NSString*>* lines=[list componentsSeparatedByCharactersInSet:NSCharacterSet.newlineCharacterSet];
-	for(NSString* line in lines)
+	for(NSString* file in files)
 	{
-		NSArray<NSString*>* bits=[line componentsSeparatedByString:@":"];
-		if(bits.count!=2)
+		if(![file.pathExtension isEqualToString:@"txt"])
 		{
 			continue;
 		}
 		
-		NSString* target=[bits[0] stringByTrimmingCharactersInSet:NSCharacterSet.whitespaceCharacterSet];
-		NSString* dylib=[bits[1] stringByTrimmingCharactersInSet:NSCharacterSet.whitespaceCharacterSet];
-		
-		if([target isEqualToString:@"*"]||[target isEqualToString:process])
+		NSString* infoPath=[PLUGIN_PATH stringByAppendingPathComponent:file];
+		NSString* infoString=[NSString stringWithContentsOfFile:infoPath encoding:NSUTF8StringEncoding error:nil];
+		if(!infoString)
 		{
-			if(shouldLog)
+			continue;
+		}
+		
+		NSArray<NSString*>* infoLines=[infoString componentsSeparatedByCharactersInSet:NSCharacterSet.newlineCharacterSet];
+		if(![infoLines containsObject:@"*"]&&![infoLines containsObject:process])
+		{
+			continue;
+		}
+		
+		NSString* dylibName=[file.stringByDeletingPathExtension stringByAppendingPathExtension:@"dylib"];
+		NSString* dylibPath=[PLUGIN_PATH stringByAppendingPathComponent:dylibName];
+		void* handle=dlopen(dylibPath.UTF8String,RTLD_NOW);
+		
+		// logging in early boot causes a hang
+		if(!earlyBoot)
+		{
+			if(handle)
 			{
-				trace(@"matched \"%@\" : \"%@\", loading...",target,dylib);
+				trace(@"plugin: loaded %@",dylibName);
 			}
-			
-			NSString* dylibPath=[PLUGIN_PATH stringByAppendingPathComponent:dylib];
-			void* handle=dlopen(dylibPath.UTF8String,RTLD_NOW);
-			
-			if(shouldLog)
+			else
 			{
-				if(handle)
-				{
-					trace(@"...success");
-				}
-				else
-				{
-					trace(@"...error (%s)",dlerror());
-				}
+				trace(@"plugin: %s",dlerror());
 			}
 		}
 	}

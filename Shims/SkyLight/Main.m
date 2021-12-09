@@ -1,7 +1,10 @@
 @import QuartzCore;
 @import Darwin.POSIX.dlfcn;
+@import Darwin.POSIX.dirent;
 
 #import "Utils.h"
+
+BOOL earlyBoot;
 
 #import "Extern.h"
 
@@ -33,7 +36,9 @@
 
 +(void)load
 {
-	if(getpid()<100&&[NSProcessInfo.processInfo.arguments[0] isEqualToString:@"/usr/sbin/kextcache"])
+	earlyBoot=getpid()<200;
+	
+	if(earlyBoot&&[NSProcessInfo.processInfo.arguments[0] isEqualToString:@"/usr/sbin/kextcache"])
 	{
 		trace(@"Zoe <3");
 	}
