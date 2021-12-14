@@ -77,9 +77,9 @@ then
 		mkdir -p "$webkit"
 		cp -R "com.apple.WebKit.WebContent.xpc" "$webkit"
 
-		kernels="$overlay/System/Library/Kernels"
-		mkdir "$kernels"
-		cp "kernel" "$kernels"
+#		kernels="$overlay/System/Library/Kernels"
+#		mkdir "$kernels"
+#		cp "kernel" "$kernels"
 
 		iokit="$overlay/System/Library/Frameworks/IOKit.framework/Versions/A"
 		mkdir -p "$iokit"

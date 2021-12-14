@@ -17,3 +17,11 @@ cp -R "Current/Payload/System/Library/Frameworks/KernelManagement.framework" "$o
 cp "ffffffff.efi" "$overlay"
 
 cp -R "SystemOverlay" "$overlay"
+
+if test "$target" = "null"
+then
+	touch "$overlay/Delete.txt"
+else
+	# TODO: based on old RamdiskFakeReboot.bash, may have unnecessary entries
+	cp "$code/Payloads/NonMetalDelete.txt" "$overlay/Delete.txt"
+fi

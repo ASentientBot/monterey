@@ -2,24 +2,19 @@
 
 set -e
 
-source=/SystemOverlay
+source="/SystemOverlay"
 target="/mnt1"
 preboot="/mnt9"
 
-PATH+=:"$target/bin:$target/usr/bin:$target/usr/sbin/"
+PATH+=:"$target/bin:$target/usr/bin:$target/usr/sbin/:$target/usr/libexed"
 
 rm -rf "$target/System/Library/UserEventPlugins/com.apple.telemetry.plugin"
 
-# TODO: stop doing this
 extensions="$target/System/Library/Extensions"
-rm -rf "$extensions/IOAcceleratorFamily2.kext"
-rm -rf "$extensions/IOGPUFamily.kext"
-rm -rf "$extensions/AMDRadeonX"*".kext"
-rm -rf "$extensions/AppleIntel"*"Graphics"*".kext"
-rm -rf "$extensions/AppleIntelFramebuffer"*".kext"
-rm -rf "$extensions/AppleParavirtGPU.kext"
-rm -rf "$extensions/GeForce.kext"
-rm -rf "$extensions/AppleCameraInterface.kext"
+while read kext
+do
+	rm -rf "$extensions/$kext"
+done < "/Delete.txt"
 
 set +e
 
@@ -34,9 +29,14 @@ unset DYLD_SHARED_REGION
 
 set -e
 
-# TODO: BootThing replacement
+# TODO: this is unreliable
 long="$(ls -t "$preboot" | head -1)"
+
 cp "/ffffffff.efi" "$preboot/$long/System/Library/CoreServices/boot.efi"
-nvram boot-args='-no_compat_check amfi_get_out_of_my_way=1 -nokcmismatchpanic keepsyms=1 -v bcom.platform-check=0 ASB_MadeItToRamdiskFakeReboot'
+
+args='-no_compat_check amfi_get_out_of_my_way=1 -nokcmismatchpanic keepsyms=1 -v bcom.platform-check=0 ASB_MadeItToRamdiskFakeReboot'
+nvram boot-args="$args"
+plist="$preboot/$long/Library/Preferences/SystemConfiguration/com.apple.Boot.plist"
+PlistBuddy "$plist" -c "Set 'Kernel Flags' $args"
 
 /RealReboot

@@ -131,7 +131,8 @@ Roughly ordered by priority. Also see [here](https://github.com/dortania/OpenCor
 - investigate Maps crash
 - rewrite Glyphs
 - investigate space switching notifications
-- fix Photo Booth (workaround: downgrade to Big Sur version)
+- fix Photo Booth (workaround: use Big Sur version)
+- fix Books (workaround: use Big Sur version)
 - use `com.apple.Boot.plist` for boot-args
 - fix keyboard backlight (workaround: use Lab Tick or manually load `TouchBarServer`)
 - automatically color menu bar text (workaround: `defaults write -g ASB_DarkMenuBar -bool true`)
