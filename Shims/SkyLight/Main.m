@@ -18,6 +18,7 @@ BOOL earlyBoot;
 #import "Hidd.m"
 #import "MenuBar.m"
 #import "Occlusion.m"
+#import "Rim.m"
 #import "SecureCursor.m"
 #import "Scroll.m"
 #import "Session.m"

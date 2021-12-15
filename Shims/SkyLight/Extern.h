@@ -12,6 +12,8 @@ unsigned int SLSShapeWindowInWindowCoordinate$(unsigned int edi_connectionID,uns
 
 CFMachPortRef SLSEventTapCreat$(unsigned int edi_location,NSString* rsi_priority,unsigned int edx_placement,unsigned int ecx_options,unsigned long r8_eventsOfInterest,void* r9_callback,void* stack_info);
 
+void SLSWindowSetShadowPropertie$(unsigned int edi_windowID,NSDictionary* rsi_properties);
+
 // SkyLight
 
 unsigned int SLSMainConnectionID();

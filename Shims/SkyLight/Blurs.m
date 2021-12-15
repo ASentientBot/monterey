@@ -13,7 +13,7 @@ void fake_setScale(id self,SEL selector,double value)
 
 BOOL blurBetaValue;
 dispatch_once_t blurBetaOnce;
-double blurBeta()
+BOOL blurBeta()
 {
 	dispatch_once(&blurBetaOnce,^()
 	{

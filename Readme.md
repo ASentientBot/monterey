@@ -26,6 +26,9 @@ Select `reveal` to show the output in Finder. Other modes are unsupported; see [
 
 # changes
 
+## 2021-12-15
+- simulate Metal window borders in dark mode (enable with `defaults write -g ASB_RimBeta -bool true`, tweak brightness with `defaults write -g ASB_RimOverride -float <value from 0 to 1, 0.2 default>`)
+
 ## 2021-12-14
 - properly disable inactive blurs for better multitasking performance
 

@@ -1,5 +1,7 @@
 // window backing surfaces
 
+const BOOL FAKE_RIM=true;
+
 @interface ContextWrapper:NSObject
 
 @property unsigned int connectionID;
@@ -107,7 +109,7 @@ dispatch_once_t defenestratorOnce;
 
 +(void)activateHandler:(NSNotification*)notification
 {
-	trace(@"ContextWrapper activateHandler: %@",notification);
+	// trace(@"ContextWrapper activateHandler: %@",notification);
 	
 	ContextWrapper* wrapper=wrapperForWindow(getNSWindowID(notification.object));
 	if(wrapper)
@@ -118,7 +120,7 @@ dispatch_once_t defenestratorOnce;
 
 +(void)deactivateHandler:(NSNotification*)notification
 {
-	trace(@"ContextWrapper deactivateHandler: %@",notification);
+	// trace(@"ContextWrapper deactivateHandler: %@",notification);
 	
 	ContextWrapper* wrapper=wrapperForWindow(getNSWindowID(notification.object));
 	if(wrapper)
@@ -129,7 +131,7 @@ dispatch_once_t defenestratorOnce;
 
 +(void)closeHandler:(NSNotification*)notification
 {
-	trace(@"ContextWrapper closeHandler: %@",notification);
+	// trace(@"ContextWrapper closeHandler: %@",notification);
 	
 	[contextWrappers removeObjectForKey:[NSNumber numberWithInt:getNSWindowID(notification.object)]];
 }

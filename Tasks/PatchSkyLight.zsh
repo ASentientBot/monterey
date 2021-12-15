@@ -1,6 +1,6 @@
 lipo -thin x86_64 "10.14.6/Payload/System/Library/PrivateFrameworks/SkyLight.framework/Versions/A/SkyLight" -output "SkyLight"
 
-./Renamer "SkyLight" "SkyLight" _SLSNewWindowWithOpaqueShape _SLSSetMenuBars _SLSCopyDevicesDictionary _SLSCopyCoordinatedDistributedNotificationContinuationBlock _SLSShapeWindowInWindowCoordinates _SLSEventTapCreate
+./Renamer "SkyLight" "SkyLight" _SLSNewWindowWithOpaqueShape _SLSSetMenuBars _SLSCopyDevicesDictionary _SLSCopyCoordinatedDistributedNotificationContinuationBlock _SLSShapeWindowInWindowCoordinates _SLSEventTapCreate _SLSWindowSetShadowProperties
 
 ./Binpatcher "SkyLight" "SkyLight" '
 # the transparency hack
