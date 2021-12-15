@@ -1,5 +1,3 @@
-// TODO: everything
-
 // transparent grey blurs
 
 void (*real_setScale)(id,SEL,double);
@@ -20,6 +18,8 @@ double blurBeta()
 	dispatch_once(&blurBetaOnce,^()
 	{
 		blurBetaValue=[NSUserDefaults.standardUserDefaults boolForKey:@"ASB_BlurBeta"];
+		
+		// TODO: this
 		
 		if(blurBetaValue&&[@[@"/System/Library/CoreServices/screencaptureui.app/Contents/MacOS/screencaptureui",@"/System/Library/CoreServices/ControlCenter.app/Contents/MacOS/ControlCenter",@"/System/Library/CoreServices/NotificationCenter.app/Contents/MacOS/NotificationCenter"] containsObject:NSProcessInfo.processInfo.arguments[0]])
 		{
@@ -48,6 +48,14 @@ double blurOverride()
 	return blurOverrideValue;
 }
 
+// TODO: another dumb not-linking-AppKit workaround
+
+@interface CAFilterLite:NSObject
+
+@property(assign) NSString* name;
+
+@end
+
 void (*real_setFilters)(id,SEL,NSArray*);
 
 void fake_setFilters(id self,SEL selector,NSArray* filters)
@@ -60,7 +68,7 @@ void fake_setFilters(id self,SEL selector,NSArray* filters)
 	
 	NSMutableArray* newFilters=NSMutableArray.alloc.init;
 	
-	for(NSObject* filter in filters)
+	for(CAFilterLite* filter in filters)
 	{
 		NSString* name=[filter name];
 		
@@ -70,6 +78,8 @@ void fake_setFilters(id self,SEL selector,NSArray* filters)
 		{
 			continue;
 		}
+		
+		// TODO: changing gaussianblur2 radius doesn't seem to work
 		
 		if([name isEqualToString:@"gaussianBlur"]||[name isEqualToString:@"gaussianBlur2"])
 		{

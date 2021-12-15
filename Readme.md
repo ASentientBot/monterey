@@ -26,6 +26,9 @@ Select `reveal` to show the output in Finder. Other modes are unsupported; see [
 
 # changes
 
+## 2021-12-14
+- properly disable inactive blurs for better multitasking performance
+
 ## 2021-12-9
 - plugins v2 (now in `/Library/Application Support/SkyLightPlugins` to workaround sandbox, target paths read from `<dylib name>.txt` for easier management)
 

@@ -17,15 +17,49 @@ ContextWrapper* wrapperForWindow(unsigned int windowID)
 	return contextWrappers[[NSNumber numberWithInt:windowID]];
 }
 
+// TODO: dumb but i can't link AppKit
+
+@interface NSWindowLite:NSObject
+
+@property(assign) unsigned int windowNumber;
+
+@end
+
+unsigned int getNSWindowID(NSWindowLite* window)
+{
+	return window.windowNumber;
+}
+
 void defenestratorSetup()
 {
 	contextWrappers=NSMutableDictionary.alloc.init;
 }
 
+dispatch_once_t defenestratorOnce;
+
 @implementation ContextWrapper
 
 -(instancetype)initWithConnectionID:(unsigned int)connectionID windowID:(unsigned int)windowID context:(CAContext*)context
 {
+	dispatch_once(&defenestratorOnce,^()
+	{
+		NSNotificationCenter* center=NSNotificationCenter.defaultCenter;
+		
+		// TODO: these aren't sent for menu bar dropdowns
+		
+		[center addObserver:self.class selector:@selector(closeHandler:) name:@"NSWindowWillCloseNotification" object:nil];
+		
+		if(!blurBeta())
+		{
+			return;
+		}
+		
+		[center addObserver:self.class selector:@selector(activateHandler:) name:@"NSWindowDidBecomeMainNotification" object:nil];
+		[center addObserver:self.class selector:@selector(activateHandler:) name:@"NSWindowDidBecomeKeyNotification" object:nil];
+		[center addObserver:self.class selector:@selector(deactivateHandler:) name:@"NSWindowDidResignMainNotification" object:nil];
+		[center addObserver:self.class selector:@selector(deactivateHandler:) name:@"NSWindowDidResignKeyNotification" object:nil];
+	});
+	
 	trace(@"ContextWrapper init %d %d %@",connectionID,windowID,context);
 	
 	_connectionID=connectionID;
@@ -71,7 +105,34 @@ void defenestratorSetup()
 	}
 }
 
-// TODO: not called when a window is destroyed, only when context is overwritten
++(void)activateHandler:(NSNotification*)notification
+{
+	trace(@"ContextWrapper activateHandler: %@",notification);
+	
+	ContextWrapper* wrapper=wrapperForWindow(getNSWindowID(notification.object));
+	if(wrapper)
+	{
+		SLSWindowBackdropActivate(wrapper.backdrop);
+	}
+}
+
++(void)deactivateHandler:(NSNotification*)notification
+{
+	trace(@"ContextWrapper deactivateHandler: %@",notification);
+	
+	ContextWrapper* wrapper=wrapperForWindow(getNSWindowID(notification.object));
+	if(wrapper)
+	{
+		SLSWindowBackdropDeactivate(wrapper.backdrop);
+	}
+}
+
++(void)closeHandler:(NSNotification*)notification
+{
+	trace(@"ContextWrapper closeHandler: %@",notification);
+	
+	[contextWrappers removeObjectForKey:[NSNumber numberWithInt:getNSWindowID(notification.object)]];
+}
 
 -(void)dealloc
 {
