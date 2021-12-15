@@ -133,7 +133,11 @@ dispatch_once_t defenestratorOnce;
 {
 	// trace(@"ContextWrapper closeHandler: %@",notification);
 	
-	[contextWrappers removeObjectForKey:[NSNumber numberWithInt:getNSWindowID(notification.object)]];
+	// TODO: sometimes a window (e.g. QuickLook) is reused after being closed
+	// so we need to detect when the window is permanently destroyed
+	// just disabled for now, but this leaks resources...
+	
+	// [contextWrappers removeObjectForKey:[NSNumber numberWithInt:getNSWindowID(notification.object)]];
 }
 
 -(void)dealloc
