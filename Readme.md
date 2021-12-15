@@ -121,9 +121,11 @@ Changes since last non-GitHub release.
 # todo
 Roughly ordered by priority. Also see [here](https://github.com/dortania/OpenCore-Legacy-Patcher/issues/108#issuecomment-810634088).
 
+- Safari frozen HTML canvas (workaround: uncheck `GPU Process: Canvas Rendering` in Develop menu)
 - fix Catalyst app scrolling
 - fix blur fix mouse events problem (workaround: temporarily blacklisted affected apps)
-- fix blur fix lag
+- improve blur fix performance
+- fix remaining blur flickering issues
 - fix "Cycle Through Windows"
 - fix "Swipe Between Pages"
 - automatically handle TeraScale 2 colors (workaround: set "millions" in SwitchResX)
@@ -139,7 +141,6 @@ Roughly ordered by priority. Also see [here](https://github.com/dortania/OpenCor
 - investigate space switching notifications
 - fix Photo Booth (workaround: use Big Sur version)
 - fix Books (workaround: use Big Sur version)
-- use `com.apple.Boot.plist` for boot-args
 - fix keyboard backlight (workaround: use Lab Tick or manually load `TouchBarServer`)
 - automatically color menu bar text (workaround: `defaults write -g ASB_DarkMenuBar -bool true`)
 - fix Control Center sliders
