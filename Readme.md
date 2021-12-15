@@ -28,6 +28,7 @@ Select `reveal` to show the output in Finder. Other modes are unsupported; see [
 
 ## 2021-12-15
 - simulate Metal window borders in dark mode (enable with `defaults write -g ASB_RimBeta -bool true`, tweak brightness with `defaults write -g ASB_RimOverride -float <value from 0 to 1, 0.2 default>`)
+- re-add Big Sur Photos hack
 
 ## 2021-12-14
 - properly disable inactive blurs for better multitasking performance
@@ -121,7 +122,8 @@ Changes since last non-GitHub release.
 # todo
 Roughly ordered by priority. Also see [here](https://github.com/dortania/OpenCore-Legacy-Patcher/issues/108#issuecomment-810634088).
 
-- Safari frozen HTML canvas (workaround: uncheck `GPU Process: Canvas Rendering` in Develop menu)
+- fix Safari frozen HTML canvas (workaround: uncheck `GPU Process: Canvas Rendering` in Develop menu)
+- fix graphical bugs with fake window rims
 - fix Catalyst app scrolling
 - fix blur fix mouse events problem (workaround: temporarily blacklisted affected apps)
 - improve blur fix performance

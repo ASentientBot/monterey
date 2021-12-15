@@ -18,6 +18,7 @@ BOOL earlyBoot;
 #import "Hidd.m"
 #import "MenuBar.m"
 #import "Occlusion.m"
+#import "Photos.m"
 #import "Rim.m"
 #import "SecureCursor.m"
 #import "Scroll.m"
@@ -57,6 +58,10 @@ BOOL earlyBoot;
 	ts2Setup();
 	
 	pluginsSetup();
+	
+#if MAJOR == 11
+	photosSetup();
+#endif
 }
 
 @end
