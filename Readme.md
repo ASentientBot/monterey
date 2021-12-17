@@ -130,6 +130,7 @@ Roughly ordered by priority. Also see [here](https://github.com/dortania/OpenCor
 - fix remaining blur flickering issues
 - fix "Cycle Through Windows"
 - fix "Swipe Between Pages"
+- investigate rare binaries not seeing re-exported symbols (Dropbox-specific workaround: [SkyLight plugin](https://github.com/ASentientBot/monterey/releases/download/2021-12-17/throw.this.in.the.SkyLight.plugins.folder.to.fix.Dropbox.in.a.really.non.ideal.way.zip))
 - automatically handle TeraScale 2 colors (workaround: set "millions" in SwitchResX)
 - fix VNC on TeraScale 2
 - support Ironlake

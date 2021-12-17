@@ -46,24 +46,49 @@ BOOL hasShadow(NSDictionary* properties)
 	return false;
 }
 
+void addFakeRim(unsigned int windowID)
+{
+	double lightness=RIM_DEFAULT;
+	if(rimOverride()>0&&rimOverride()<=1)
+	{
+		lightness=rimOverride();
+	}
+	
+	CALayer* layer=wrapperForWindow(windowID).context.layer;
+	layer.borderWidth=1;
+	CGColorRef color=CGColorCreateGenericRGB(lightness,lightness,lightness,1.0);
+	layer.borderColor=color;
+	CFRelease(color);
+}
+
+void removeFakeRim(unsigned int windowID)
+{
+	CALayer* layer=wrapperForWindow(windowID).context.layer;
+	layer.borderWidth=0;
+}
+
 void SLSWindowSetShadowProperties(unsigned int edi_windowID,NSDictionary* rsi_properties)
 {
-	trace(@"SLSWindowSetShadowProperties in %d %@",edi_windowID,rsi_properties);
+	// trace(@"SLSWindowSetShadowProperties in %d %@",edi_windowID,rsi_properties);
 	
 	if(!rimBeta()||!hasShadow(rsi_properties))
 	{
-		trace(@"SLSWindowSetShadowProperties passthrough");
+		// trace(@"SLSWindowSetShadowProperties passthrough");
+		
+		if(rimBeta())
+		{
+			removeFakeRim(edi_windowID);
+		}
 		
 		SLSWindowSetShadowPropertie$(edi_windowID,rsi_properties);
 		return;
 	}
 	
-	trace(@"SLSWindowSetShadowProperties override");
-	
-	// hide rim
+	// trace(@"SLSWindowSetShadowProperties override");
 	
 	NSMutableDictionary* newProperties=rsi_properties.mutableCopy;
 	
+	// hide rim
 	newProperties[@"com.apple.WindowShadowRimDensityActive"]=@0;
 	newProperties[@"com.apple.WindowShadowRimDensityInactive"]=@0;
 	
@@ -71,17 +96,5 @@ void SLSWindowSetShadowProperties(unsigned int edi_windowID,NSDictionary* rsi_pr
 	
 	newProperties.release;
 	
-	// fake rim
-	
-	double lightness=RIM_DEFAULT;
-	if(rimOverride()>0&&rimOverride()<=1)
-	{
-		lightness=rimOverride();
-	}
-	
-	CALayer* layer=wrapperForWindow(edi_windowID).context.layer;
-	layer.borderWidth=1;
-	CGColorRef color=CGColorCreateGenericRGB(lightness,lightness,lightness,1.0);
-	layer.borderColor=color;
-	CFRelease(color);
+	addFakeRim(edi_windowID);
 }
