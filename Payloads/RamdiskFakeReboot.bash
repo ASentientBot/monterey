@@ -6,7 +6,7 @@ source="/SystemOverlay"
 target="/mnt1"
 preboot="/mnt9"
 
-PATH+=:"$target/bin:$target/usr/bin:$target/usr/sbin/:$target/usr/libexed"
+PATH+=:"$target/bin:$target/usr/bin:$target/usr/sbin:$target/usr/libexec"
 
 rm -rf "$target/System/Library/UserEventPlugins/com.apple.telemetry.plugin"
 

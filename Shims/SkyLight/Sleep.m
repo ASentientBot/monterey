@@ -71,11 +71,8 @@ unsigned int SLSDisplayManagerRegisterPowerStateNotification(dispatch_queue_t rd
 		
 		unsigned int connection=SLSMainConnectionID();
 		
-		// kCGSDisplayWillSleep
-		SLSRegisterConnectionNotifyProc(connection,displaySleepCallback,0x66,nil);
-		
-		// kCGSDisplayDidWake
-		SLSRegisterConnectionNotifyProc(connection,displayWakeCallback,0x67,nil);
+		SLSRegisterConnectionNotifyProc(connection,displaySleepCallback,kCGSDisplayWillSleep,nil);
+		SLSRegisterConnectionNotifyProc(connection,displayWakeCallback,kCGSDisplayDidWake,nil);
 	});
 	
 	// passed NULL by PowerChime

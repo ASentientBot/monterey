@@ -1,3 +1,5 @@
+#import "Notifications.h"
+
 // Renamer
 
 unsigned int SLSNewWindowWithOpaqueShap$(unsigned int edi_connectionID,unsigned int esi,char* rdx_region,char* rcx_region,unsigned int r8d,char* r9,unsigned long stack1_windowID,unsigned long stack2,double xmm0,double xmm1);

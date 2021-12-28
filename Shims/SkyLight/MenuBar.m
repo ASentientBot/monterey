@@ -231,10 +231,7 @@ NSNotificationCenter* SLSCoordinatedLocalNotificationCenter()
 	{
 		unsigned int connection=SLSMainConnectionID();
 		
-		// TODO: are these keys actually exported somewhere?
-		
-		// kCGSPackagesStatusBarSpaceChanged
-		SLSRegisterConnectionNotifyProc(connection,statusBarSpaceCallback,0x51c,nil);
+		SLSRegisterConnectionNotifyProc(connection,statusBarSpaceCallback,kCGSPackagesStatusBarSpaceChanged,nil);
 		
 		// not in WSLogStringForNotifyType
 		SLSRegisterConnectionNotifyProc(connection,menuBarRevealCallback,0x524,nil);
