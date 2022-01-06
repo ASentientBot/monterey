@@ -1,7 +1,5 @@
 // window backing surfaces
 
-const BOOL FAKE_RIM=true;
-
 @interface ContextWrapper:NSObject
 
 @property unsigned int connectionID;
@@ -83,28 +81,44 @@ dispatch_once_t defenestratorOnce;
 
 -(void)updateSurfaceBounds
 {
+	SLSSetSurfaceBounds(_connectionID,_windowID,_surfaceID,self.getBounds);
+	
+	if(blurBeta())
+	{
+		self.addBackdrop;
+	}
+}
+
+-(CGRect)getBounds
+{
 	CGRect bounds;
 	SLSGetWindowBounds(_connectionID,_windowID,&bounds);
-	
-	// trace(@"ContextWrapper updateSurfaceBounds %@",NSStringFromRect(bounds));
 	
 	bounds.origin.x=0;
 	bounds.origin.y=0;
 	
-	SLSSetSurfaceBounds(_connectionID,_windowID,_surfaceID,bounds);
-	
-	if(blurBeta())
+	return bounds;
+}
+
+-(void)removeBackdrop
+{
+	if(_backdrop)
 	{
-		if(_backdrop)
-		{
-			SLSWindowBackdropRelease(_backdrop);
-		}
-		
-		// TODO: why
-		bounds.size.width+=1;
-		
-		_backdrop=SLSWindowBackdropCreateWithLevelAndTintColor(_windowID,@"Mimic",@"Sover",0,NULL,bounds);
+		SLSWindowBackdropRelease(_backdrop);
+		_backdrop=NULL;
 	}
+}
+
+-(void)addBackdrop
+{
+	self.removeBackdrop;
+	
+	CGRect bounds=self.getBounds;
+	
+	// TODO: why
+	bounds.size.width+=1;
+	
+	_backdrop=SLSWindowBackdropCreateWithLevelAndTintColor(_windowID,@"Mimic",@"Sover",0,NULL,bounds);
 }
 
 +(void)activateHandler:(NSNotification*)notification
@@ -114,7 +128,10 @@ dispatch_once_t defenestratorOnce;
 	ContextWrapper* wrapper=wrapperForWindow(getNSWindowID(notification.object));
 	if(wrapper)
 	{
-		SLSWindowBackdropActivate(wrapper.backdrop);
+		// TODO
+		// SLSWindowBackdropActivate(wrapper.backdrop);
+		
+		wrapper.addBackdrop;
 	}
 }
 
@@ -125,7 +142,10 @@ dispatch_once_t defenestratorOnce;
 	ContextWrapper* wrapper=wrapperForWindow(getNSWindowID(notification.object));
 	if(wrapper)
 	{
-		SLSWindowBackdropDeactivate(wrapper.backdrop);
+		// TODO
+		// SLSWindowBackdropDeactivate(wrapper.backdrop);
+		
+		wrapper.removeBackdrop;
 	}
 }
 
@@ -148,10 +168,7 @@ dispatch_once_t defenestratorOnce;
 	
 	_context.release;
 	
-	if(_backdrop)
-	{
-		SLSWindowBackdropRelease(_backdrop);
-	}
+	self.removeBackdrop;
 	
 	super.dealloc;
 }

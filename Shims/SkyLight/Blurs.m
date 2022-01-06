@@ -79,10 +79,10 @@ void fake_setFilters(id self,SEL selector,NSArray* filters)
 			continue;
 		}
 		
-		// TODO: changing gaussianblur2 radius doesn't seem to work
-		
-		if([name isEqualToString:@"gaussianBlur"]||[name isEqualToString:@"gaussianBlur2"])
+		if([name isEqualToString:@"gaussianBlur"])
 		{
+			// TODO: doesn't seem to work in light mode Finder sidebar
+			
 			if(blurOverride()>0)
 			{
 				[filter setValue:[NSNumber numberWithDouble:blurOverride()] forKey:@"inputRadius"];

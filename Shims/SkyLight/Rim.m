@@ -54,6 +54,11 @@ void addFakeRim(unsigned int windowID)
 		lightness=rimOverride();
 	}
 	
+	if(rimOverride()<0)
+	{
+		return;
+	}
+	
 	CALayer* layer=wrapperForWindow(windowID).context.layer;
 	layer.borderWidth=1;
 	CGColorRef color=CGColorCreateGenericRGB(lightness,lightness,lightness,1.0);
