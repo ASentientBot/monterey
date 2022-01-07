@@ -37,6 +37,14 @@ void defenestratorSetup()
 
 dispatch_once_t defenestratorOnce;
 
+void closeHandler(unsigned int rdi_type,char* rsi_window,unsigned int rdx,id rcx_context)
+{
+	unsigned int windowID=*(unsigned int*)rsi_window;
+	trace(@"closeHandler %d",windowID);
+	
+	[contextWrappers removeObjectForKey:[NSNumber numberWithInt:windowID]];
+}
+
 @implementation ContextWrapper
 
 -(instancetype)initWithConnectionID:(unsigned int)connectionID windowID:(unsigned int)windowID context:(CAContext*)context
@@ -45,14 +53,14 @@ dispatch_once_t defenestratorOnce;
 	{
 		NSNotificationCenter* center=NSNotificationCenter.defaultCenter;
 		
-		// TODO: these aren't sent for menu bar dropdowns
-		
-		[center addObserver:self.class selector:@selector(closeHandler:) name:@"NSWindowWillCloseNotification" object:nil];
+		SLSRegisterConnectionNotifyProc(connectionID,closeHandler,kCGSWindowIsTerminated,NULL);
 		
 		if(!blurBeta())
 		{
 			return;
 		}
+		
+		// TODO: these aren't sent for menu bar dropdowns
 		
 		[center addObserver:self.class selector:@selector(activateHandler:) name:@"NSWindowDidBecomeMainNotification" object:nil];
 		[center addObserver:self.class selector:@selector(activateHandler:) name:@"NSWindowDidBecomeKeyNotification" object:nil];
@@ -75,6 +83,9 @@ dispatch_once_t defenestratorOnce;
 	_backdrop=NULL;
 	
 	self.updateSurfaceBounds;
+	
+	unsigned int windowIDCopy=windowID;
+	SLSRequestNotificationsForWindows(connectionID,&windowIDCopy,1);
 	
 	return self;
 }
@@ -126,13 +137,7 @@ dispatch_once_t defenestratorOnce;
 	// trace(@"ContextWrapper activateHandler: %@",notification);
 	
 	ContextWrapper* wrapper=wrapperForWindow(getNSWindowID(notification.object));
-	if(wrapper)
-	{
-		// TODO
-		// SLSWindowBackdropActivate(wrapper.backdrop);
-		
-		wrapper.addBackdrop;
-	}
+	wrapper.addBackdrop;
 }
 
 +(void)deactivateHandler:(NSNotification*)notification
@@ -140,24 +145,7 @@ dispatch_once_t defenestratorOnce;
 	// trace(@"ContextWrapper deactivateHandler: %@",notification);
 	
 	ContextWrapper* wrapper=wrapperForWindow(getNSWindowID(notification.object));
-	if(wrapper)
-	{
-		// TODO
-		// SLSWindowBackdropDeactivate(wrapper.backdrop);
-		
-		wrapper.removeBackdrop;
-	}
-}
-
-+(void)closeHandler:(NSNotification*)notification
-{
-	// trace(@"ContextWrapper closeHandler: %@",notification);
-	
-	// TODO: sometimes a window (e.g. QuickLook) is reused after being closed
-	// so we need to detect when the window is permanently destroyed
-	// just disabled for now, but this leaks resources...
-	
-	// [contextWrappers removeObjectForKey:[NSNumber numberWithInt:getNSWindowID(notification.object)]];
+	wrapper.removeBackdrop;
 }
 
 -(void)dealloc

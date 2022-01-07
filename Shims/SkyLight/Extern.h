@@ -32,7 +32,7 @@ unsigned int SLSGetWindowBounds(unsigned int edi_connectionID,unsigned int esi_w
 unsigned int SLSOrderWindow(unsigned int edi_connectionID,unsigned int esi,unsigned int edx,unsigned int ecx);
 unsigned int SLSOrderWindowList(unsigned int edi_connectionID,unsigned int* rsi_list,unsigned int* rdx_list,unsigned int* rcx_list,unsigned int r8d_count);
 
-unsigned int SLSRegisterConnectionNotifyProc(unsigned int edi_connectionID,void (*rdi_callback)(),unsigned int edx_type,id rcx);
+unsigned int SLSRegisterConnectionNotifyProc(unsigned int edi_connectionID,void (*rdi_callback)(),unsigned int edx_type,char* rcx_context);
 unsigned int SLSRequestNotificationsForWindows(unsigned int edi_connectionID,unsigned int* rsi_windowIDList,unsigned int edx_windowIDCount);
 
 unsigned int SLSGetDisplayList(unsigned int edi_maxCount,unsigned int* rsi_idsOut,unsigned int* rdx_countOut);

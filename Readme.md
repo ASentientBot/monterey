@@ -28,6 +28,7 @@ Select `reveal` to show the output in Finder. Other modes are unsupported; see [
 
 ## 2022-1-6
 - interpret negative `ASB_RimOverride` value as "hide legacy border but don't draw a fake one"
+- properly deallocate wrapper object on window termination
 
 ## 2021-12-15
 - simulate Metal window borders in dark mode (enable with `defaults write -g ASB_RimBeta -bool true`, tweak brightness with `defaults write -g ASB_RimOverride -float <value from 0 to 1, 0.2 default>`)
