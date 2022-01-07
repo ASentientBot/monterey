@@ -7,6 +7,9 @@
 @property unsigned int surfaceID;
 @property(assign) CAContext* context;
 @property(assign) char* backdrop;
+@property(assign) BOOL activeBlurs;
+
+-(void)updateBackdrop;
 
 @end
 
@@ -20,15 +23,16 @@ ContextWrapper* wrapperForWindow(unsigned int windowID)
 // TODO: dumb but i can't link AppKit
 
 @interface NSWindowLite:NSObject
-
 @property(assign) unsigned int windowNumber;
-
 @end
 
-unsigned int getNSWindowID(NSWindowLite* window)
-{
-	return window.windowNumber;
-}
+@interface NSVisualEffectViewLite:NSObject
+@property(assign) BOOL _shouldUseActiveAppearance;
+@property(assign) long blendingMode;
+@property(assign) NSWindowLite* window;
+@end
+
+#define NSVisualEffectBlendingModeBehindWindow 0
 
 void defenestratorSetup()
 {
@@ -40,9 +44,25 @@ dispatch_once_t defenestratorOnce;
 void closeHandler(unsigned int rdi_type,char* rsi_window,unsigned int rdx,id rcx_context)
 {
 	unsigned int windowID=*(unsigned int*)rsi_window;
-	trace(@"closeHandler %d",windowID);
 	
 	[contextWrappers removeObjectForKey:[NSNumber numberWithInt:windowID]];
+}
+
+void (*real__updateMaterialLayer)(NSVisualEffectViewLite* self,SEL selector);
+
+// TODO: extremely naive
+
+void fake__updateMaterialLayer(NSVisualEffectViewLite* self,SEL selector)
+{
+	if(self.blendingMode==NSVisualEffectBlendingModeBehindWindow)
+	{
+		unsigned int windowID=self.window.windowNumber;
+		ContextWrapper* wrapper=wrapperForWindow(windowID);
+		wrapper.activeBlurs=self._shouldUseActiveAppearance;
+		wrapper.updateBackdrop;
+	}
+	
+	real__updateMaterialLayer(self,selector);
 }
 
 @implementation ContextWrapper
@@ -60,12 +80,7 @@ void closeHandler(unsigned int rdi_type,char* rsi_window,unsigned int rdx,id rcx
 			return;
 		}
 		
-		// TODO: these aren't sent for menu bar dropdowns
-		
-		[center addObserver:self.class selector:@selector(activateHandler:) name:@"NSWindowDidBecomeMainNotification" object:nil];
-		[center addObserver:self.class selector:@selector(activateHandler:) name:@"NSWindowDidBecomeKeyNotification" object:nil];
-		[center addObserver:self.class selector:@selector(deactivateHandler:) name:@"NSWindowDidResignMainNotification" object:nil];
-		[center addObserver:self.class selector:@selector(deactivateHandler:) name:@"NSWindowDidResignKeyNotification" object:nil];
+		swizzleImp(@"NSVisualEffectView",@"_updateMaterialLayer",true,(IMP)fake__updateMaterialLayer,(IMP*)&real__updateMaterialLayer);
 	});
 	
 	trace(@"ContextWrapper init %d %d %@",connectionID,windowID,context);
@@ -74,13 +89,12 @@ void closeHandler(unsigned int rdi_type,char* rsi_window,unsigned int rdx,id rcx
 	_windowID=windowID;
 	_context=context.retain;
 	
-	unsigned int surfaceID;
-	SLSAddSurface(connectionID,windowID,&surfaceID);
-	SLSBindSurface(connectionID,windowID,surfaceID,4,0,context.contextId);
-	SLSOrderSurface(connectionID,windowID,surfaceID,1,0);
-	_surfaceID=surfaceID;
+	SLSAddSurface(connectionID,windowID,&_surfaceID);
+	SLSBindSurface(connectionID,windowID,_surfaceID,4,0,context.contextId);
+	SLSOrderSurface(connectionID,windowID,_surfaceID,1,0);
 	
 	_backdrop=NULL;
+	_activeBlurs=false;
 	
 	self.updateSurfaceBounds;
 	
@@ -96,7 +110,7 @@ void closeHandler(unsigned int rdi_type,char* rsi_window,unsigned int rdx,id rcx
 	
 	if(blurBeta())
 	{
-		self.addBackdrop;
+		self.updateBackdrop;
 	}
 }
 
@@ -120,9 +134,18 @@ void closeHandler(unsigned int rdi_type,char* rsi_window,unsigned int rdx,id rcx
 	}
 }
 
--(void)addBackdrop
+-(void)updateBackdrop
 {
+	trace(@"ContextWrapper updateBackdrop (activeBlurs %d)",_activeBlurs);
+	
+	// TODO: exit early if unchanged activeBlurs and bounds
+	
 	self.removeBackdrop;
+	
+	if(!_activeBlurs)
+	{
+		return;
+	}
 	
 	CGRect bounds=self.getBounds;
 	
@@ -132,27 +155,11 @@ void closeHandler(unsigned int rdi_type,char* rsi_window,unsigned int rdx,id rcx
 	_backdrop=SLSWindowBackdropCreateWithLevelAndTintColor(_windowID,@"Mimic",@"Sover",0,NULL,bounds);
 }
 
-+(void)activateHandler:(NSNotification*)notification
-{
-	// trace(@"ContextWrapper activateHandler: %@",notification);
-	
-	ContextWrapper* wrapper=wrapperForWindow(getNSWindowID(notification.object));
-	wrapper.addBackdrop;
-}
-
-+(void)deactivateHandler:(NSNotification*)notification
-{
-	// trace(@"ContextWrapper deactivateHandler: %@",notification);
-	
-	ContextWrapper* wrapper=wrapperForWindow(getNSWindowID(notification.object));
-	wrapper.removeBackdrop;
-}
-
 -(void)dealloc
 {
 	trace(@"ContextWrapper dealloc");
 	
-	// TODO: *Surface* calls are not undone
+	// TODO: do *Surface* calls need to be undone?
 	
 	_context.release;
 	
