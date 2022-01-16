@@ -33,13 +33,13 @@ function build
 
 	./Stubber "$oldIn" "$newIn" "$shimsIn" "$mainIn"
 	
-	clangCommon -dynamiclib -compatibility_version 1.0.0 -current_version 1.0.0 -install_name "$mainInstall" -Xlinker -reexport_library "$oldOut" -I "$code/Shims" "$mainIn" -o "$mainOut"
+	clangCommon -dynamiclib -compatibility_version 1.0.0 -current_version 1.0.0 -install_name "$mainInstall" -Xlinker -reexport_library "$oldOut" -I "$code/Shims" "$mainIn" -o "$mainOut" "${@:5}"
 	
 	codesign -f -s - "$oldOut"
 	codesign -f -s - "$mainOut"
 }
 
-build "SkyLight" "Current/Ramdisk/System/Library/PrivateFrameworks/SkyLight.framework/Versions/A/SkyLight" "/System/Library/PrivateFrameworks/SkyLight.framework/Versions/A/SkyLight" "Common"
+build "SkyLight" "Current/Ramdisk/System/Library/PrivateFrameworks/SkyLight.framework/Versions/A/SkyLight" "/System/Library/PrivateFrameworks/SkyLight.framework/Versions/A/SkyLight" "Common" -F "/System/Library/PrivateFrameworks" -framework AppleSystemInfo
 build "CoreDisplay" "Current/Ramdisk/System/Library/Frameworks/CoreDisplay.framework/Versions/A/CoreDisplay" "/System/Library/Frameworks/CoreDisplay.framework/Versions/A/CoreDisplay" "Common"
 
 build "10.15.7/Payload/System/Library/Frameworks/IOSurface.framework/Versions/A/IOSurface" "Current/Ramdisk/System/Library/Frameworks/IOSurface.framework/Versions/A/IOSurface" "/System/Library/Frameworks/IOSurface.framework/Versions/A/IOSurface" "Zoe"

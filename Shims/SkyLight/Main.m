@@ -17,6 +17,7 @@ BOOL earlyBoot;
 #import "Grey.m"
 #import "Hidd.m"
 #import "MenuBar.m"
+#import "NightShift.m"
 #import "Occlusion.m"
 #import "Photos.m"
 #import "Rim.m"

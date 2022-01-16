@@ -19,15 +19,6 @@ BOOL blurBeta()
 	{
 		blurBetaValue=[NSUserDefaults.standardUserDefaults boolForKey:@"ASB_BlurBeta"];
 		
-		// TODO: this
-		
-		if(blurBetaValue&&[@[@"/System/Library/CoreServices/screencaptureui.app/Contents/MacOS/screencaptureui",@"/System/Library/CoreServices/ControlCenter.app/Contents/MacOS/ControlCenter",@"/System/Library/CoreServices/NotificationCenter.app/Contents/MacOS/NotificationCenter"] containsObject:NSProcessInfo.processInfo.arguments[0]])
-		{
-			trace(@"blacklisted from blur fixes");
-			
-			blurBetaValue=false;
-		}
-		
 		trace(@"ASB_BlurBeta %d",blurBetaValue);
 	});
 	

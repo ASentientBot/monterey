@@ -2,11 +2,11 @@
 - [dosdude1](http://dosdude1.com): 10.14.4+ OpenGL fix, Mojave/Catalina patchers, countless macOS insights
 - [Dortania](https://dortania.github.io) ([khronokernel](https://github.com/khronokernel), [dhinakg](https://github.com/dhinakg), et al.): OpenCore Legacy Patcher, Broadcom Wi-Fi fix, Bluetooth insights, TeraScale 2 insights, excellent hackintosh guides, countless other explanations and help
 - [SpiraMira](https://github.com/SpiraMira) ([pkouame](https://forums.macrumors.com/members/pkouame.1036080/)), [testheit](https://forums.macrumors.com/members/1133139/): SkyLight insights, previous transparency patches
+- [EduCovas](https://github.com/educovas): Safari Extensions, WebKit, QuartzCore, SkyLight, and Safari freeze (DisplayLink) insights, corner workaround, extensive testing, swipe between pages workaround
+- [moosethegoose2213](https://moosethegoose2213.github.io) (ASentientHedgehog): TeraScale 2 and QuartzCore insights, corner workaround, keyboard backlight workaround, extensive testing
 - [jackluke](https://github.com/jacklukem): 10.14+ Penryn panic fix (telemetry plugin), Tesla insights, testing
 - [Minh Ton](https://minh-ton.github.io): many macOS insights, testing
-- [moosethegoose2213](https://moosethegoose2213.github.io) (ASentientHedgehog): TeraScale 2 and QuartzCore insights, keyboard backlight fix, testing
-- [parrotgeek1](https://parrotgeek.com): many macOS and graphics insights regarding Tesla, TeraScale 2, SIP, OpenGL and more
-- [EduCovas](https://github.com/educovas): Safari Extensions, WebKit, QuartzCore, and DisplayLink insights, testing
+- [parrotgeek1](https://parrotgeek.com): macOS and graphics insights regarding Tesla, TeraScale 2, SIP, OpenGL and more
 - [Syncretic](https://forums.macrumors.com/members/syncretic.1173816/): [MonteRand](https://forums.macrumors.com/threads/monterand-probably-the-start-of-an-ongoing-saga.2320479/)
 - [Acidanthera](https://github.com/acidanthera): aftermarket SSD hibernation patch
 - [Julian Fairfax](https://julianfairfax.gitlab.io): macOS insights, testing
@@ -25,6 +25,11 @@ Run `Install.tool` to prepare patches for a given machine:
 Select `reveal` to show the output in Finder. Other modes are unsupported; see [OCLP](https://dortania.github.io/OpenCore-Legacy-Patcher/) for all practical uses.
 
 # changes
+
+## 2022-1-16
+- forcibly enable Night Shift
+- call `SkyLightPluginEntry` in plugins if present
+- remove now-unnecessary blur blacklisting
 
 ## 2022-1-6
 - interpret negative `ASB_RimOverride` value as "hide legacy border but don't draw a fake one"
@@ -130,11 +135,10 @@ Roughly ordered by priority. Also see [here](https://github.com/dortania/OpenCor
 - fix Safari frozen HTML canvas (workaround: uncheck `GPU Process: Canvas Rendering` in Develop menu)
 - fix graphical bugs with fake window rims
 - fix Catalyst app scrolling
-- fix blur fix mouse events problem (workaround: temporarily blacklisted affected apps)
 - improve blur fix performance
 - fix remaining blur flickering issues
 - fix "Cycle Through Windows"
-- fix "Swipe Between Pages"
+- fix "Swipe Between Pages" (workaround: `defaults write -g AppleEnableMouseSwipeNavigateWithScrolls -bool true`)
 - investigate rare binaries not seeing re-exported symbols (Dropbox-specific workaround: [SkyLight plugin](https://github.com/ASentientBot/monterey/releases/download/2021-12-17/throw.this.in.the.SkyLight.plugins.folder.to.fix.Dropbox.in.a.really.non.ideal.way.zip))
 - automatically handle TeraScale 2 colors (workaround: set "millions" in SwitchResX)
 - fix VNC on TeraScale 2

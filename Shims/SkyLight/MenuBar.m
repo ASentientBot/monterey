@@ -195,11 +195,12 @@ void menuBarRevealCommon(NSNumber* amount)
 	unsigned long spaceID=SLSGetActiveSpace(connection);
 	NSDictionary* spaceDict=SLSSpaceCopyValues(SLSMainConnectionID(),spaceID);
 	NSNumber* wallID=spaceDict[kCGSWorkspaceWallSpaceKey][kCGSWorkspaceSpaceIDKey];
-	spaceDict.release;
 	
 	NSMutableDictionary* output=NSMutableDictionary.alloc.init;
 	output[@"space"]=wallID;
 	output[@"reveal"]=amount;
+	
+	spaceDict.release;
 	
 	// trace(@"menuBarRevealCommon %@",output);
 	

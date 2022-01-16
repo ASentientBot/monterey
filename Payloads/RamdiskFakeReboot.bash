@@ -8,6 +8,8 @@ preboot="/mnt9"
 
 PATH+=:"$target/bin:$target/usr/bin:$target/usr/sbin:$target/usr/libexec"
 
+# TODO: delete arbitrary folders rather than just SLE
+# and then move this to the txt
 rm -rf "$target/System/Library/UserEventPlugins/com.apple.telemetry.plugin"
 
 extensions="$target/System/Library/Extensions"

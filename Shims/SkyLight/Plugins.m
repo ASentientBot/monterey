@@ -76,5 +76,16 @@ void pluginsSetup()
 				trace(@"plugin: %s",dlerror());
 			}
 		}
+		
+		void (*entry)()=dlsym(handle,"SkyLightPluginEntry");
+		if(entry)
+		{
+			if(!earlyBoot)
+			{
+				trace(@"plugin: found initializer %p",entry);
+			}
+			
+			entry();
+		}
 	}
 }
