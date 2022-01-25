@@ -1,6 +1,24 @@
 #import "Utils.h"
 @import QuartzCore;
 
+// from old SL shim - Blurs.m
+// with downgraded QuartzCore, no longer needed for grey blurs
+// but EduCovas noticed this greatly reduces flickering
+
+void (*real_setScale)(id,SEL,double);
+
+void fake_setScale(id self,SEL selector,double value)
+{
+	value=MAX(value,1);
+	
+	real_setScale(self,selector,value);
+}
+
+void blursSetup()
+{
+	swizzleImp(@"CABackdropLayer",@"setScale:",true,(IMP)fake_setScale,(IMP*)&real_setScale);
+}
+
 // from old SL shim - DowngradedQuartzCore.m
 
 @interface CAPresentationModifierGroup:NSObject
@@ -193,6 +211,7 @@ void fixCAContextImpl()
 	swizzleImp(@"CALayer",@"setCompositingFilter:",true,(IMP)fake_SCF,(IMP*)&real_SCF);
 	
 	fixCAContextImpl();
+	blursSetup();
 }
 
 @end

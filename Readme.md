@@ -26,6 +26,9 @@ Select `reveal` to show the output in Finder. Other modes are unsupported; see [
 
 # changes
 
+## 2022-1-25
+- re-enable old CABackdropLayer scale override to reduce blur glitching with downgraded QuartzCore; another thank you to EduCovas for noticing this
+
 ## 2022-1-24
 - implement QuartzCore downgrade and supporting shims to fix Control Center graphical bugs, system-wide missing icons, desaturated blurs, and more; **huge thanks to EduCovas for extensive research and over half of the shim code**
 - strip out obsolete fixes (disables `ASB_BlurOverride`)
@@ -140,8 +143,9 @@ Roughly ordered by priority. Also see [here](https://github.com/dortania/OpenCor
 
 - fix broken Siri with downgraded QuartzCore
 - fix broken desktop stacks with downgraded QuartzCore
+- fix broken Quick Note with downgraded QuartzCore
 - implement Objective-C functions in Stubber
-- change defaults and logging prefix to reflect that this is now a multi-person project!
+- change defaults and logging prefix to reflect that this is a multi-person project!
 - fix Safari frozen HTML canvas (workaround: uncheck `GPU Process: Canvas Rendering` in Develop menu)
 - fix graphical bugs with fake window rims
 - fix Catalyst app scrolling
