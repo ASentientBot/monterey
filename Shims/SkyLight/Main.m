@@ -8,11 +8,9 @@ BOOL earlyBoot;
 
 #import "Extern.h"
 
-#import "Blurs.m"
 #import "Defenestrator.m"
 #import "DisplayLink.m"
 #import "Dock.m"
-#import "DowngradedQuartzCore.m"
 #import "Glyphs.m"
 #import "Grey.m"
 #import "Hidd.m"
@@ -44,13 +42,13 @@ BOOL earlyBoot;
 	if(earlyBoot&&[NSProcessInfo.processInfo.arguments[0] isEqualToString:@"/usr/sbin/kextcache"])
 	{
 		trace(@"Zoe <3");
+		trace(@"\e[32mASentientBot, EduCovas, ASentientHedgehog");
 	}
 	
 	traceLog=true;
 	tracePrint=false;
 	swizzleLog=false;
 	
-	blursSetup();
 	defenestratorSetup();
 	glyphsSetup();
 	hiddSetup();

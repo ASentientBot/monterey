@@ -21,9 +21,11 @@ rm -f "$frameworks/OpenGL.framework/Versions/A/Libraries/libCoreFSCache.dylib"
 mkdir -p "$privateFrameworks/SkyLight.framework/Versions/A"
 mkdir -p "$frameworks/CoreDisplay.framework/Versions/A"
 mkdir -p "$frameworks/IOSurface.framework/Versions/A"
+mkdir -p "$frameworks/QuartzCore.framework/Versions/A"
 
 cp "Wrapped/Common/SkyLight" "Wrapped/Common/SkyLightOld.dylib" "$privateFrameworks/SkyLight.framework/Versions/A"
 cp "Wrapped/Common/CoreDisplay" "Wrapped/Common/CoreDisplayOld.dylib" "$frameworks/CoreDisplay.framework/Versions/A"
+cp "Wrapped/Common/QuartzCore" "Wrapped/Common/QuartzCoreOld.dylib" "$frameworks/QuartzCore.framework/Versions/A"
 
 ln -s "A" "$privateFrameworks/SkyLight.framework/Versions/Current"
 ln -s "A" "$frameworks/CoreDisplay.framework/Versions/Current"

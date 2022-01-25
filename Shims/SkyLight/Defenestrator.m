@@ -65,6 +65,20 @@ void fake__updateMaterialLayer(NSVisualEffectViewLite* self,SEL selector)
 	real__updateMaterialLayer(self,selector);
 }
 
+BOOL blurBetaValue;
+dispatch_once_t blurBetaOnce;
+BOOL blurBeta()
+{
+	dispatch_once(&blurBetaOnce,^()
+	{
+		blurBetaValue=[NSUserDefaults.standardUserDefaults boolForKey:@"ASB_BlurBeta"];
+		
+		trace(@"ASB_BlurBeta %d",blurBetaValue);
+	});
+	
+	return blurBetaValue;
+}
+
 @implementation ContextWrapper
 
 -(instancetype)initWithConnectionID:(unsigned int)connectionID windowID:(unsigned int)windowID context:(CAContext*)context
@@ -136,7 +150,7 @@ void fake__updateMaterialLayer(NSVisualEffectViewLite* self,SEL selector)
 
 -(void)updateBackdrop
 {
-	trace(@"ContextWrapper updateBackdrop (activeBlurs %d)",_activeBlurs);
+	// trace(@"ContextWrapper updateBackdrop (activeBlurs %d)",_activeBlurs);
 	
 	// TODO: exit early if unchanged activeBlurs and bounds
 	

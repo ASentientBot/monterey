@@ -1,4 +1,4 @@
-// glyph colors
+// sidebar glyph colors
 
 // TODO: extremely weird
 

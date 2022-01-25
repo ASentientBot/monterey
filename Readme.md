@@ -1,9 +1,9 @@
 # credits
+- [EduCovas](https://github.com/educovas): Safari Extensions, WebKit, SkyLight, and Safari freeze (DisplayLink) insights, corner workaround, extensive testing, swipe between pages workaround, QuartzCore (Control Center, missing icons, blur saturation, corners) insights and shim code
+- [moosethegoose2213](https://moosethegoose2213.github.io) (ASentientHedgehog): TeraScale 2 and QuartzCore (corners) insights, corner workaround, keyboard backlight workaround, extensive testing
 - [dosdude1](http://dosdude1.com): 10.14.4+ OpenGL fix, Mojave/Catalina patchers, countless macOS insights
 - [Dortania](https://dortania.github.io) ([khronokernel](https://github.com/khronokernel), [dhinakg](https://github.com/dhinakg), et al.): OpenCore Legacy Patcher, Broadcom Wi-Fi fix, Bluetooth insights, TeraScale 2 insights, excellent hackintosh guides, countless other explanations and help
 - [SpiraMira](https://github.com/SpiraMira) ([pkouame](https://forums.macrumors.com/members/pkouame.1036080/)), [testheit](https://forums.macrumors.com/members/1133139/): SkyLight insights, previous transparency patches
-- [EduCovas](https://github.com/educovas): Safari Extensions, WebKit, QuartzCore, SkyLight, and Safari freeze (DisplayLink) insights, corner workaround, extensive testing, swipe between pages workaround
-- [moosethegoose2213](https://moosethegoose2213.github.io) (ASentientHedgehog): TeraScale 2 and QuartzCore insights, corner workaround, keyboard backlight workaround, extensive testing
 - [jackluke](https://github.com/jacklukem): 10.14+ Penryn panic fix (telemetry plugin), Tesla insights, testing
 - [Minh Ton](https://minh-ton.github.io): many macOS insights, testing
 - [parrotgeek1](https://parrotgeek.com): macOS and graphics insights regarding Tesla, TeraScale 2, SIP, OpenGL and more
@@ -25,6 +25,12 @@ Run `Install.tool` to prepare patches for a given machine:
 Select `reveal` to show the output in Finder. Other modes are unsupported; see [OCLP](https://dortania.github.io/OpenCore-Legacy-Patcher/) for all practical uses.
 
 # changes
+
+## 2022-1-24
+- implement QuartzCore downgrade and supporting shims to fix Control Center graphical bugs, system-wide missing icons, desaturated blurs, and more; **huge thanks to EduCovas for extensive research and over half of the shim code**
+- strip out obsolete fixes (disables `ASB_BlurOverride`)
+- write tool to export private symbols
+- add credits in verbose boot
 
 ## 2022-1-16
 - forcibly enable Night Shift
@@ -132,6 +138,10 @@ Changes since last non-GitHub release.
 # todo
 Roughly ordered by priority. Also see [here](https://github.com/dortania/OpenCore-Legacy-Patcher/issues/108#issuecomment-810634088).
 
+- fix broken Siri with downgraded QuartzCore
+- fix broken desktop stacks with downgraded QuartzCore
+- implement Objective-C functions in Stubber
+- change defaults and logging prefix to reflect that this is now a multi-person project!
 - fix Safari frozen HTML canvas (workaround: uncheck `GPU Process: Canvas Rendering` in Develop menu)
 - fix graphical bugs with fake window rims
 - fix Catalyst app scrolling
@@ -143,10 +153,8 @@ Roughly ordered by priority. Also see [here](https://github.com/dortania/OpenCor
 - automatically handle TeraScale 2 colors (workaround: set "millions" in SwitchResX)
 - fix VNC on TeraScale 2
 - support Ironlake
-- fix CALayer corner radii (workaround: downgrade QuartzCore to Big Sur version)
 - investigate slow compositing in all browsers
 - investigate broken WebGL in all browsers (workaround: use Chrome's `ignore-gpu-blocklist`)
-- fix shifted/missing icons
 - improve status bar item resizing, replicant handling
 - investigate Maps crash
 - rewrite Glyphs
@@ -155,7 +163,6 @@ Roughly ordered by priority. Also see [here](https://github.com/dortania/OpenCor
 - fix Books (workaround: use Big Sur version)
 - fix keyboard backlight (workaround: use Lab Tick or manually load `TouchBarServer`)
 - automatically color menu bar text (workaround: `defaults write -g ASB_DarkMenuBar -bool true`)
-- fix Control Center sliders
 - fix hardware cursor
 - implement auto appearance (workaround: use NightOwl)
 - implement Screen Time locking
