@@ -32,7 +32,6 @@ Select `reveal` to show the output in Finder. Other modes are unsupported; see [
 ## 2022-1-24
 - implement QuartzCore downgrade and supporting shims to fix Control Center graphical bugs, system-wide missing icons, desaturated blurs, and more; **huge thanks to EduCovas for extensive research and over half of the shim code**
 - strip out obsolete fixes (disables `ASB_BlurOverride`)
-- write tool to export private symbols
 - add credits in verbose boot
 
 ## 2022-1-16
