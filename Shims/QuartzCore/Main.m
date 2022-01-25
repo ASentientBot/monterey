@@ -156,13 +156,7 @@ void fake_SCF(CALayer* self,SEL sel,NSObject* filter)
 	return CAFenceHandle.alloc.init;
 }
 
--(BOOL)isInvalidated
-{
-	trace(@"CAFenceHandle isInvalidated");
-	return true;
-}
-
--(BOOL)supportsSecureCoding
++(BOOL)supportsSecureCoding
 {
 	trace(@"CAFenceHandle supportsSecureCoding");
 	return true;

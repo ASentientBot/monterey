@@ -28,6 +28,7 @@ Select `reveal` to show the output in Finder. Other modes are unsupported; see [
 
 ## 2022-1-25
 - re-enable old CABackdropLayer scale override to reduce blur glitching with downgraded QuartzCore; another thank you to EduCovas for noticing this
+- fix Siri with downgraded QuartzCore
 
 ## 2022-1-24
 - implement QuartzCore downgrade and supporting shims to fix Control Center graphical bugs, system-wide missing icons, desaturated blurs, and more; **huge thanks to EduCovas for extensive research and over half of the shim code**
@@ -140,7 +141,6 @@ Changes since last non-GitHub release.
 # todo
 Roughly ordered by priority. Also see [here](https://github.com/dortania/OpenCore-Legacy-Patcher/issues/108#issuecomment-810634088).
 
-- fix broken Siri with downgraded QuartzCore
 - fix broken desktop stacks with downgraded QuartzCore
 - fix broken Quick Note with downgraded QuartzCore
 - implement Objective-C functions in Stubber
