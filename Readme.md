@@ -26,7 +26,7 @@ Select `reveal` to show the output in Finder. Other modes are unsupported; see [
 
 # changes
 
-# 2022-1-26
+## 2022-1-26
 - write a [hack](https://github.com/ASentientBot/monterey/releases/download/2022-1-26/this.has.zero.error.checking.and.operates.by.binpatching.the.SkyLight.data.section.at.runtime.but.it.DOES.change.your.menubar.color.if.you.are.willing.to.accept.the.risk.lol.zip) to tweak the menu bar color
 
 ## 2022-1-25
