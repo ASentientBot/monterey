@@ -27,7 +27,6 @@ Select `reveal` to show the output in Finder. Other modes are unsupported; see [
 # changes
 
 ## 2022-1-26
-- write a [hack](https://github.com/ASentientBot/monterey/releases/download/2022-1-26/this.has.zero.error.checking.and.operates.by.binpatching.the.SkyLight.data.section.at.runtime.but.it.DOES.change.your.menubar.color.if.you.are.willing.to.accept.the.risk.lol.zip) to tweak the menu bar color
 - fix Finder animations with downgraded QuartzCore
 - implement custom menu bar colors (`sudo defaults write /Library/Preferences/.GlobalPreferences.plist NonMetal_MenuBarOverride 'R,G,B,A'` where 0 ≤ R,G,B,A ≤ 1)
 
