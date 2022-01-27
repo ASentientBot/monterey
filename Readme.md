@@ -29,6 +29,7 @@ Select `reveal` to show the output in Finder. Other modes are unsupported; see [
 ## 2022-1-26
 - write a [hack](https://github.com/ASentientBot/monterey/releases/download/2022-1-26/this.has.zero.error.checking.and.operates.by.binpatching.the.SkyLight.data.section.at.runtime.but.it.DOES.change.your.menubar.color.if.you.are.willing.to.accept.the.risk.lol.zip) to tweak the menu bar color
 - fix Finder animations with downgraded QuartzCore
+- implement custom menu bar colors (`sudo defaults write /Library/Preferences/.GlobalPreferences.plist NonMetal_MenuBarOverride 'R,G,B,A'` where 0 ≤ R,G,B,A ≤ 1)
 
 ## 2022-1-25
 - re-enable old CABackdropLayer scale override to reduce blur glitching with downgraded QuartzCore; another thank you to EduCovas for noticing this
@@ -145,10 +146,10 @@ Changes since last non-GitHub release.
 # todo
 Roughly ordered by priority. Also see [here](https://github.com/dortania/OpenCore-Legacy-Patcher/issues/108#issuecomment-810634088).
 
-- fix broken desktop stacks with downgraded QuartzCore
 - fix broken Quick Note with downgraded QuartzCore
+- fix unresponsive password dialogs with downgraded QuartzCore
 - implement Objective-C functions in Stubber
-- change defaults and logging prefix to reflect that this is a multi-person project!
+- change defaults and logging prefix to reflect that this is a multi-person project
 - fix Safari frozen HTML canvas (workaround: uncheck `GPU Process: Canvas Rendering` in Develop menu)
 - fix graphical bugs with fake window rims
 - fix Catalyst app scrolling

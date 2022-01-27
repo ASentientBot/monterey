@@ -30,7 +30,7 @@ BOOL fake_canEnableExtensions()
 
 void safariSetup()
 {
-	if([NSProcessInfo.processInfo.arguments[0] containsString:@"Safari"])
+	if([process containsString:@"Safari"])
 	{
 		swizzleImp(@"ExtensionsPreferences",@"canEnableExtensions",true,(IMP)fake_canEnableExtensions,NULL);
 	}

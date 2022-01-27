@@ -21,7 +21,7 @@ BOOL hasTS2()
 
 void ts2ScreencaptureSetup()
 {
-	if([NSProcessInfo.processInfo.arguments[0] isEqualToString:@"/usr/sbin/screencapture"])
+	if([process isEqualToString:@"/usr/sbin/screencapture"])
 	{
 		if(hasTS2())
 		{

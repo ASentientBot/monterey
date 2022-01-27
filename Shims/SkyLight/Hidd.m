@@ -10,7 +10,7 @@ dispatch_queue_t hiddQueue;
 
 void hiddSetup()
 {
-	if([NSProcessInfo.processInfo.arguments[0] isEqualToString:@"/System/Library/PrivateFrameworks/SkyLight.framework/Versions/A/Resources/WindowServer"])
+	if(isWindowServer)
 	{
 		dispatch_queue_attr_t queueSettings=dispatch_queue_attr_make_with_qos_class(DISPATCH_QUEUE_SERIAL,QOS_CLASS_USER_INTERACTIVE,-1);
 		hiddQueue=dispatch_queue_create(NULL,queueSettings);

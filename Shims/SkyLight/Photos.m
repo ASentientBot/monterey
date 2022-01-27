@@ -1,7 +1,5 @@
 // corrupted graphics in Big Sur photos
 
-// TODO: just copied from old shims, should probably re-check
-
 BOOL fake_deviceDisableOpenGL()
 {
 	return false;
@@ -9,7 +7,7 @@ BOOL fake_deviceDisableOpenGL()
 
 void photosSetup()
 {
-	if([NSProcessInfo.processInfo.processName isEqualToString:@"Photos"])
+	if([process isEqualToString:@"/System/Applications/Photos.app/Contents/MacOS/Photos"])
 	{
 		trace(@"enabling Big Sur Photos hack");
 		

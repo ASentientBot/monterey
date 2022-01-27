@@ -7,8 +7,6 @@ BOOL styleIsDark()
 	dispatch_once(&styleIsDarkOnce,^()
 	{
 		styleIsDarkValue=[NSUserDefaults.standardUserDefaults boolForKey:@"ASB_DarkMenuBar"];
-		
-		// trace(@"ASB_DarkMenuBar %d",styleIsDarkValue);
 	});
 	
 	return styleIsDarkValue;
@@ -18,8 +16,6 @@ BOOL styleIsDark()
 
 void SLSTransactionSystemStatusBarRegisterSortedWindow(unsigned long rdi_transaction,unsigned int esi_windowID,unsigned int edx_priority,unsigned long rcx_displayID,unsigned int r8d_flags,unsigned int r9d_insertOrder,float xmm0_preferredPosition,unsigned int stack_appearance)
 {
-	// trace(@"SLSTransactionSystemStatusBarRegisterSortedWindow %d %d %ld %d %d %f %d",esi_windowID,edx_priority,rcx_displayID,r8d_flags,r9d_insertOrder,xmm0_preferredPosition,stack_appearance);
-	
 	unsigned int connection=SLSMainConnectionID();
 	
 	// TODO: null space ID
@@ -32,8 +28,6 @@ void SLSTransactionSystemStatusBarRegisterSortedWindow(unsigned long rdi_transac
 
 void SLSTransactionSystemStatusBarRegisterReplicantWindow(unsigned long rdi_transaction,unsigned int esi_windowID,unsigned int edx_parent,unsigned long rcx_displayID,unsigned int r8d_flags,unsigned int r9d_appearance)
 {
-	// trace(@"SLSTransactionSystemStatusBarRegisterReplicantWindow %d %d %ld %d %d",esi_windowID,edx_parent,rcx_displayID,r8d_flags,r9d_appearance);
-	
 	unsigned int connection=SLSMainConnectionID();
 	SLSSystemStatusBarRegisterReplicantWindow(connection,esi_windowID,edx_parent,rcx_displayID,r8d_flags);
 	SLSAdjustSystemStatusBarWindows(connection);
@@ -41,8 +35,6 @@ void SLSTransactionSystemStatusBarRegisterReplicantWindow(unsigned long rdi_tran
 
 void SLSTransactionSystemStatusBarUnregisterWindow(unsigned long rdi_transaction,unsigned int esi_windowID)
 {
-	// trace(@"SLSTransactionSystemStatusBarUnregisterWindow %d",esi_windowID);
-	
 	unsigned int connection=SLSMainConnectionID();
 	SLSUnregisterWindowWithSystemStatusBar(connection,esi_windowID);
 	SLSOrderWindow(connection,esi_windowID,0,0);
@@ -53,8 +45,6 @@ void SLSTransactionSystemStatusBarUnregisterWindow(unsigned long rdi_transaction
 
 void SLSTransactionSystemStatusBarSetSelectedContentFrame(unsigned long rdi_transaction,unsigned int esi_windowID,CGRect stack_rect)
 {
-	// trace(@"SLSTransactionSystemStatusBarSetSelectedContentFrame %d %@",esi_windowID,NSStringFromRect(stack_rect));
-	
 	CALayer* layer=wrapperForWindow(esi_windowID).context.layer;
 	
 	if(NSIsEmptyRect(stack_rect))
@@ -176,8 +166,6 @@ NSDictionary* SLSCopySystemStatusBarMetrics()
 
 void statusBarSpaceCallback()
 {
-	// trace(@"statusBarSpaceCallback");
-	
 	// TODO: not how it's officially done
 	
 	NSDictionary* dict=SLSCopySystemStatusBarMetrics();
@@ -211,23 +199,17 @@ void menuBarRevealCommon(NSNumber* amount)
 
 void menuBarRevealCallback()
 {
-	// trace(@"menuBarRevealCallback");
-	
 	menuBarRevealCommon(@1.0);
 }
 
 void menuBarHideCallback()
 {
-	// trace(@"menuBarHideCallback");
-	
 	menuBarRevealCommon(@0.0);
 }
 
 dispatch_once_t notifyOnce;
 NSNotificationCenter* SLSCoordinatedLocalNotificationCenter()
 {
-	// trace(@"SLSCoordinatedLocalNotificationCenter");
-	
 	dispatch_once(&notifyOnce,^()
 	{
 		unsigned int connection=SLSMainConnectionID();
@@ -252,10 +234,56 @@ dispatch_block_t SLSCopyCoordinatedDistributedNotificationContinuationBlock()
 		return result;
 	}
 	
-	// trace(@"SLSCopyCoordinatedDistributedNotificationContinuationBlock fallback");
-	
 	// TODO: ownership?
 	return ^()
 	{
 	};
+}
+
+// custom backgrounds
+// TODO: cursed
+
+void menuBarSetup()
+{
+	if(!isWindowServer)
+	{
+		return;
+	}
+	
+	NSString* pref=[NSUserDefaults.standardUserDefaults stringForKey:@"NonMetal_MenuBarOverride"];
+	if(!pref)
+	{
+		return;
+	}
+	
+	NSArray<NSString*>* bits=[pref componentsSeparatedByString:@","];
+	if(bits.count!=4)
+	{
+		return;
+	}
+	
+	float floats[4];
+	for(int i=0;i<4;i++)
+	{
+		floats[i]=bits[i].floatValue;
+		if(floats[i]<0||floats[i]>1)
+		{
+			return;
+		}
+	}
+	
+	trace(@"menuBarSetup sanity checks passed (%f, %f, %f, %f)",floats[0],floats[1],floats[2],floats[3]);
+	
+	char* base=(char*)SLSMainConnectionID-0x1d8322;
+	char* target=base+0x26ef70;
+	
+	trace(@"menuBarSetup found SkyLight base %p target %p",base,target);
+	
+	if(mprotect(target-(long)target%getpagesize(),getpagesize()*2,PROT_READ|PROT_WRITE))
+	{
+		trace(@"menuBarSetup mprotect failed");
+		return;
+	}
+	
+	memcpy(target,floats,16);
 }

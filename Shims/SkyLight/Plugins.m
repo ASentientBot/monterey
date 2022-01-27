@@ -38,8 +38,6 @@ void pluginsSetup()
 		return;
 	}
 	
-	NSString* process=NSProcessInfo.processInfo.arguments[0];
-	
 	for(NSString* file in files)
 	{
 		if(![file.pathExtension isEqualToString:@"txt"])
@@ -65,6 +63,7 @@ void pluginsSetup()
 		void* handle=dlopen(dylibPath.UTF8String,RTLD_NOW);
 		
 		// logging in early boot causes a hang
+		
 		if(!earlyBoot)
 		{
 			if(handle)

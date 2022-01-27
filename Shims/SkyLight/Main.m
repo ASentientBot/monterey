@@ -5,6 +5,8 @@
 #import "Utils.h"
 
 BOOL earlyBoot;
+NSString* process;
+BOOL isWindowServer;
 
 #import "Extern.h"
 
@@ -38,8 +40,10 @@ BOOL earlyBoot;
 +(void)load
 {
 	earlyBoot=getpid()<200;
+	process=NSProcessInfo.processInfo.arguments[0];
+	isWindowServer=[process isEqualToString:@"/System/Library/PrivateFrameworks/SkyLight.framework/Versions/A/Resources/WindowServer"];
 	
-	if(earlyBoot&&[NSProcessInfo.processInfo.arguments[0] isEqualToString:@"/usr/sbin/kextcache"])
+	if(earlyBoot&&[process isEqualToString:@"/usr/sbin/kextcache"])
 	{
 		trace(@"Zoe <3");
 		trace(@"\e[32mASentientBot, EduCovas, ASentientHedgehog");
@@ -52,6 +56,7 @@ BOOL earlyBoot;
 	defenestratorSetup();
 	glyphsSetup();
 	hiddSetup();
+	menuBarSetup();
 	occlusionSetup();
 	safariSetup();
 	ts2Setup();
