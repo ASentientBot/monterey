@@ -61,29 +61,22 @@ void blursSetup()
 
 @end
 
+int transBoolCount=0;
+NSString* transFakeKey(int key)
+{
+	return [NSString stringWithFormat:@"fake%d",key];
+}
+
 @interface CATransaction(Shim)
 @end
 
 @implementation CATransaction(Shim)
 
-+(void)registerBoolKey
-{
-}
-
 +(void)startFrameWithReason:(id)rdx beginTime:(id)rcx commitDeadline:(id)r8
 {
 }
 
-+(BOOL)boolValueForKey:(id)rdx
-{
-	return false;
-}
-
 +(void)finishFrameWithToken:(id)rdx
-{
-}
-
-+(void)setBoolValue:(BOOL)rdx forKey:(id)rcx
 {
 }
 
@@ -93,6 +86,33 @@ void blursSetup()
 
 +(void)setFrameInputTime:(id)rdx withToken:(id)rcx
 {
+}
+
+// fix animations - ASB
+
++(void)setBoolValue:(BOOL)value forKey:(int)key
+{
+	// trace(@"CATransaction setBoolValue: %d forKey: %d",value,key);
+	
+	[self setValue:[NSNumber numberWithBool:value] forKey:transFakeKey(key)];
+}
+
++(BOOL)boolValueForKey:(int)key
+{
+	BOOL result=((NSNumber*)[self valueForKey:transFakeKey(key)]).boolValue;
+	
+	// trace(@"CATransaction boolValueForKey: %ld - %d",key,result);
+	
+	return result;
+}
+
++(int)registerBoolKey
+{
+	// trace(@"CATransaction registerBoolKey");
+	
+	transBoolCount++;
+	
+	return transBoolCount;
 }
 
 @end
@@ -151,27 +171,27 @@ void fake_SCF(CALayer* self,SEL sel,NSObject* filter)
 
 +(instancetype)newFenceFromDefaultServer
 {
-	trace(@"CAFenceHandle newFenceFromDefaultServer");
+	// trace(@"CAFenceHandle newFenceFromDefaultServer");
 	
 	return CAFenceHandle.alloc.init;
 }
 
 +(BOOL)supportsSecureCoding
 {
-	trace(@"CAFenceHandle supportsSecureCoding");
+	// trace(@"CAFenceHandle supportsSecureCoding");
 	return true;
 }
 
 -(instancetype)initWithCoder:(NSCoder*)coder
 {
-	trace(@"CAFenceHandle initWithCoder:");
+	// trace(@"CAFenceHandle initWithCoder:");
 	self=self.init;
 	return self;
 }
 
 -(void)encodeWithCoder:(NSCoder*)coder
 {
-	trace(@"CAFenceHandle encodeWithCoder");
+	// trace(@"CAFenceHandle encodeWithCoder");
 }
 
 @end
