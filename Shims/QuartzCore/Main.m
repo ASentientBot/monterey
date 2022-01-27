@@ -237,7 +237,7 @@ void fixCAContextImpl()
 	fixCAContextImpl();
 	blursSetup();
 	
-	brightnessHack=[NSProcesInfo.processInfo.arguments[0] isEqualToString:@"/System/Library/CoreServices/ControlCenter.app/Contents/MacOS/ControlCenter"];
+	brightnessHack=[NSProcessInfo.processInfo.arguments[0] isEqualToString:@"/System/Library/CoreServices/ControlCenter.app/Contents/MacOS/ControlCenter"];
 }
 
 @end
