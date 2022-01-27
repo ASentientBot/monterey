@@ -99,6 +99,14 @@ NSString* transFakeKey(int key)
 
 +(BOOL)boolValueForKey:(int)key
 {
+	// TODO: MinhTon's fix for brightness slider on MacBook5,1
+	// not sure of the root cause right now...
+	
+	if([NSProcesInfo.processInfo.arguments[0] isEqualToString:@"/System/Library/CoreServices/ControlCenter.app/Contents/MacOS/ControlCenter"])
+	{
+		return false;
+	}
+	
 	BOOL result=((NSNumber*)[self valueForKey:transFakeKey(key)]).boolValue;
 	
 	// trace(@"CATransaction boolValueForKey: %ld - %d",key,result);
