@@ -70,6 +70,8 @@ NSString* transFakeKey(int key)
 @interface CATransaction(Shim)
 @end
 
+BOOL brightnessHack;
+
 @implementation CATransaction(Shim)
 
 +(void)startFrameWithReason:(id)rdx beginTime:(id)rcx commitDeadline:(id)r8
@@ -102,7 +104,7 @@ NSString* transFakeKey(int key)
 	// TODO: MinhTon's fix for brightness slider on MacBook5,1
 	// not sure of the root cause right now...
 	
-	if([NSProcesInfo.processInfo.arguments[0] isEqualToString:@"/System/Library/CoreServices/ControlCenter.app/Contents/MacOS/ControlCenter"])
+	if(brightnessHack)
 	{
 		return false;
 	}
@@ -234,6 +236,8 @@ void fixCAContextImpl()
 	
 	fixCAContextImpl();
 	blursSetup();
+	
+	brightnessHack=[NSProcesInfo.processInfo.arguments[0] isEqualToString:@"/System/Library/CoreServices/ControlCenter.app/Contents/MacOS/ControlCenter"];
 }
 
 @end
