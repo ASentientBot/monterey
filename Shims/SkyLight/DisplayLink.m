@@ -10,3 +10,11 @@ char** SLSDisplayGetTiming(char** rdi_structOut,unsigned long rsi,unsigned int e
 	*rdi_structOut=NULL;
 	return rdi_structOut;
 }
+
+// fix Catalyst scrolling
+// credit: EduCovas
+
+long SLSDisplayGetCurrentVBLDeltaInNanoseconds()
+{
+	return 1.0/60*NSEC_PER_SEC;
+}

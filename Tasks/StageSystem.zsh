@@ -90,6 +90,9 @@ then
 		powerd="$overlay/System/Library/CoreServices/powerd.bundle"
 		mkdir -p "$powerd"
 		cp "powerd" "$powerd"
+
+		# TODO: probably non-ideal way to fix the 12.3 DP1 800 MHz issue
+		cp -R "10.15.7/Payload/System/Library/Extensions/IOPlatformPluginFamily.kext" "$extensions"
 	fi
 
 elif test "$target" = "cass2"

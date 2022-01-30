@@ -1,8 +1,11 @@
 "./Binpatcher" "Current/Ramdisk/System/Library/Frameworks/IOKit.framework/Versions/A/IOKit" "IOKit" '
 otool forward (?m)^.*?MacBookAir
-otool forward (?m)^.*?andb
-# or al,1
-write 0x0c01'
+otool forward (?m)^.*?setae
+
+# TODO: probably not very stable across changes
+# or r15b,0x1
+write 0x4180cf01
+nop 0x3'
 
 codesign -f -s - "IOKit"
 chmod +x "IOKit"

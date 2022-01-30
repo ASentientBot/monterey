@@ -26,6 +26,10 @@ Select `reveal` to show the output in Finder. Other modes are unsupported; see [
 
 # changes
 
+## 2022-1-30
+- add hacks for 12.3 DP1: workaround 800 MHz problem by downgrading `IOPlatformPluginFamily.kext`, tweak LPM patch for changes in IOKit
+- fix Catalyst scrolling, thank you very much EduCovas for figuring this out!
+
 ## 2022-1-26
 - fix Finder animations with downgraded QuartzCore
 - implement custom menu bar colors (`sudo defaults write /Library/Preferences/.GlobalPreferences.plist NonMetal_MenuBarOverride 'R,G,B,A'` where 0 ≤ R,G,B,A ≤ 1)
@@ -150,7 +154,7 @@ Roughly ordered by priority. Also see [here](https://github.com/dortania/OpenCor
 - fix unresponsive password dialogs with downgraded QuartzCore
 - implement Objective-C functions in Stubber
 - change defaults and logging prefix to reflect that this is a multi-person project
-- fix Safari frozen HTML canvas (workaround: uncheck `GPU Process: Canvas Rendering` in Develop menu)
+- fix Safari frozen HTML canvas (workaround: `defaults write -g InternalDebugUseGPUProcessForCanvasRenderingEnabled -bool false`)
 - fix graphical bugs with fake window rims
 - fix Catalyst app scrolling
 - improve blur fix performance
