@@ -1,8 +1,9 @@
 # credits
-- [EduCovas](https://github.com/educovas): Safari Extensions, WebKit, SkyLight, and Safari freeze (DisplayLink) insights, swipe between pages workaround, QuartzCore (Control Center, missing icons, blur saturation, corners) insights and shim code, extensive testing
+- [EduCovas](https://github.com/educovas): Safari Extensions, WebKit, SkyLight, and Safari freeze (DisplayLink) insights, swipe between pages workaround, QuartzCore (Control Center, missing icons, blur saturation, corners) insights and shim code, Catalyst scrolling workaround, extensive testing
 - [moosethegoose2213](https://moosethegoose2213.github.io) (ASentientHedgehog): TeraScale 2 and QuartzCore (corners) insights, keyboard backlight workaround, extensive testing
 - [dosdude1](http://dosdude1.com): 10.14.4+ OpenGL fix, Mojave/Catalina patchers, countless macOS insights
 - [Dortania](https://dortania.github.io) ([khronokernel](https://github.com/khronokernel), [dhinakg](https://github.com/dhinakg), et al.): OpenCore Legacy Patcher, Broadcom Wi-Fi fix, Bluetooth insights, TeraScale 2 insights, excellent hackintosh guides, countless other explanations and help
+- [Flagers](https://github.com/flagersgit): various macOS insights and help
 - [SpiraMira](https://github.com/SpiraMira) ([pkouame](https://forums.macrumors.com/members/pkouame.1036080/)), [testheit](https://forums.macrumors.com/members/1133139/): SkyLight insights, previous transparency patches
 - [jackluke](https://github.com/jacklukem): 10.14+ Penryn panic fix (telemetry plugin), Tesla insights, testing
 - [Minh Ton](https://minh-ton.github.io): many macOS insights, QuartzCore downgrade bug fixes, testing
@@ -26,9 +27,15 @@ Select `reveal` to show the output in Finder. Other modes are unsupported; see [
 
 # changes
 
+## 2022-2-6
+- add hack to allow quitting Catalyst apps with downgraded QuartzCore
+
+## 2022-2-3
+- support new InstallAssistant DMG format
+
 ## 2022-1-30
 - add hacks for 12.3 DP1: workaround 800 MHz problem by downgrading `IOPlatformPluginFamily.kext`, tweak LPM patch for changes in IOKit
-- fix Catalyst scrolling, thank you very much EduCovas for figuring this out!
+- fix Catalyst scrolling; thank you very much EduCovas for figuring this out!
 
 ## 2022-1-26
 - fix Finder animations with downgraded QuartzCore
@@ -150,13 +157,11 @@ Changes since last non-GitHub release.
 # todo
 Roughly ordered by priority. Also see [here](https://github.com/dortania/OpenCore-Legacy-Patcher/issues/108#issuecomment-810634088).
 
-- fix broken Quick Note with downgraded QuartzCore
 - fix unresponsive password dialogs with downgraded QuartzCore
 - implement Objective-C functions in Stubber
 - change defaults and logging prefix to reflect that this is a multi-person project
 - fix Safari frozen HTML canvas (workaround: `defaults write -g InternalDebugUseGPUProcessForCanvasRenderingEnabled -bool false`)
 - fix graphical bugs with fake window rims
-- fix Catalyst app scrolling
 - improve blur fix performance
 - fix remaining blur flickering issues
 - fix "Cycle Through Windows"

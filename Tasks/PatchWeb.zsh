@@ -8,5 +8,8 @@ codesign --dump --entitlements "WebEnts.plist" --xml "com.apple.WebKit.WebConten
 
 defaults delete "$PWD/WebEnts.plist" "com.apple.private.security.message-filter"
 
+# TODO: what
+rm -rf "com.apple.WebKit.WebContent.xpc/Contents/PlugIns/MediaFormatReader.bundle"
+
 plutil -convert xml1 "WebEnts.plist"
 codesign -f -s - --entitlements "WebEnts.plist" "com.apple.WebKit.WebContent.xpc"
