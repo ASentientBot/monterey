@@ -10,6 +10,7 @@ BOOL isWindowServer;
 
 #import "Extern.h"
 
+#import "Backlight.m"
 #import "Defenestrator.m"
 #import "DisplayLink.m"
 #import "Dock.m"

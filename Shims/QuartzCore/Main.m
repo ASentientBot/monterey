@@ -221,6 +221,15 @@ void fixCAContextImpl()
 	class_addMethod(CAContextImpl,@selector(transferSlot:toContextWithId:),(IMP)doNothing,"v@:@@");
 }
 
+// hack to allow iMessage to quit
+
+BOOL fake_AST(id self,SEL sel)
+{
+	trace(@"fake_AST");
+	
+	return true;
+}
+
 @interface Load:NSObject
 @end
 
@@ -233,6 +242,7 @@ void fixCAContextImpl()
 	
 	swizzleImp(@"CATransaction",@"addCommitHandler:forPhase:",false,(IMP)fake_ACHFP,(IMP*)&real_ACHFP);
 	swizzleImp(@"CALayer",@"setCompositingFilter:",true,(IMP)fake_SCF,(IMP*)&real_SCF);
+	swizzleImp(@"UINSAppKitTerminationController",@"appShouldTerminate",true,(IMP)fake_AST,NULL);
 	
 	fixCAContextImpl();
 	blursSetup();
