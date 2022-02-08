@@ -21,6 +21,7 @@ int runTask(NSArray<NSString*>* command,NSString* workingPath,NSString** output)
 	[task launchAndReturnError:&error];
 	if(error)
 	{
+		trace(@"runTask: error %@",error);
 		@throw error;
 	}
 	

@@ -61,7 +61,7 @@ void displayWakeCallback()
 
 unsigned int SLSDisplayManagerRegisterPowerStateNotification(dispatch_queue_t rdi_queue,unsigned int esi,unsigned int edx_type,dispatch_block_t rcx_block)
 {
-	trace(@"SLSDisplayManagerRegisterPowerStateNotification %d %@",edx_type,NSThread.callStackSymbols);
+	// trace(@"SLSDisplayManagerRegisterPowerStateNotification %d %@",edx_type,NSThread.callStackSymbols);
 	
 	dispatch_once(&displayNotifyOnce,^()
 	{

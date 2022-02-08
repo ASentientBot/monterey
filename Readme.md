@@ -27,6 +27,9 @@ Select `reveal` to show the output in Finder. Other modes are unsupported; see [
 
 # changes
 
+## 2022-2-8
+- temporarily fix keyboard backlight by delaying until AppleSMCLMU comes online (_not_ production-ready: can increase boot time considerably)
+
 ## 2022-2-6
 - add hack to allow quitting Catalyst apps with downgraded QuartzCore
 

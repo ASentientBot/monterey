@@ -39,7 +39,7 @@ function build
 	codesign -f -s - "$mainOut"
 }
 
-build "SkyLight" "Current/Ramdisk/System/Library/PrivateFrameworks/SkyLight.framework/Versions/A/SkyLight" "/System/Library/PrivateFrameworks/SkyLight.framework/Versions/A/SkyLight" "Common" -F "/System/Library/PrivateFrameworks" -framework AppleSystemInfo
+build "SkyLight" "Current/Ramdisk/System/Library/PrivateFrameworks/SkyLight.framework/Versions/A/SkyLight" "/System/Library/PrivateFrameworks/SkyLight.framework/Versions/A/SkyLight" "Common" -F "/System/Library/PrivateFrameworks" -framework AppleSystemInfo -framework CoreBrightness
 build "CoreDisplay" "Current/Ramdisk/System/Library/Frameworks/CoreDisplay.framework/Versions/A/CoreDisplay" "/System/Library/Frameworks/CoreDisplay.framework/Versions/A/CoreDisplay" "Common"
 build "10.15.7/Payload/System/Library/Frameworks/QuartzCore.framework/Versions/A/QuartzCore" "Current/Ramdisk/System/Library/Frameworks/QuartzCore.framework/Versions/A/QuartzCore" "/System/Library/Frameworks/QuartzCore.framework/Versions/A/QuartzCore" "Common"
 
