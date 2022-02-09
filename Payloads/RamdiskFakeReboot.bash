@@ -31,7 +31,7 @@ long="$(ls -t "$preboot" | head -1)"
 
 cp "/ffffffff.efi" "$preboot/$long/System/Library/CoreServices/boot.efi"
 
-args='-no_compat_check amfi_get_out_of_my_way=1 -nokcmismatchpanic keepsyms=1 -v bcom.platform-check=0 ASB_MadeItToRamdiskFakeReboot'
+args='-no_compat_check amfi_get_out_of_my_way=1 -nokcmismatchpanic keepsyms=1 -v bcom.platform-check=0 ASB_MadeItToRamdiskFakeReboot ipc_control_port_options=0'
 nvram boot-args="$args"
 plist="$preboot/$long/Library/Preferences/SystemConfiguration/com.apple.Boot.plist"
 PlistBuddy "$plist" -c "Set 'Kernel Flags' $args"

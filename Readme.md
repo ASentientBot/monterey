@@ -6,7 +6,7 @@
 - [Flagers](https://github.com/flagersgit): various macOS insights and help
 - [SpiraMira](https://github.com/SpiraMira) ([pkouame](https://forums.macrumors.com/members/pkouame.1036080/)), [testheit](https://forums.macrumors.com/members/1133139/): SkyLight insights, previous transparency patches
 - [jackluke](https://github.com/jacklukem): 10.14+ Penryn panic fix (telemetry plugin), Tesla insights, testing
-- [Minh Ton](https://minh-ton.github.io): many macOS insights, QuartzCore downgrade bug fixes, testing
+- [Minh Ton](https://minh-ton.github.io): many macOS insights, QuartzCore brightness workaround, testing
 - [parrotgeek1](https://parrotgeek.com): macOS and graphics insights regarding Tesla, TeraScale 2, SIP, OpenGL and more
 - [Syncretic](https://forums.macrumors.com/members/syncretic.1173816/): [MonteRand](https://forums.macrumors.com/threads/monterand-probably-the-start-of-an-ongoing-saga.2320479/)
 - [Acidanthera](https://github.com/acidanthera): aftermarket SSD hibernation patch
@@ -29,6 +29,7 @@ Select `reveal` to show the output in Finder. Other modes are unsupported; see [
 
 ## 2022-2-8
 - temporarily fix keyboard backlight by delaying until AppleSMCLMU comes online (_not_ production-ready: can increase boot time considerably)
+- add workaround for EXC_GUARD crashes with AMFI off
 
 ## 2022-2-6
 - add hack to allow quitting Catalyst apps with downgraded QuartzCore
@@ -160,6 +161,7 @@ Changes since last non-GitHub release.
 # todo
 Roughly ordered by priority. Also see [here](https://github.com/dortania/OpenCore-Legacy-Patcher/issues/108#issuecomment-810634088).
 
+- fix mouse event weirdness on dual monitors with blur fix
 - fix unresponsive password dialogs with downgraded QuartzCore
 - implement Objective-C functions in Stubber
 - change defaults and logging prefix to reflect that this is a multi-person project
