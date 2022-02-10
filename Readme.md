@@ -1,6 +1,6 @@
 # credits
 - [EduCovas](https://github.com/educovas): Safari Extensions, WebKit, SkyLight, and Safari freeze (DisplayLink) insights, swipe between pages workaround, QuartzCore (Control Center, missing icons, blur saturation, corners) insights and shim code, Catalyst scrolling workaround, extensive testing
-- [moosethegoose2213](https://moosethegoose2213.github.io) (ASentientHedgehog): TeraScale 2 and QuartzCore (corners) insights, keyboard backlight workaround, extensive testing
+- [moosethegoose2213](https://moosethegoose2213.github.io) (ASentientHedgehog): TeraScale 2 and QuartzCore (corners) insights, previous keyboard backlight workaround, extensive testing
 - [dosdude1](http://dosdude1.com): 10.14.4+ OpenGL fix, Mojave/Catalina patchers, countless macOS insights
 - [Dortania](https://dortania.github.io) ([khronokernel](https://github.com/khronokernel), [dhinakg](https://github.com/dhinakg), et al.): OpenCore Legacy Patcher, Broadcom Wi-Fi fix, Bluetooth insights, TeraScale 2 insights, excellent hackintosh guides, countless other explanations and help
 - [Flagers](https://github.com/flagersgit): various macOS insights and help
@@ -26,6 +26,9 @@ Run `Install.tool` to prepare patches for a given machine:
 Select `reveal` to show the output in Finder. Other modes are unsupported; see [OCLP](https://dortania.github.io/OpenCore-Legacy-Patcher/) for all practical uses.
 
 # changes
+
+## 2022-2-9
+- reduce keyboard backlight hack delay, disable by default (`sudo defaults write /Library/Preferences/.GlobalPreferences.plist NonMetal_BacklightHack -bool true` to enable)
 
 ## 2022-2-8
 - temporarily fix keyboard backlight by delaying until AppleSMCLMU comes online (_not_ production-ready: can increase boot time considerably)
@@ -183,7 +186,6 @@ Roughly ordered by priority. Also see [here](https://github.com/dortania/OpenCor
 - investigate space switching notifications
 - fix Photo Booth (workaround: use Big Sur version)
 - fix Books (workaround: use Big Sur version)
-- fix keyboard backlight (workaround: use Lab Tick or manually load `TouchBarServer`)
 - automatically color menu bar text (workaround: `defaults write -g ASB_DarkMenuBar -bool true`)
 - fix hardware cursor
 - implement auto appearance (workaround: use NightOwl)

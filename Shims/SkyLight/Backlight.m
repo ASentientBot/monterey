@@ -1,27 +1,37 @@
 // keyboard backlight
 
-#define BACKLIGHT_INTERVAL 1
-#define BACKLIGHT_MAX 100
+#define BACKLIGHT_INTERVAL 0.5
+#define BACKLIGHT_MAX 30
 #define BACKLIGHT_AFTER 10
 
 BOOL CBALCKeyboardFeatureAvailable();
 
+BOOL keyboardBetaValue;
+dispatch_once_t keyboardBetaOnce;
+BOOL keyboardBeta()
+{
+	dispatch_once(&keyboardBetaOnce,^()
+	{
+		keyboardBetaValue=[NSUserDefaults.standardUserDefaults boolForKey:@"NonMetal_BacklightHack"];
+		
+		trace(@"backlight: NonMetal_BacklightHack %d",keyboardBetaValue);
+	});
+	
+	return keyboardBetaValue;
+}
+
 BOOL fake_CBALCKeyboardFeatureAvailable()
 {
-	trace(@"fake_CBALCKeyboardFeatureAvailable");
+	trace(@"backlight: fake_CBALCKeyboardFeatureAvailable");
 	
-	if(isWindowServer)
+	if(isWindowServer&&keyboardBeta())
 	{
-		// runTask(@[@"/bin/bash",@"-c",@"ioreg -l > /tmp/ASB_ioreg_pre.txt"],nil,nil);
-		
 		for(NSTimeInterval wait=0;wait<BACKLIGHT_MAX;wait+=BACKLIGHT_INTERVAL)
 		{
 			if(CBALCKeyboardFeatureAvailable())
 			{
 				trace(@"backlight: als-lgp-version appeared");
 				[NSThread sleepForTimeInterval:BACKLIGHT_AFTER];
-				
-				// runTask(@[@"/bin/bash",@"-c",@"ioreg -l > /tmp/ASB_ioreg_post.txt"],nil,nil);
 				
 				return true;
 			}
