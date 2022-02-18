@@ -6,7 +6,26 @@ long IOHIDEventSystemOpen(void*,void*,void*,void*,long);
 long IOHIDEventSystemSetProperty(void*,CFStringRef,void*);
 
 // TODO: necessary?
+// TODO: increase the priority more?
 dispatch_queue_t hiddQueue;
+
+void* eventSystem;
+
+NSDictionary* getHidParams()
+{
+	io_service_t service=IORegistryEntryFromPath(kIOMainPortDefault,"IOService:/IOResources/IOHIDSystem");
+	NSDictionary* result=IORegistryEntryCreateCFProperty(service,CFSTR("HIDParameters"),kCFAllocatorDefault,0);
+	IOObjectRelease(service);
+	
+	trace(@"getHidParams IORegistryEntryCreateCFProperty %@",result);
+	
+	return result.autorelease;
+}
+
+void setHidParams(NSDictionary* params)
+{
+	trace(@"setHidParams IOHIDEventSystemSetProperty %d %@",IOHIDEventSystemSetProperty(eventSystem,CFSTR("HIDParameters"),params),params);
+}
 
 void hiddSetup()
 {
@@ -17,27 +36,19 @@ void hiddSetup()
 		
 		dispatch_async(hiddQueue,^()
 		{
-			void* system=IOHIDEventSystemCreate(kCFAllocatorDefault);
+			eventSystem=IOHIDEventSystemCreate(kCFAllocatorDefault);
 			
-			if(!system)
+			if(!eventSystem)
 			{
-				trace(@"IOHIDEventSystemCreate failed, system will be unresponsive without HiddHack!");
+				trace(@"IOHIDEventSystemCreate failed, will be unresponsive without HiddHack!");
 				return;
 			}
 			
-			trace(@"IOHIDEventSystemOpen %ld",IOHIDEventSystemOpen(system,NULL,NULL,NULL,0));
+			trace(@"IOHIDEventSystemOpen %ld",IOHIDEventSystemOpen(eventSystem,NULL,NULL,NULL,0));
 			
-			io_service_t service=IORegistryEntryFromPath(kIOMainPortDefault,"IOService:/IOResources/IOHIDSystem");
+			setHidParams(getHidParams());
 			
-			CFStringRef paramsKey=(CFStringRef)@"HIDParameters";
-			NSDictionary* params=IORegistryEntryCreateCFProperty(service,paramsKey,kCFAllocatorDefault,0);
-			// trace(@"%@ %@",paramsKey,params);
-			IOHIDEventSystemSetProperty(system,paramsKey,params);
-			
-			IOObjectRelease(service);
-			params.release;
-			
-			// IOHIDEventSystem not freed
+			// eventSystem not freed
 		});
 	}
 }

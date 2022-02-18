@@ -7,11 +7,6 @@ lipo -thin x86_64 "10.14.6/Payload/System/Library/PrivateFrameworks/SkyLight.fra
 set 0x216c60
 nop 0x4
 
-# spin cursor hack
-# TODO: proper fix
-symbol _CGXHWCursorIsAllowed
-return 0x0
-
 # menubar height (22.0 --> 24.0)
 set 0xb949c
 write 0x38

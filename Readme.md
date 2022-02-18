@@ -164,6 +164,7 @@ Changes since last non-GitHub release.
 # todo
 Roughly ordered by priority. Also see [here](https://github.com/dortania/OpenCore-Legacy-Patcher/issues/108#issuecomment-810634088).
 
+- fix Catalyst timeout crash
 - fix mouse event weirdness on dual monitors with blur fix
 - fix unresponsive password dialogs with downgraded QuartzCore
 - implement Objective-C functions in Stubber

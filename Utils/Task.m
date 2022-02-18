@@ -32,6 +32,10 @@ int runTask(NSArray<NSString*>* command,NSString* workingPath,NSString** output)
 		[data appendData:errPipe.fileHandleForReading.readDataToEndOfFile];
 	}
 	
+	// TODO: why does not putting this cause a file descriptor leak?
+	// Apple bug or i don't understand run loops/autoreleasing?
+	task.waitUntilExit;
+	
 	if(output)
 	{
 		*output=[NSString.alloc initWithData:data encoding:NSUTF8StringEncoding].autorelease;
