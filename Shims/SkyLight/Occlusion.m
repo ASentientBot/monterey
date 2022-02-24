@@ -11,13 +11,71 @@ void fake_setWindowNumber(id self,SEL selector,unsigned long windowID)
 	
 	if(windowID!=-1)
 	{
-		// trace(@"fake_setWindowNumber fixing occlusion detection");
-		
 		SLSPackagesEnableWindowOcclusionNotifications(SLSMainConnectionID(),windowID,1,0);
+	}
+}
+
+// NSLocalSavePanel _updateOKButtonEnabledState
+// TODO: not ideal
+
+BOOL fake_isOccluded(id self,SEL selector)
+{
+	trace(@"fake_isOccluded");
+	
+	return false;
+}
+
+// Safari extensions
+
+BOOL fake_validateNoOcclusionSinceToken(id self,SEL selector,void* rdx)
+{
+	trace(@"fake_validateNoOcclusionSinceToken");
+	
+	return true;
+}
+
+@interface SLSecureCursorAssertion:SkyLightStubClass
+@end
+
+@implementation SLSecureCursorAssertion
+
++(instancetype)assertion
+{
+	trace(@"SLSecureCursorAssertion assertion");
+	
+	return SLSecureCursorAssertion.alloc.init.autorelease;
+}
+
+-(BOOL)isValid
+{
+	trace(@"SLSecureCursorAssertion isValid");
+	
+	return true;
+}
+
+@end
+
+// TODO: temporary hack
+
+BOOL fake_canEnableExtensions()
+{
+	trace(@"fake_canEnableExtensions");
+	
+	return true;
+}
+
+void safariSetup()
+{
+	if([process containsString:@"Safari"])
+	{
+		swizzleImp(@"ExtensionsPreferences",@"canEnableExtensions",true,(IMP)fake_canEnableExtensions,NULL);
 	}
 }
 
 void occlusionSetup()
 {
 	swizzleImp(@"NSWindow",@"_setWindowNumber:",true,(IMP)fake_setWindowNumber,(IMP*)&real_setWindowNumber);
+	swizzleImp(@"NSOcclusionDetectionView",@"isOccluded",true,(IMP)fake_isOccluded,NULL);
+	swizzleImp(@"NSOcclusionDetectionView",@"validateNoOcclusionSinceToken:",true,(IMP)fake_validateNoOcclusionSinceToken,NULL);
+	safariSetup();
 }

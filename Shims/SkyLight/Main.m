@@ -22,12 +22,10 @@ BOOL isWindowServer;
 #import "Occlusion.m"
 #import "Photos.m"
 #import "Rim.m"
-#import "SecureCursor.m"
 #import "Scroll.m"
 #import "Session.m"
 #import "Sleep.m"
 #import "Todo.m"
-#import "TS2.m"
 #import "WindowFlags.m"
 #import "Zoom.m"
 
@@ -59,8 +57,6 @@ BOOL isWindowServer;
 	hiddSetup();
 	menuBarSetup();
 	occlusionSetup();
-	safariSetup();
-	ts2Setup();
 	
 	pluginsSetup();
 	

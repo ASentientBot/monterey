@@ -1,6 +1,6 @@
 # credits
 - [EduCovas](https://github.com/educovas): Safari Extensions, WebKit, SkyLight, and Safari freeze (DisplayLink) insights, swipe between pages workaround, QuartzCore (Control Center, missing icons, blur saturation, corners) insights and shim code, Catalyst scrolling workaround, extensive testing
-- [moosethegoose2213](https://moosethegoose2213.github.io) (ASentientHedgehog): TeraScale 2 and QuartzCore (corners) insights, previous keyboard backlight workaround, extensive testing
+- [ASentientHedgehog](https://moosethegoose2213.github.io): TeraScale 2 and QuartzCore (corners) insights, previous keyboard backlight workaround, OpenCL downgrade, extensive testing
 - [dosdude1](http://dosdude1.com): 10.14.4+ OpenGL fix, Mojave/Catalina patchers, countless macOS insights
 - [Dortania](https://dortania.github.io) ([khronokernel](https://github.com/khronokernel), [dhinakg](https://github.com/dhinakg), et al.): OpenCore Legacy Patcher, Broadcom Wi-Fi fix, Bluetooth insights, TeraScale 2 insights, excellent hackintosh guides, countless other explanations and help
 - [Flagers](https://github.com/flagersgit): various macOS insights and help
@@ -11,6 +11,7 @@
 - [Syncretic](https://forums.macrumors.com/members/syncretic.1173816/): [MonteRand](https://forums.macrumors.com/threads/monterand-probably-the-start-of-an-ongoing-saga.2320479/)
 - [Acidanthera](https://github.com/acidanthera): aftermarket SSD hibernation patch
 - [Julian Fairfax](https://julianfairfax.gitlab.io): macOS insights, testing
+- IronApple: OpenCL downgrade testing
 - [me](http://asentientbot.github.io): code, most fixes not listed above
 
 Thanks as well to other contributors, moderators, and testers on [Unsupported Macs Discord](https://discord.gg/XbbWAsE), [OCLP Discord](https://discord.gg/rqdPgH8xSN), and [MacRumors Forums](https://forums.macrumors.com). Please tell me if I forgot to mention you.
@@ -26,6 +27,10 @@ Run `Install.tool` to prepare patches for a given machine:
 Select `reveal` to show the output in Finder. Other modes are unsupported; see [OCLP](https://dortania.github.io/OpenCore-Legacy-Patcher/) for all practical uses.
 
 # changes
+
+## 2022-2-23
+- disable TS2 hacks since ASentientHedgehog and IronApple fixed OpenCL
+- enable open/save buttons on 12.3 DP4
 
 ## 2022-2-9
 - reduce keyboard backlight hack delay, disable by default (`sudo defaults write /Library/Preferences/.GlobalPreferences.plist NonMetal_BacklightHack -bool true` to enable)
@@ -176,8 +181,6 @@ Roughly ordered by priority. Also see [here](https://github.com/dortania/OpenCor
 - fix "Cycle Through Windows"
 - fix "Swipe Between Pages" (workaround: `defaults write -g AppleEnableMouseSwipeNavigateWithScrolls -bool true`)
 - investigate rare binaries not seeing re-exported symbols (Dropbox-specific workaround: [SkyLight plugin](https://github.com/ASentientBot/monterey/releases/download/2021-12-17/throw.this.in.the.SkyLight.plugins.folder.to.fix.Dropbox.in.a.really.non.ideal.way.zip))
-- automatically handle TeraScale 2 colors (workaround: set "millions" in SwitchResX)
-- fix VNC on TeraScale 2
 - support Ironlake
 - investigate slow compositing in all browsers
 - investigate broken WebGL in all browsers (workaround: use Chrome's `ignore-gpu-blocklist`)
