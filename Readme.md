@@ -1,6 +1,6 @@
 # credits
 - [EduCovas](https://github.com/educovas): Safari Extensions, WebKit, SkyLight, and Safari freeze (DisplayLink) insights, swipe between pages workaround, QuartzCore (Control Center, missing icons, blur saturation, corners) insights and shim code, Catalyst scrolling workaround, extensive testing
-- [ASentientHedgehog](https://moosethegoose2213.github.io): TeraScale 2 and QuartzCore (corners) insights, previous keyboard backlight workaround, OpenCL downgrade, extensive testing
+- [ASentientHedgehog](https://moosethegoose2213.github.io): TeraScale 2 and QuartzCore (corners) insights, previous keyboard backlight workaround, OpenCL downgrade, Night Shift prefpane fix, extensive testing
 - [dosdude1](http://dosdude1.com): 10.14.4+ OpenGL fix, Mojave/Catalina patchers, countless macOS insights
 - [Dortania](https://dortania.github.io) ([khronokernel](https://github.com/khronokernel), [dhinakg](https://github.com/dhinakg), et al.): OpenCore Legacy Patcher, Broadcom Wi-Fi fix, Bluetooth insights, TeraScale 2 insights, excellent hackintosh guides, countless other explanations and help
 - [Flagers](https://github.com/flagersgit): various macOS insights and help
