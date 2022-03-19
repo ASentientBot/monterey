@@ -191,7 +191,7 @@ Roughly ordered by priority. Also see [here](https://github.com/dortania/OpenCor
 - fix Photo Booth (workaround: use Big Sur version)
 - fix Books (workaround: use Big Sur version)
 - automatically color menu bar text (workaround: `defaults write -g ASB_DarkMenuBar -bool true`)
-- fix hardware cursor
+- fix beachball with hardware cursor (workaround: downgrade `IOHIDFamily` to Catalina and edit WindowServer's sandbox file to allow `HIDWaitCursorFrameInterval`)
 - implement auto appearance (workaround: use NightOwl)
 - implement Screen Time locking
 - fix full-screen transition
