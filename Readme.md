@@ -12,7 +12,7 @@
 - [Acidanthera](https://github.com/acidanthera): aftermarket SSD hibernation patch
 - [Julian Fairfax](https://julianfairfax.gitlab.io): macOS insights, testing
 - IronApple: OpenCL downgrade testing
-- [me](http://asentientbot.github.io): code, most fixes not listed above
+- [me](http://asentientbot.github.io): most fixes not listed above
 
 Thanks as well to other contributors, moderators, and testers on [Unsupported Macs Discord](https://discord.gg/XbbWAsE), [OCLP Discord](https://discord.gg/rqdPgH8xSN), and [MacRumors Forums](https://forums.macrumors.com). Please tell me if I forgot to mention you.
 
@@ -27,6 +27,9 @@ Run `Install.tool` to prepare patches for a given machine:
 Select `reveal` to show the output in Finder. Other modes are unsupported; see [OCLP](https://dortania.github.io/OpenCore-Legacy-Patcher/) for all practical uses.
 
 # changes
+
+## 2022-3-7
+- whitelist Displays prefpane service in Night Shift fixes, thanks ASentientHedgehog for this finding
 
 ## 2022-2-23
 - disable TS2 hacks since ASentientHedgehog and IronApple fixed OpenCL
