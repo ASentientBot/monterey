@@ -176,6 +176,7 @@ Changes since last non-GitHub release.
 Roughly ordered by priority. Also see [here](https://github.com/dortania/OpenCore-Legacy-Patcher/issues/108#issuecomment-810634088).
 
 - fix Catalyst timeout crash
+- fix beachball with hardware cursor (workaround: downgrade `IOHIDFamily` to Catalina and edit WindowServer's sandbox file to allow `HIDWaitCursorFrameInterval`, or use [this](https://github.com/ASentientBot/monterey/releases/download/2022-3-20/you.can.edit.the.defines.to.make.it.spin.extremely.fast.or.even.backward.lol.zip) beta SkyLight plugin)
 - fix mouse event weirdness on dual monitors with blur fix
 - fix unresponsive password dialogs with downgraded QuartzCore
 - implement Objective-C functions in Stubber
@@ -197,7 +198,6 @@ Roughly ordered by priority. Also see [here](https://github.com/dortania/OpenCor
 - fix Photo Booth (workaround: use Big Sur version)
 - fix Books (workaround: use Big Sur version)
 - automatically color menu bar text (workaround: `defaults write -g ASB_DarkMenuBar -bool true`)
-- fix beachball with hardware cursor (workaround: downgrade `IOHIDFamily` to Catalina and edit WindowServer's sandbox file to allow `HIDWaitCursorFrameInterval`)
 - implement auto appearance (workaround: use NightOwl)
 - implement Screen Time locking
 - fix full-screen transition
