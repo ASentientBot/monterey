@@ -45,7 +45,10 @@ nop 0x8
 # prevent prefpane crash
 # TODO: shim SLSInstallRemoteContextNotificationHandlerV2 instead
 symbol ___SLSRemoveRemoteContextNotificationHandler_block_invoke
-return 0x0'
+return 0x0
+
+symbol __ZL26debug_connection_permittedv
+return 0x1'
 
 if test -e "$code/Stuff/anti-thing.txt"
 then
