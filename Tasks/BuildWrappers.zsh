@@ -32,8 +32,12 @@ function build
 	shimsIn="$code/Shims"
 
 	./Stubber "$oldIn" "$newIn" "$shimsIn" "$mainIn"
+
+	current="$(otool -l "$newIn" | grep -m 1 'current version' | cut -d ' ' -f 9)"
+	compatibility="$(otool -l "$newIn" | grep -m 1 'compatibility version' | cut -d ' ' -f 3)"
+	echo "current $current compatibility $compatibility"
 	
-	clangCommon -dynamiclib -compatibility_version 1.0.0 -current_version 1.0.0 -install_name "$mainInstall" -Xlinker -reexport_library "$oldOut" -I "$code/Shims" "$mainIn" -o "$mainOut" "${@:5}"
+	clangCommon -dynamiclib -compatibility_version "$compatibility" -current_version "$current" -install_name "$mainInstall" -Xlinker -reexport_library "$oldOut" -I "$code/Shims" "$mainIn" -o "$mainOut" "${@:5}"
 	
 	codesign -f -s - "$oldOut"
 	codesign -f -s - "$mainOut"

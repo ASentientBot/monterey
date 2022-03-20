@@ -28,6 +28,9 @@ Select `reveal` to show the output in Finder. Other modes are unsupported; see [
 
 # changes
 
+## 2022-3-19
+- update build scripts to apply correct library versions to wrappers
+
 ## 2022-3-7
 - whitelist Displays prefpane service in Night Shift fixes, thanks ASentientHedgehog for this finding
 
