@@ -28,6 +28,10 @@ Select `reveal` to show the output in Finder. Other modes are unsupported; see [
 
 # changes
 
+# 2022-3-31
+- begin work to support QuartzCore downgraded to Mojave (significantly improves performance but currently breaks many features; another huge thanks to our local madlad EduCovas for the discovery!)
+- rewrite Stubber's Objective-C handling to generate real functions (rather than catching invocations), allowing auto-generation of most formerly handwritten QuartzCore stub categories
+
 ## 2022-3-19
 - update build scripts to apply correct library versions to wrappers
 

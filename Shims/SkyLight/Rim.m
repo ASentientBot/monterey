@@ -9,8 +9,6 @@ BOOL rimBeta()
 	dispatch_once(&rimBetaOnce,^()
 	{
 		rimBetaValue=[NSUserDefaults.standardUserDefaults boolForKey:@"ASB_RimBeta"];
-		
-		trace(@"ASB_RimBeta %d",rimBetaValue);
 	});
 	
 	return rimBetaValue;
@@ -23,8 +21,6 @@ double rimOverride()
 	dispatch_once(&rimOverrideOnce,^()
 	{
 		rimOverrideValue=[NSUserDefaults.standardUserDefaults doubleForKey:@"ASB_RimOverride"];
-		
-		trace(@"ASB_RimOverride %lf",rimOverrideValue);
 	});
 	
 	return rimOverrideValue;
@@ -74,12 +70,8 @@ void removeFakeRim(unsigned int windowID)
 
 void SLSWindowSetShadowProperties(unsigned int edi_windowID,NSDictionary* rsi_properties)
 {
-	// trace(@"SLSWindowSetShadowProperties in %d %@",edi_windowID,rsi_properties);
-	
 	if(!rimBeta()||!hasShadow(rsi_properties))
 	{
-		// trace(@"SLSWindowSetShadowProperties passthrough");
-		
 		if(rimBeta())
 		{
 			removeFakeRim(edi_windowID);
@@ -88,8 +80,6 @@ void SLSWindowSetShadowProperties(unsigned int edi_windowID,NSDictionary* rsi_pr
 		SLSWindowSetShadowPropertie$(edi_windowID,rsi_properties);
 		return;
 	}
-	
-	// trace(@"SLSWindowSetShadowProperties override");
 	
 	NSMutableDictionary* newProperties=rsi_properties.mutableCopy;
 	

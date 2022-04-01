@@ -1,65 +1,24 @@
+// TODO: re-test all now that we're downgrading to Mojave
+// TODO: refactor into several files like SL shims
+
 #import "Utils.h"
-@import QuartzCore;
-
-// from old SL shim - Blurs.m
-// with downgraded QuartzCore, no longer needed for grey blurs
-// but EduCovas noticed this greatly reduces flickering
-
-void (*real_setScale)(id,SEL,double);
-
-void fake_setScale(id self,SEL selector,double value)
-{
-	value=MAX(value,1);
-	
-	real_setScale(self,selector,value);
-}
-
-void blursSetup()
-{
-	swizzleImp(@"CABackdropLayer",@"setScale:",true,(IMP)fake_setScale,(IMP*)&real_setScale);
-}
-
-// from old SL shim - DowngradedQuartzCore.m
-
-@interface CAPresentationModifierGroup:NSObject
--(void)flush;
-@end
 
 @interface CAPresentationModifierGroup(Shim)
 @end
 
 @implementation CAPresentationModifierGroup(Shim)
 
--(void)setUpdatesAsynchronously:(BOOL)flag
-{
-}
-
 -(void)flushWithTransaction
 {
-	self.flush;
+	[self flush];
 }
 
 @end
 
-// from EduCovas, modified
+BOOL brightnessHack;
 
-@interface CABackdropLayer:NSObject
-@end
-
-@interface CABackdropLayer(Shim)
-@end
-
-@implementation CABackdropLayer(Shim)
-
--(void)setAllowsSubstituteColor:(BOOL)flag
-{
-}
-
--(void)setGroupNamespace:(id)rdx
-{
-}
-
-@end
+// animations
+// exploit existing key/value storage on CATransaction
 
 int transBoolCount=0;
 NSString* transFakeKey(int key)
@@ -70,39 +29,17 @@ NSString* transFakeKey(int key)
 @interface CATransaction(Shim)
 @end
 
-BOOL brightnessHack;
-
 @implementation CATransaction(Shim)
-
-+(void)startFrameWithReason:(id)rdx beginTime:(id)rcx commitDeadline:(id)r8
-{
-}
-
-+(void)finishFrameWithToken:(id)rdx
-{
-}
-
-+(void)setFrameStallSkipRequest:(id)rdx
-{
-}
-
-+(void)setFrameInputTime:(id)rdx withToken:(id)rcx
-{
-}
-
-// fix animations - ASB
 
 +(void)setBoolValue:(BOOL)value forKey:(int)key
 {
-	// trace(@"CATransaction setBoolValue: %d forKey: %d",value,key);
-	
 	[self setValue:[NSNumber numberWithBool:value] forKey:transFakeKey(key)];
 }
 
 +(BOOL)boolValueForKey:(int)key
 {
-	// TODO: MinhTon's fix for brightness slider on MacBook5,1
-	// not sure of the root cause right now...
+	// MinhTon's fix for brightness slider on MacBook5,1
+	// TODO: a mystery
 	
 	if(brightnessHack)
 	{
@@ -111,15 +48,11 @@ BOOL brightnessHack;
 	
 	BOOL result=((NSNumber*)[self valueForKey:transFakeKey(key)]).boolValue;
 	
-	// trace(@"CATransaction boolValueForKey: %ld - %d",key,result);
-	
 	return result;
 }
 
 +(int)registerBoolKey
 {
-	// trace(@"CATransaction registerBoolKey");
-	
 	transBoolCount++;
 	
 	return transBoolCount;
@@ -127,7 +60,7 @@ BOOL brightnessHack;
 
 @end
 
-// prevent Catalyst crash - ASB
+// weird crash
 
 BOOL (*real_ACHFP)(CATransaction*,SEL,void*,int);
 BOOL fake_ACHFP(CATransaction* self,SEL sel,void* rdx_block,int rcx_phase)
@@ -147,7 +80,7 @@ BOOL fake_ACHFP(CATransaction* self,SEL sel,void* rdx_block,int rcx_phase)
 	return true;
 }
 
-// prevent WindowServer crash due to Finder glyphs - ASB
+// WindowServer crash due to sidebar glyphs
 
 @interface CAFilter:NSObject
 -(NSString*)name;
@@ -174,39 +107,35 @@ void fake_SCF(CALayer* self,SEL sel,NSObject* filter)
 
 // SiriNCService not appearing
 
-@interface CAFenceHandle:QuartzCoreStubClass<NSSecureCoding>
+@interface CAFenceHandle(shim)<NSSecureCoding>
 @end
 
-@implementation CAFenceHandle
+@implementation CAFenceHandle(shim)
 
 +(instancetype)newFenceFromDefaultServer
 {
-	// trace(@"CAFenceHandle newFenceFromDefaultServer");
-	
 	return CAFenceHandle.alloc.init;
 }
 
 +(BOOL)supportsSecureCoding
 {
-	// trace(@"CAFenceHandle supportsSecureCoding");
 	return true;
 }
 
 -(instancetype)initWithCoder:(NSCoder*)coder
 {
-	// trace(@"CAFenceHandle initWithCoder:");
 	self=self.init;
 	return self;
 }
 
 -(void)encodeWithCoder:(NSCoder*)coder
 {
-	// trace(@"CAFenceHandle encodeWithCoder");
 }
 
 @end
 
-// private, can't use a category
+// private, can't use a category to add missing symbols
+// TODO: generate via Stubber, make public, or SOMETHING better than this...
 
 void doNothing()
 {
@@ -214,40 +143,40 @@ void doNothing()
 
 void fixCAContextImpl()
 {
-	// TODO: make a utility function like swizzleImp
-	
 	Class CAContextImpl=NSClassFromString(@"CAContextImpl");
 	class_addMethod(CAContextImpl,@selector(addFence:),(IMP)doNothing,"v@:@");
 	class_addMethod(CAContextImpl,@selector(transferSlot:toContextWithId:),(IMP)doNothing,"v@:@@");
 }
 
-// hack to allow iMessage to quit
+// TODO: check necessary
 
-BOOL fake_AST(id self,SEL sel)
-{
-	trace(@"fake_AST");
-	
-	return true;
-}
-
-@interface Load:NSObject
+@interface CALayer(Shim)
 @end
 
-@implementation Load
+@implementation CALayer(Shim)
 
-+(void)load
+-(void)setUnsafeUnretainedDelegate:(id)rdx
+{
+	[self setDelegate:rdx];
+}
+
+-(id)unsafeUnretainedDelegate
+{
+	return [self delegate];
+}
+
+@end
+
+__attribute__((constructor))
+void load()
 {
 	swizzleLog=false;
 	traceLog=true;
 	
 	swizzleImp(@"CATransaction",@"addCommitHandler:forPhase:",false,(IMP)fake_ACHFP,(IMP*)&real_ACHFP);
 	swizzleImp(@"CALayer",@"setCompositingFilter:",true,(IMP)fake_SCF,(IMP*)&real_SCF);
-	swizzleImp(@"UINSAppKitTerminationController",@"appShouldTerminate",true,(IMP)fake_AST,NULL);
 	
 	fixCAContextImpl();
-	blursSetup();
 	
 	brightnessHack=[NSProcessInfo.processInfo.arguments[0] isEqualToString:@"/System/Library/CoreServices/ControlCenter.app/Contents/MacOS/ControlCenter"];
 }
-
-@end

@@ -22,8 +22,6 @@ NSDictionary* SLSCopyDevicesDictionary()
 		valuesNew.release;
 	}
 	
-	// trace(@"SLSCopyDevicesDictionary %@",dictOut);
-	
 	// don't autorelease because *Copy*
 	return dictOut;
 }

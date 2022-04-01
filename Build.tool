@@ -18,7 +18,6 @@ if test "$major" = "12"
 then
 	runTask "PatchWeb"
 	runTask "PatchBluetooth"
-#	runTask "PatchKernel"
 	runTask "PatchLPM"
 fi
 

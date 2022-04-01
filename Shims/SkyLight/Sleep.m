@@ -6,8 +6,6 @@ io_registry_entry_t displaySleepEntry;
 
 unsigned int SLSDisplayManagerRequestDisplaysIdle()
 {
-	// trace(@"SLSDisplayManagerRequestDisplaysIdle");
-	
 	dispatch_once(&displaySleepOnce,^()
 	{
 		displaySleepEntry=IORegistryEntryFromPath(kIOMainPortDefault,"IOService:/IOResources/IODisplayWrangler");
@@ -27,8 +25,6 @@ NSMutableArray<dispatch_block_t>* displayNotifyBlocks;
 
 void displayNotifyCommon(unsigned int type)
 {
-	// trace(@"displayNotifyCommon %d",type);
-	
 	for(unsigned int index=0;index<displayNotifyQueues.count;index++)
 	{
 		if(displayNotifyTypes[index].intValue==type)
@@ -61,8 +57,6 @@ void displayWakeCallback()
 
 unsigned int SLSDisplayManagerRegisterPowerStateNotification(dispatch_queue_t rdi_queue,unsigned int esi,unsigned int edx_type,dispatch_block_t rcx_block)
 {
-	// trace(@"SLSDisplayManagerRegisterPowerStateNotification %d %@",edx_type,NSThread.callStackSymbols);
-	
 	dispatch_once(&displayNotifyOnce,^()
 	{
 		displayNotifyQueues=NSMutableArray.alloc.init;

@@ -34,10 +34,10 @@ BOOL fake_validateNoOcclusionSinceToken(id self,SEL selector,void* rdx)
 	return true;
 }
 
-@interface SLSecureCursorAssertion:SkyLightStubClass
+@interface SLSecureCursorAssertion(Shim)
 @end
 
-@implementation SLSecureCursorAssertion
+@implementation SLSecureCursorAssertion(Shim)
 
 +(instancetype)assertion
 {

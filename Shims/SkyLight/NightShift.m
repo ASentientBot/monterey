@@ -1,7 +1,5 @@
 // enable Night Shift
 
-// TODO: enable in prefpane too
-
 NSString* ASI_CopyComputerModelName(int edi_includeNumbers);
 
 NSString* fake_CCMN(int edi_includeNumbers)

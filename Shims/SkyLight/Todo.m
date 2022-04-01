@@ -1,14 +1,6 @@
 // TODO: non-ideal workarounds
 
-// TODO: remove
-
-unsigned long SLSFindSessionAuditSessionID()
-{
-	trace(@"SLSFindSessionAuditSessionID %@",NSThread.callStackSymbols);
-	return 0;
-}
-
-// SLSReenableUpdateTokenWithSeed assertions
+// assertions
 
 unsigned long SLSReenableUpdateTokenWithSeed()
 {

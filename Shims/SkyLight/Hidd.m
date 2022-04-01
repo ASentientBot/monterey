@@ -5,8 +5,6 @@ void* IOHIDEventSystemCreate(CFAllocatorRef);
 long IOHIDEventSystemOpen(void*,void*,void*,void*,long);
 long IOHIDEventSystemSetProperty(void*,CFStringRef,void*);
 
-// TODO: necessary?
-// TODO: increase the priority more?
 dispatch_queue_t hiddQueue;
 
 void* eventSystem;

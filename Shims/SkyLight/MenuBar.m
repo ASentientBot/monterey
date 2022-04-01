@@ -24,7 +24,6 @@ void SLSTransactionSystemStatusBarRegisterSortedWindow(unsigned long rdi_transac
 }
 
 // greyed copies on inactive display
-// keep the demosystems script away from this one :P
 
 void SLSTransactionSystemStatusBarRegisterReplicantWindow(unsigned long rdi_transaction,unsigned int esi_windowID,unsigned int edx_parent,unsigned long rcx_displayID,unsigned int r8d_flags,unsigned int r9d_appearance)
 {
@@ -76,8 +75,6 @@ const NSString* kSLMenuBarInactiveImageWindowLightKey=@"kSLMenuBarInactiveImageW
 
 unsigned int SLSSetMenuBars(unsigned int edi_connectionID,NSMutableArray* rsi_array,NSMutableDictionary* rdx_dict)
 {
-	// trace(@"SLSSetMenuBars (in) %d %@ %@",edi_connectionID,rdx_dict,rsi_array);
-	
 	// emulate the new highlight color
 	// TODO: strings may be defined somewhere
 	// TODO: obviously better to do via CALayer if possible
@@ -109,8 +106,6 @@ unsigned int SLSSetMenuBars(unsigned int edi_connectionID,NSMutableArray* rsi_ar
 		rsi_array[barIndex][kCGMenuBarImageWindowKey]=activeID;
 		rsi_array[barIndex][kCGMenuBarInactiveImageWindowKey]=inactiveID;
 	}
-	
-	// trace(@"SLSSetMenuBars (out) %d %@ %@",edi_connectionID,rdx_dict,rsi_array);
 	
 	return SLSSetMenuBar$(edi_connectionID,rsi_array,rdx_dict);
 }
@@ -156,8 +151,6 @@ NSDictionary* SLSCopySystemStatusBarMetrics()
 	result[@"displays"]=displays;
 	displays.release;
 	
-	// trace(@"SLSCopySystemStatusBarMetrics %@",result);
-	
 	// don't autorelease because *Copy*
 	return result;
 }
@@ -189,8 +182,6 @@ void menuBarRevealCommon(NSNumber* amount)
 	output[@"reveal"]=amount;
 	
 	spaceDict.release;
-	
-	// trace(@"menuBarRevealCommon %@",output);
 	
 	[NSNotificationCenter.defaultCenter postNotificationName:kSLSCoordinatedSpaceMenuBarRevealChangedNotificationName object:nil userInfo:output];
 	

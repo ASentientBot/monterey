@@ -4,7 +4,5 @@ void SLSSessionSwitchToAuditSessionIDWithOptions(unsigned int edi_sessionID,NSDi
 {
 	// TODO: cube?
 	
-	// trace(@"SLSSessionSwitchToAuditSessionIDWithOptions %d %@",edi_sessionID,rsi_options);
-	
 	SLSSessionSwitchToAuditSessionID(edi_sessionID);
 }

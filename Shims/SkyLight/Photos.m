@@ -9,8 +9,6 @@ void photosSetup()
 {
 	if([process isEqualToString:@"/System/Applications/Photos.app/Contents/MacOS/Photos"])
 	{
-		trace(@"enabling Big Sur Photos hack");
-		
 		swizzleImp(@"NUGlobalSettings",@"deviceDisableOpenGL",false,(IMP)fake_deviceDisableOpenGL,NULL);
 	}
 }

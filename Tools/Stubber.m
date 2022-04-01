@@ -1,3 +1,5 @@
+// TODO: spaghetti
+
 #import "Utils.h"
 
 NSString* oldPath;
@@ -6,11 +8,11 @@ NSString* codePath;
 NSString* outPath;
 
 NSString* name;
+NSArray<NSString*>* oldSymbols;
+NSArray<NSString*>* newSymbols;
 NSMutableArray<NSString*>* symbols;
 NSMutableString* output;
 NSMutableString* shims;
-NSMutableArray<NSString*>* classNames;
-NSMutableDictionary<NSString*,NSMutableArray<NSString*>*>* ivarNames;
 NSMutableArray<NSString*>* constantNames;
 NSMutableArray<NSString*>* functionNames;
 NSString* shimMainPath;
@@ -25,6 +27,255 @@ NSArray<NSString*>* getSymbols(NSString* path)
 	}
 	
 	return [symbolsString componentsSeparatedByString:@"\n"];
+}
+
+NSDictionary<NSString*,id>* runObjcHelper(NSString* path)
+{
+	trace(@"%@",path);
+	
+	assert(!runTask(@[@"StubberObjcHelper",path],nil,nil));
+	
+	NSData* jsonData=[NSData dataWithContentsOfFile:@"StubberObjcTemp.json"];
+	assert(jsonData);
+	
+	NSError* error=nil;
+	NSDictionary<NSString*,id>* result=[NSJSONSerialization JSONObjectWithData:jsonData options:0 error:&error];
+	assert(!error);
+	
+	return result;
+}
+
+int runObjcNewWay()
+{
+	trace(@"RUN HELPER");
+	
+	NSDictionary<NSString*,id>* oldInfo=runObjcHelper(oldPath);
+	NSDictionary<NSString*,id>* newInfo=runObjcHelper(newPath);
+	
+	int count=0;
+	
+	// TODO: extremely fragile and probably dependent on my particular coding style
+	
+	trace(@"PARSE SHIMS");
+	
+	NSMutableDictionary<NSString*,NSMutableArray*>* shimMethodLines=NSMutableDictionary.alloc.init.autorelease;
+	NSArray<NSString*>* shimLines=[shims componentsSeparatedByCharactersInSet:NSCharacterSet.newlineCharacterSet];
+	NSString* parseClass=nil;
+	for(NSString* line in shimLines)
+	{
+		if([line containsString:@"@implementation"])
+		{
+			NSArray<NSString*>* bits=[line componentsSeparatedByCharactersInSet:NSCharacterSet.alphanumericCharacterSet.invertedSet];
+			for(int index=0;index<bits.count-1;index++)
+			{
+				if([bits[index] containsString:@"implementation"])
+				{
+					parseClass=bits[index+1];
+					trace(@"into %@",parseClass);
+					break;
+				}
+			}
+			
+			continue;
+		}
+		
+		if(!parseClass)
+		{
+			continue;
+		}
+		
+		if([line containsString:@"@end"])
+		{
+			trace(@"out of %@",parseClass);
+			parseClass=nil;
+			
+			continue;
+		}
+		
+		if(line.length<2)
+		{
+			continue;
+		}
+		
+		NSString* first2=[line substringToIndex:2];
+		if([first2 isEqualToString:@"-("]||[first2 isEqualToString:@"+("])
+		{
+			trace(@"potential method %@",line);
+			
+			if(!shimMethodLines[parseClass])
+			{
+				shimMethodLines[parseClass]=NSMutableArray.alloc.init.autorelease;
+			}
+			
+			[shimMethodLines[parseClass] addObject:[line stringByAppendingString:@"$"]];
+		}
+	}
+	
+	trace(@"COMPARE");
+	
+	for(NSDictionary* newClass in newInfo)
+	{
+		NSString* name=newClass[@"name"];
+		
+		NSDictionary* oldClass=nil;
+		for(NSDictionary* oldCheck in oldInfo)
+		{
+			if([oldCheck[@"name"] isEqualToString:name])
+			{
+				oldClass=oldCheck;
+				break;
+			}
+		}
+		
+		NSString* sanity=[@"_OBJC_CLASS_$_" stringByAppendingString:name];
+		if(![newSymbols containsObject:sanity])
+		{
+			trace(@"not exported %@",name);
+			continue;
+		}
+		
+		NSString* block=[NSString stringWithFormat:@"// nostub %@\n",name];
+		if([shims containsString:block])
+		{
+			trace(@"explicitly blocked %@",name);
+			continue;
+		}
+		
+		// TODO: skip entire classes implemented in shims
+		
+		NSMutableString* classOutput=NSMutableString.alloc.init.autorelease;
+		BOOL addClass=false;
+		
+		NSArray<NSDictionary*>* oldMethods;
+		if(oldClass)
+		{
+			oldMethods=oldClass[@"methods"];
+			
+			[classOutput appendString:@"// category - class exists but is missing selectors\n"];
+			
+			NSString* block=[NSString stringWithFormat:@"// nostubinterface %@\n",name];
+			if([shims containsString:block])
+			{
+				trace(@"explicit nostubinterface %@",name);
+			}
+			else
+			{
+				[classOutput appendFormat:@"@interface %@:NSObject\n@end\n",name];
+			}
+			
+			[classOutput appendFormat:@"@interface %@(Stub)\n@end\n@implementation %@(Stub)\n",name,name];
+		}
+		else
+		{
+			// TODO: can't add ivars in a category
+			// this is going to become a problem sooner or later
+			
+			oldMethods=@[];
+			
+			addClass=true;
+			
+			[classOutput appendFormat:@"// stub - class doesn't exist at all\n@interface %@:NSObject\n{\n",name];
+			
+			for(NSDictionary* newIvar in newClass[@"ivars"])
+			{
+				[classOutput appendFormat:@"\t%@",newIvar[@"stub"]];
+				count++;
+			}
+			
+			[classOutput appendFormat:@"}\n@end\n@implementation %@\n",name];
+		}
+		
+		for(NSDictionary* newMethod in newClass[@"methods"])
+		{
+			BOOL skip=false;
+			
+			NSString* methodName=newMethod[@"name"];
+			for(NSDictionary* oldCheck in oldMethods)
+			{
+				if(((NSNumber*)oldCheck[@"instance"]).boolValue==((NSNumber*)newMethod[@"instance"]).boolValue&&[oldCheck[@"name"] isEqualToString:methodName])
+				{
+					skip=true;
+					break;
+				}
+			}
+			
+			if(skip)
+			{
+				continue;
+			}
+			
+			NSArray<NSString*>* nameBits=[methodName componentsSeparatedByString:@":"];
+			for(NSString* line in shimMethodLines[name])
+			{
+				BOOL allBitsMatch=true;
+				NSUInteger lastBitOffset=0;
+				for(int index=0;index<nameBits.count;index++)
+				{
+					NSString* bit=nameBits[index];
+					
+					if(bit.length==0)
+					{
+						trace(@"bit short");
+						continue;
+					}
+					
+					if(index==0)
+					{
+						bit=[@")" stringByAppendingString:bit];
+					}
+					if(nameBits.count>1)
+					{
+						bit=[bit stringByAppendingString:@":"];
+					}
+					else
+					{
+						bit=[bit stringByAppendingString:@"$"];
+					}
+					
+					trace(@"bit %@",bit);
+					
+					NSUInteger bitOffset=[line rangeOfString:bit].location;
+					if(bitOffset==NSNotFound||bitOffset<lastBitOffset)
+					{
+						trace(@"bit ded %d %d",bitOffset,lastBitOffset);
+						allBitsMatch=false;
+						break;
+					}
+					
+					lastBitOffset=bitOffset;
+				}
+				
+				if(allBitsMatch)
+				{
+					trace(@"matched shims %@ | %@",methodName,line);
+					skip=true;
+					break;
+				}
+			}
+			
+			if(skip)
+			{
+				continue;
+			}
+			
+			trace(@"method %@",methodName);
+			
+			addClass=true;
+			
+			[classOutput appendString:newMethod[@"stub"]];
+			count++;
+		}
+		
+		[classOutput appendString:@"@end\n"];
+		
+		if(addClass)
+		{
+			trace(@"class %@",name);
+			[output appendString:classOutput];
+		}
+	}
+	
+	return count;
 }
 
 const int TYPE_ONCE=0;
@@ -61,8 +312,8 @@ void setupTasks()
 	
 	addTask(@"compare symbols",TYPE_ONCE,^int()
 	{
-		NSArray<NSString*>* oldSymbols=getSymbols(oldPath);
-		NSArray<NSString*>* newSymbols=getSymbols(newPath);
+		oldSymbols=getSymbols(oldPath);
+		newSymbols=getSymbols(newPath);
 		
 		if(!oldSymbols||!newSymbols)
 		{
@@ -86,9 +337,9 @@ void setupTasks()
 	{
 		output=NSMutableString.alloc.init;
 	
-		[output appendString:@"// generated by Stubber\n"];
+		[output appendString:@"// generated by Stubber\n\n"];
 		
-		[output appendString:@"#import \"Utils.h\"\n"];
+		[output appendString:@"@import Foundation;\n"];
 		
 		return RET_NULL;
 	});
@@ -135,94 +386,30 @@ void setupTasks()
 		return [shims containsString:check]?RET_DONE_DELETE:RET_NULL;
 	});
 	
-	addTask(@"init classes",TYPE_ONCE,^int()
+	addTask(@"(new) add imports",TYPE_ONCE,^int()
 	{
-		classNames=NSMutableArray.alloc.init;
-		ivarNames=NSMutableDictionary.alloc.init;
-		return RET_NULL;
-	});
-	
-	addTask(@"add classes",TYPE_PER_SYMBOL,^int(NSString* symbol)
-	{
-		if([symbol containsString:@"OBJC_CLASS_$_"])
+		int count=0;
+		NSArray<NSString*>* shimLines=[shims componentsSeparatedByCharactersInSet:NSCharacterSet.newlineCharacterSet];
+		for(NSString* line in shimLines)
 		{
-			NSString* className=[symbol substringFromIndex:13];
-			[classNames addObject:className];
-			
-			ivarNames[className]=NSMutableArray.alloc.init;
-			
-			return RET_DONE_DELETE;
-		}
-		return RET_NULL;
-	});
-	
-	addTask(@"remove metaclasses",TYPE_PER_SYMBOL,^int(NSString* symbol)
-	{
-		return [symbol containsString:@"OBJC_METACLASS_$_"]?RET_DONE_DELETE:RET_NULL;
-	});
-	
-	addTask(@"add ivars",TYPE_PER_SYMBOL,^int(NSString* symbol)
-	{
-		if([symbol containsString:@"OBJC_IVAR_$_"])
-		{
-			NSArray<NSString*>* bits=[[symbol substringFromIndex:12] componentsSeparatedByString:@"."];
-			[ivarNames[bits[0]] addObject:bits[1]];
-			
-			return RET_DONE_DELETE;
-		}
-		return RET_NULL;
-	});
-	
-	addTask(@"remove shim classes",TYPE_ONCE,^int()
-	{
-		unsigned int count=0;
-		for(unsigned int index=0;index<classNames.count;index++)
-		{
-			NSString* check=[NSString stringWithFormat:@"@interface %@:",classNames[index]];
-			if([shims containsString:check])
+			if([line containsString:@"// shimimport"])
 			{
-				[classNames removeObjectAtIndex:index];
-				index--;
+				NSString* name=[line componentsSeparatedByString:@" "].lastObject;
+				[output appendFormat:@"@import %@;\n",name];
 				count++;
 			}
 		}
 		return count;
 	});
 	
-	addTask(@"commit classes",TYPE_ONCE,^int()
+	addTask(@"(new) generate objective-c stubs",TYPE_ONCE,^int()
 	{
-		if(classNames.count>0)
-		{
-			NSString* classPath=[codePath stringByAppendingPathComponent:@"Stub.m"];
-			NSString* classString=[NSString stringWithContentsOfFile:classPath encoding:NSUTF8StringEncoding error:nil];
-			
-			if(!classString)
-			{
-				return RET_ERROR;
-			}
-			
-			NSString* stubClassName=[name stringByAppendingString:@"StubClass"];
-			classString=[classString stringByReplacingOccurrencesOfString:@"%name%" withString:stubClassName];
-			
-			[output appendString:classString];
-			[output appendString:@"\n"];
-			
-			for(unsigned int index=0;index<classNames.count;index++)
-			{
-				NSString* className=classNames[index];
-				
-				[output appendFormat:@"@interface %@:%@\n{\n",className,stubClassName];
-				
-				for(NSString* ivarName in ivarNames[className])
-				{
-					[output appendFormat:@"\tid %@;\n",ivarName];
-				}
-				
-				[output appendFormat:@"}\n@end\n@implementation %@\n@end\n",className];
-			}
-		}
-		
-		return classNames.count;
+		return runObjcNewWay();
+	});
+	
+	addTask(@"(new) skip objective-c symbols",TYPE_PER_SYMBOL,^int(NSString* symbol)
+	{
+		return [symbol containsString:@"OBJC_"]?RET_DONE_DELETE:RET_NULL;
 	});
 	
 	addTask(@"init constants",TYPE_ONCE,^int()

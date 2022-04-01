@@ -72,8 +72,6 @@ BOOL blurBeta()
 	dispatch_once(&blurBetaOnce,^()
 	{
 		blurBetaValue=[NSUserDefaults.standardUserDefaults boolForKey:@"ASB_BlurBeta"];
-		
-		trace(@"ASB_BlurBeta %d",blurBetaValue);
 	});
 	
 	return blurBetaValue;
@@ -96,8 +94,6 @@ BOOL blurBeta()
 		
 		swizzleImp(@"NSVisualEffectView",@"_updateMaterialLayer",true,(IMP)fake__updateMaterialLayer,(IMP*)&real__updateMaterialLayer);
 	});
-	
-	trace(@"ContextWrapper init %d %d %@",connectionID,windowID,context);
 	
 	_connectionID=connectionID;
 	_windowID=windowID;
@@ -150,8 +146,6 @@ BOOL blurBeta()
 
 -(void)updateBackdrop
 {
-	// trace(@"ContextWrapper updateBackdrop (activeBlurs %d)",_activeBlurs);
-	
 	// TODO: exit early if unchanged activeBlurs and bounds
 	
 	self.removeBackdrop;
@@ -171,8 +165,6 @@ BOOL blurBeta()
 
 -(void)dealloc
 {
-	trace(@"ContextWrapper dealloc");
-	
 	// TODO: do *Surface* calls need to be undone?
 	
 	_context.release;
