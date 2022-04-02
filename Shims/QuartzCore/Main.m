@@ -149,7 +149,7 @@ void fixCAContextImpl()
 long CAImageQueueInsertImage(void* rdi_queue,int esi,void* rdx_surface,int ecx,void* r8_function,void* r9,double xmm0);
 long CAImageQueueInsertImageWithRotation(void* rdi_queue,int esi,void* rdx,int ecx,int r8d,void* r9_function,double xmm0,void* stack)
 {
-	trace(@"CAImageQueueInsertImageWithRotation %p %d %p %d %d %p %lf %p %@",rdi_queue,esi,rdx,ecx,r8d,r9_function,xmm0,stack,NSThread.callStackSymbols);
+	// trace(@"CAImageQueueInsertImageWithRotation %p %d %p %d %d %p %lf %p %@",rdi_queue,esi,rdx,ecx,r8d,r9_function,xmm0,stack,NSThread.callStackSymbols);
 	
 	// TODO: not sure of order of 32-bit parameters
 	// and clearly the lack of rotation will pose a problem at some point
