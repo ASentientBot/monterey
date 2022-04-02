@@ -100,7 +100,7 @@ int runObjcNewWay()
 		NSString* first2=[line substringToIndex:2];
 		if([first2 isEqualToString:@"-("]||[first2 isEqualToString:@"+("])
 		{
-			trace(@"potential method %@",line);
+			trace(@"method %@",line);
 			
 			if(!shimMethodLines[parseClass])
 			{
@@ -215,7 +215,6 @@ int runObjcNewWay()
 					
 					if(bit.length==0)
 					{
-						trace(@"bit short");
 						continue;
 					}
 					
@@ -232,12 +231,9 @@ int runObjcNewWay()
 						bit=[bit stringByAppendingString:@"$"];
 					}
 					
-					trace(@"bit %@",bit);
-					
 					NSUInteger bitOffset=[line rangeOfString:bit].location;
 					if(bitOffset==NSNotFound||bitOffset<lastBitOffset)
 					{
-						trace(@"bit ded %d %d",bitOffset,lastBitOffset);
 						allBitsMatch=false;
 						break;
 					}
@@ -355,6 +351,7 @@ void setupTasks()
 		NSArray<NSString*>* fileNames=[NSFileManager.defaultManager contentsOfDirectoryAtPath:folderPath error:&error];
 		if(error)
 		{
+			trace(@"can't list directory %@",folderPath);
 			return RET_NO;
 		}
 		

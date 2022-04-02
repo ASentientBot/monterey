@@ -20,8 +20,8 @@ BOOL brightnessHack;
 // animations
 // exploit existing key/value storage on CATransaction
 
-int transBoolCount=0;
-NSString* transFakeKey(int key)
+int transactionBoolCount=0;
+NSString* transactionFakeKey(int key)
 {
 	return [NSString stringWithFormat:@"fake%d",key];
 }
@@ -33,7 +33,7 @@ NSString* transFakeKey(int key)
 
 +(void)setBoolValue:(BOOL)value forKey:(int)key
 {
-	[self setValue:[NSNumber numberWithBool:value] forKey:transFakeKey(key)];
+	[self setValue:[NSNumber numberWithBool:value] forKey:transactionFakeKey(key)];
 }
 
 +(BOOL)boolValueForKey:(int)key
@@ -46,21 +46,21 @@ NSString* transFakeKey(int key)
 		return false;
 	}
 	
-	BOOL result=((NSNumber*)[self valueForKey:transFakeKey(key)]).boolValue;
+	BOOL result=((NSNumber*)[self valueForKey:transactionFakeKey(key)]).boolValue;
 	
 	return result;
 }
 
 +(int)registerBoolKey
 {
-	transBoolCount++;
+	transactionBoolCount++;
 	
-	return transBoolCount;
+	return transactionBoolCount;
 }
 
 @end
 
-// weird crash
+// weird Catalyst crash
 
 BOOL (*real_ACHFP)(CATransaction*,SEL,void*,int);
 BOOL fake_ACHFP(CATransaction* self,SEL sel,void* rdx_block,int rcx_phase)
@@ -80,37 +80,12 @@ BOOL fake_ACHFP(CATransaction* self,SEL sel,void* rdx_block,int rcx_phase)
 	return true;
 }
 
-// WindowServer crash due to sidebar glyphs
-
-@interface CAFilter:NSObject
--(NSString*)name;
-@end
-
-void (*real_SCF)(CALayer*,SEL,NSObject*);
-void fake_SCF(CALayer* self,SEL sel,NSObject* filter)
-{
-	if(filter&&[filter isKindOfClass:CAFilter.class]&&[((CAFilter*)filter).name isEqualToString:@"vibrantColorMatrixSourceOver"])
-	{
-		// TODO: fixes glyphs in dark mode but not light, investigate further
-		
-		/*NSValue* matrix=[filter valueForKey:kCAFilterInputColorMatrix];
-		
-		CAFilter* newFilter=[CAFilter filterWithType:kCAFilterColorMatrix];
-		[newFilter setValue:matrix forKey:kCAFilterInputColorMatrix];
-		self.filters=@[newFilter];*/
-		
-		filter=nil;
-	}
-	
-	real_SCF(self,sel,filter);
-}
-
 // SiriNCService not appearing
 
-@interface CAFenceHandle(shim)<NSSecureCoding>
+@interface CAFenceHandle(Shim)<NSSecureCoding>
 @end
 
-@implementation CAFenceHandle(shim)
+@implementation CAFenceHandle(Shim)
 
 +(instancetype)newFenceFromDefaultServer
 {
@@ -167,6 +142,20 @@ void fixCAContextImpl()
 
 @end
 
+// videos not playing
+
+// TODO: check signatures, especially return value
+
+long CAImageQueueInsertImage(void* rdi_queue,int esi,void* rdx_surface,int ecx,void* r8_function,void* r9,double xmm0);
+long CAImageQueueInsertImageWithRotation(void* rdi_queue,int esi,void* rdx,int ecx,int r8d,void* r9_function,double xmm0,void* stack)
+{
+	trace(@"CAImageQueueInsertImageWithRotation %p %d %p %d %d %p %lf %p %@",rdi_queue,esi,rdx,ecx,r8d,r9_function,xmm0,stack,NSThread.callStackSymbols);
+	
+	// TODO: not sure of order of 32-bit parameters
+	// and clearly the lack of rotation will pose a problem at some point
+	return CAImageQueueInsertImage(rdi_queue,esi,rdx,ecx,r9_function,stack,xmm0);
+}
+
 __attribute__((constructor))
 void load()
 {
@@ -174,7 +163,6 @@ void load()
 	traceLog=true;
 	
 	swizzleImp(@"CATransaction",@"addCommitHandler:forPhase:",false,(IMP)fake_ACHFP,(IMP*)&real_ACHFP);
-	swizzleImp(@"CALayer",@"setCompositingFilter:",true,(IMP)fake_SCF,(IMP*)&real_SCF);
 	
 	fixCAContextImpl();
 	

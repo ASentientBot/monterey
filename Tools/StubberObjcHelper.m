@@ -37,7 +37,8 @@ NSDictionary<NSString*,NSArray<NSString*>*>* getBasicTypes()
 	return basicTypes;
 }
 
-// TODO: put in all methods on NSObject
+// TODO: make it go up the inheritance hierarchy and check for methods on parents
+// rather than hardcoding NSObject ones
 
 NSMutableArray<NSString*>* bannedMethods=nil;
 NSArray<NSString*>* getBannedMethods()
@@ -143,6 +144,11 @@ int main(int argCount,char** argList)
 {
 	NSString* path=[NSString stringWithUTF8String:argList[1]];
 	void* handle=dlopen(path.UTF8String,RTLD_LAZY);
+	char* dlerror2=dlerror();
+	if(dlerror2)
+	{
+		puts(dlerror2);
+	}
 	assert(handle);
 	
 	unsigned int imageCount;
