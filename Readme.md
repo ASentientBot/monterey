@@ -183,12 +183,12 @@ Changes since last non-GitHub release.
 Roughly ordered by priority. Also see [here](https://github.com/dortania/OpenCore-Legacy-Patcher/issues/108#issuecomment-810634088).
 
 - fix Catalyst timeout crash
+- fix Catalyst crashes with Mojave QC
+- fix upside-down Catalyst UI elements with Mojave QC
 - fix beachball with hardware cursor (workaround: downgrade `IOHIDFamily` to Catalina and edit WindowServer's sandbox file to allow `HIDWaitCursorFrameInterval`, or use [this](https://github.com/ASentientBot/monterey/releases/download/2022-3-20/you.can.edit.the.defines.to.make.it.spin.extremely.fast.or.even.backward.lol.zip) beta SkyLight plugin)
 - fix mouse event weirdness on dual monitors with blur fix
 - fix unresponsive password dialogs with downgraded QuartzCore
-- implement Objective-C functions in Stubber
-- change defaults and logging prefix to reflect that this is a multi-person project
-- fix Safari frozen HTML canvas (workaround: `defaults write -g InternalDebugUseGPUProcessForCanvasRenderingEnabled -bool false`)
+- change remaining defaults and logging prefixes, move repo to Moraea organization
 - fix graphical bugs with fake window rims
 - improve blur fix performance
 - fix remaining blur flickering issues
@@ -196,7 +196,7 @@ Roughly ordered by priority. Also see [here](https://github.com/dortania/OpenCor
 - fix "Swipe Between Pages" (workaround: `defaults write -g AppleEnableMouseSwipeNavigateWithScrolls -bool true`)
 - investigate rare binaries not seeing re-exported symbols (Dropbox-specific workaround: [SkyLight plugin](https://github.com/ASentientBot/monterey/releases/download/2021-12-17/throw.this.in.the.SkyLight.plugins.folder.to.fix.Dropbox.in.a.really.non.ideal.way.zip))
 - support Ironlake
-- investigate slow compositing in all browsers
+- investigate slow compositing in all browsers (at least partially fixed with Mojave QC)
 - investigate broken WebGL in all browsers (workaround: use Chrome's `ignore-gpu-blocklist`)
 - improve status bar item resizing, replicant handling
 - investigate Maps crash
