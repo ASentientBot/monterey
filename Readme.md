@@ -1,7 +1,7 @@
 # THIS REPO IS OBSOLETE
-**As non-Metal is now firmly a multi-person effort (thanks to EduCovas and ASentientHedgehog!), we are migrating the code [here](https://github.com/moraea) for easier collaboration and a saner build system.
+**As non-Metal is now firmly a multi-person effort (thanks to EduCovas and ASentientHedgehog!), we are migrating the code [here](https://github.com/moraea) for easier collaboration and a saner build system.**
 
-I am unlikely to update this repo in future.**
+I am unlikely to update this repo in future.
 
 ---
 
