@@ -1,3 +1,10 @@
+# THIS REPO IS OBSOLETE
+**As non-Metal is now firmly a multi-person effort (thanks to EduCovas and ASentientHedgehog!), we are migrating the code [here](https://github.com/moraea) for easier collaboration and a saner build system.
+
+I am unlikely to update this repo in future.**
+
+---
+
 # credits
 - [EduCovas](https://github.com/educovas): Safari Extensions, WebKit, SkyLight, and Safari freeze (DisplayLink) insights, swipe between pages workaround, QuartzCore (Control Center, missing icons, blur saturation, corners) insights and shim code, Catalyst scrolling workaround, extensive testing
 - [ASentientHedgehog](https://moosethegoose2213.github.io): TeraScale 2 and QuartzCore (corners) insights, previous keyboard backlight workaround, OpenCL downgrade, Night Shift prefpane fix, extensive testing
